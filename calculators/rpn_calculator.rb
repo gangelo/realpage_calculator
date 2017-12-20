@@ -1,5 +1,5 @@
 require_relative 'calculator_base'
-require_relative '../interfaces/interface'
+require_relative '../services/service'
 require_relative '../support/input_parser'
 
 module RealPage
@@ -11,7 +11,6 @@ module RealPage
       class RPNCalculator < CalculatorBase
 
          def inititialize
-         #   super(interface)
          end
 
          public

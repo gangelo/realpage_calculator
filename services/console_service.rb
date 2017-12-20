@@ -1,9 +1,9 @@
-require_relative 'interface_base'
+require_relative 'service_base'
 
 module RealPage
    module Calculators
    
-      class ConsoleInterface < InterfaceBase
+      class ConsoleService < ServiceBase
 
          def initialize
          end

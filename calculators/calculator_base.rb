@@ -1,4 +1,4 @@
-require_relative '../interfaces/interface'
+require_relative '../services/service'
 require_relative '../support/input_parser'
 require_relative '../support/must_override_error'
 
@@ -9,14 +9,7 @@ module RealPage
 
          private 
 
-         attr_accessor :interface
-
-         public 
-
-         def initialize(interface)
-            @interface = interface
-            @interface.attach_calculator(self)
-         end
+         attr_accessor :service
 
          public
 

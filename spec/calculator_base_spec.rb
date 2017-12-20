@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "CalculatorBase" do
    before do
-      @subject = RealPage::Calculators::CalculatorBase.new RealPage::Calculators::InterfaceBase.new
+      @subject = RealPage::Calculators::CalculatorBase.new RealPage::Calculators::ServiceBase.new
    end
 
    subject { @subject }
