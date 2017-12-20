@@ -101,4 +101,7 @@ RSpec.configure do |config|
   # as the one that triggered the failure.
   Kernel.srand config.seed
 =end
+
+  # Raise deprecation errors for spec syntax to keep it current.
+  config.raise_errors_for_deprecations!
 end

@@ -11,15 +11,15 @@ module RealPage
          public 
 
          def initialize(calculator)
-         	@calculator = calculator
-         	@closed = false
+            @closed = true
+            @calculator = calculator
          end
 
          public
 
          #
-         # Starts the process of receiving input. Opening of resources, establishing
-         # connections
+         # Starts the process of receiving input. Accept connections, 
+         # open files, initial STDIN prompts, etc.
          def accept
             raise MustOverrideError
          end
@@ -28,20 +28,36 @@ module RealPage
             raise MustOverrideError
          end
 
+         #
+         # Returns true if this service is closed; false otherwise.
          def closed?
-            @closed || false
+            @closed
+         end
+
+         #
+         # Returns true if this service is open and accepting input; false otherwise.
+         def open?
+            !@closed
          end
 
          protected 
 
+         #
+         # Receive input from the resource previously accepted.
+         # When input is received, it should be processed subsequently.
          def receive
             raise MustOverrideError
          end
 
-         def respond(input)
+         #
+         # Sends processed input back to the resource previously accepted.
+         def respond(output)
             raise MustOverrideError
          end
 
+         #
+         # Terminates this service. Close connections, files,
+         # stop receiving input from STDIN, etc.
          def close
             @closed = true
          end
