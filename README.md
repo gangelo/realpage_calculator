@@ -11,7 +11,7 @@ Calculator
 Responsible for processing the input received from the Service and sending the appropriate response back to the Service.
 
 
-RealPage::Calculators::RPNCalculator.new RealPage::Calculators::ConsoleService.new
+# RealPage::Calculators::RPNCalculator.new RealPage::Calculators::ConsoleService.new
 
 
 

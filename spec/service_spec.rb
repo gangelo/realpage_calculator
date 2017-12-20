@@ -3,7 +3,7 @@ require 'pry'
 
 describe "Service" do
    before do
-      @service = RealPage::Calculators::Service.new(RealPage::Calculators::CalculatorBase.new)
+      @service = RealPage::Calculators::Service.new(RealPage::Calculators::Calculator.new)
 
       # Change the access modifier on all protected members to public so we can test them.
       RealPage::Calculators::Service.send(:public, *RealPage::Calculators::Service.protected_instance_methods)   
