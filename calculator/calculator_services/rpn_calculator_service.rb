@@ -2,6 +2,7 @@ require_relative 'calculator_service'
 require_relative '../support/rpn_input_parser'
 require_relative '../support/input_token'
 require_relative '../support/output_token'
+require_relative '../errors/errors'
 
 module RealPage
    module Calculator
@@ -13,25 +14,11 @@ module RealPage
 
          public 
 
-         def inititialize
+         def initialize
             super RPNInputParser.new
          end
 
          public
-
-=begin
-         #
-         # Pseudo code RPN processing loop...   
-         for each token in the postfix expression:
-            if token is an operator:
-               operand_2 ← pop from the stack
-               operand_1 ← pop from the stack
-               result ← evaluate token with operand_1 and operand_2
-               push result back onto the stack
-            else if token is an operand:
-               push token onto the stack
-         result ← pop from the stack
-=end
 
          def calculate(input)
             input_tokens = input_parser.tokenize(input)
@@ -39,30 +26,54 @@ module RealPage
 
             result = ""
 
-            input_tokens.each do |token|
-               if token.operator?
-                  # Retrieve our operands that will be used as part of our operation
-                  operand_2 = input_stack.pop.token
-                  operand_1 = input_stack.pop.token
-
-                  # Formulate the operation, save the result and execute the operation
-                  operation = "#{operand_1}#{token.token}#{operand_2}"
-                  result = eval(operation)
-                  
-                  # The result gets pushed to the input stack for later
-                  input_stack << InputToken.new(result)
-               elsif token.operand?
-                  # Operand get pushed onto the input stack for later
-                  input_stack << token
-                  result = token.token
-               elsif token.quit?
-                  result = token.token
+            input_tokens.each do |input_token|
+               if input_token.operator?
+                  return self.process_operator(input_token)
+               elsif input_token.operand?
+                  result = self.process_operand(input_token)
+               elsif input_token.quit?
+                  result = input_token.token
                   break
                end
             end
 
             return OutputToken.new(result)
 
+         end
+
+         protected
+
+         def process_operator(input_token) 
+            if self.input_stack.count < 2
+               token = input_token.token
+               return OutputToken.new(token, OperandExpectedError.new(token))
+            end
+
+            # Retrieve our operands that will be used as part of our operation
+            operand_2 = self.input_stack.pop.token
+            operand_1 = self.input_stack.pop.token
+
+            # Formulate the operation, save the result and execute the operation
+            operation = "#{operand_1}#{input_token.token}#{operand_2}"
+            result = eval(operation)
+            
+            # The result gets pushed to the input stack for later
+            self.input_stack << InputToken.new(result)
+
+            OutputToken.new(result)
+         end
+
+         def process_operand(input_token) 
+            # Operand get pushed onto the input stack for later
+            self.input_stack << input_token
+            return input_token.token
+         end
+
+         def valid_input_for_state?(input_token)
+            # If we've encountered there must be at least 2 operands in the
+            # input stack; otherwise, this is an error.
+            return false if input_token.operator? && self.input_stack.count < 2
+            true
          end
 
       end
