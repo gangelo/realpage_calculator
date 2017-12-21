@@ -11,7 +11,6 @@ module RealPage
          # Starts the process of receiving input. Accept connections, 
          # open files, initial STDIN prompts, etc.
          def accept
-            display_prompt
             receive
          end
 
@@ -25,9 +24,15 @@ module RealPage
          # Receive input from the resource previously accepted.
          # When input is received, it should be processed subsequently.
          def receive
-            while !(output_token = calculator.calculate $stdin.gets.chomp).quit?
-               respond(output_token)
-               display_prompt
+            display_prompt
+
+            while !(output_token = self.calculator.calculate $stdin.gets.chomp).quit?
+               if output_token.error? 
+                  $stderr.print output_token.error.message 
+               else
+                  respond(output_token.token)
+               end
+               display_prompt true
             end
          end
 
@@ -39,7 +44,8 @@ module RealPage
 
          private
 
-         def display_prompt
+         def display_prompt(new_line = false)
+            respond("\n") if new_line
             respond("> ")
          end
       end
