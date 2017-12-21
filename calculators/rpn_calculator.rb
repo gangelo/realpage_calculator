@@ -55,9 +55,13 @@ module RealPage
                elsif token.operand?
                   # Operand get pushed onto the input stack for later
                   input_stack << token
+                  result = token.token
+               elsif token.quit?
+                  result = ""
+                  break
                end
             end
-            
+
             return result
 
          end
