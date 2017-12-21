@@ -3,10 +3,10 @@ require 'pry'
 
 describe "RPNInputParser" do
    before do
-      @input_parser = RealPage::Calculators::RPNInputParser.new
+      @input_parser = RealPage::Calculator::RPNInputParser.new
 
       # Change the access modifier on all protected members to public so we can test them.
-      RealPage::Calculators::RPNInputParser.send(:public, *RealPage::Calculators::RPNInputParser.protected_instance_methods)   
+      RealPage::Calculator::RPNInputParser.send(:public, *RealPage::Calculator::RPNInputParser.protected_instance_methods)   
    end
 
    subject { @input_parser }
@@ -29,9 +29,9 @@ describe "RPNInputParser" do
          end
 
          it "should convert string input to a token array" do
-            expect(@input_parser.tokenize("1 1 +")).to eq(["1", "1", "+"]) 
-            expect(@input_parser.tokenize(" - 1 2 3 ")).to eq(["-", "1", "2", "3"]) 
-            expect(@input_parser.tokenize(" 1  2  3 ")).to eq(["1", "2", "3"]) 
+            expect(@input_parser.tokenize("1 1 +").to_token_array).to eq(["1", "1", "+"]) 
+            expect(@input_parser.tokenize(" - 1 2 3 ").to_token_array).to eq(["-", "1", "2", "3"]) 
+            expect(@input_parser.tokenize(" 1  2  3 ").to_token_array).to eq(["1", "2", "3"]) 
          end
       end
 
@@ -64,11 +64,11 @@ describe "RPNInputParser" do
          it { should respond_to(:parse).with(1).arguments }
 
          it "should remove leading and trailing spaces" do
-            expect(@input_parser.parse(" x ")).to eq(["x"])
+            expect(@input_parser.parse(" x ").to_token_array).to eq(["x"])
          end
 
          it "should remove double spaces" do
-            expect(@input_parser.parse("1  2  3  4")).to eq(["1", "2", "3", "4"])
+            expect(@input_parser.parse("1  2  3  4").to_token_array).to eq(["1", "2", "3", "4"])
          end
       end
 

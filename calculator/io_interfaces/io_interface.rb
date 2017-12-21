@@ -1,9 +1,9 @@
-require_relative '../support/must_override_error'
+require_relative '../errors/must_override_error'
 
 module RealPage
-   module Calculators
+   module Calculator
    
-      class Service
+      class IOInterface
          protected
 
          attr_accessor :closed

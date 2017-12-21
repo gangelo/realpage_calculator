@@ -1,12 +1,12 @@
 require 'spec_helper'
 require 'pry'
 
-describe "Service" do
+describe "IOInterface" do
    before do
-      @service = RealPage::Calculators::Service.new(RealPage::Calculators::Calculator.new)
+      @service = RealPage::Calculator::IOInterface.new(RealPage::Calculator::CalculatorService.new)
 
       # Change the access modifier on all protected members to public so we can test them.
-      RealPage::Calculators::Service.send(:public, *RealPage::Calculators::Service.protected_instance_methods)   
+      RealPage::Calculator::IOInterface.send(:public, *RealPage::Calculator::IOInterface.protected_instance_methods)   
    end
 
    subject { @service }
@@ -16,21 +16,21 @@ describe "Service" do
       describe "#accept" do
          it { should respond_to(:accept).with(0).arguments }
          it "should raise MustOverrideError" do
-            expect { @service.accept }.to raise_exception(MustOverrideError)
+            expect { @service.accept }.to raise_exception(RealPage::Calculator::MustOverrideError)
          end
       end
 
       describe "#receive" do
          it { should respond_to(:receive).with(0).arguments }
          it "should raise MustOverrideError" do
-            expect { @service.receive }.to raise_exception(MustOverrideError)
+            expect { @service.receive }.to raise_exception(RealPage::Calculator::MustOverrideError)
          end
       end
 
       describe "#respond" do
          it { should respond_to(:respond).with(1).arguments }
          it "should raise MustOverrideError" do
-            expect { @service.respond("input") }.to raise_exception(MustOverrideError)
+            expect { @service.respond("input") }.to raise_exception(RealPage::Calculator::MustOverrideError)
          end
       end
 

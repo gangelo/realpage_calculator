@@ -1,1 +1,0 @@
-class MustOverrideError < NoMethodError; end

@@ -1,5 +1,4 @@
-require_relative 'calculator'
-require_relative '../services/service'
+require_relative 'calculator_service'
 require_relative '../support/rpn_input_parser'
 require_relative '../support/input_token'
 
@@ -9,7 +8,7 @@ module RealPage
       #
       # Question: Should the Calculator be serializable in the case of a stateless environment that needs to
       # keep track of the calculator input?
-      class RPNCalculator < Calculator
+      class RPNCalculatorService < CalculatorService
 
          public 
 

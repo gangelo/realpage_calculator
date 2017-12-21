@@ -1,11 +1,10 @@
-require_relative '../services/service'
 require_relative '../support/rpn_input_parser'
-require_relative '../support/must_override_error'
+require_relative '../errors/must_override_error'
 
 module RealPage
    module Calculator
 
-      class Calculator
+      class CalculatorService
 
          protected
 

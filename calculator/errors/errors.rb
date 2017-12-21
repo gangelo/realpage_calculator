@@ -1,5 +1,5 @@
 module RealPage
-   module Calculators
+   module Calculator
       class Errors
          # Calculator errors
       end
