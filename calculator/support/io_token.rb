@@ -3,31 +3,27 @@ module RealPage
    
       class IOToken
 
-         public 
-
          attr_accessor :token
 
          def initialize(token)
             @token = token || ""
          end
 
-         public
-
          def self.operators
             {'+' => '+', '-' => '-', '/' => '/', '*' => '*'}
          end
 
          def operator?
-            !InputToken.operators[token].nil?
+            !InputToken.operators[@token].nil?
          end
 
          def operand?
             return false if operator? || quit?
-            Float(token) != nil rescue false
+            Float(@token) != nil rescue false
          end
 
          def quit?
-            @token.downcase == "q"
+            @token.to_s.downcase == "q"
          end
 
          def valid?
@@ -35,7 +31,7 @@ module RealPage
          end
 
          def empty?
-            @token.empty?
+            @token.to_s.empty?
          end
       end
    end
