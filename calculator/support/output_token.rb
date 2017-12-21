@@ -6,12 +6,10 @@ module RealPage
    
       class OutputToken < IOToken
 
-         public
-
          attr_reader :error
 
-         def error(error)
-            # TODO: Verify is RealPage::Calculator::Error type
+         def initialize(token, error = nil)
+            super token
             @error = error
          end
 
