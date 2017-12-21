@@ -1,7 +1,1 @@
-module RealPage
-   module Calculator
-      class Errors
-         # Calculator errors
-      end
-   end
-end
+require_relative 'operand_expected_error'
