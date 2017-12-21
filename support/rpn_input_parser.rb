@@ -1,6 +1,8 @@
+require_relative './input_token'
 
 module RealPage
-   module Calculators
+   module Calculator
+
       class RPNInputParser
 
          def tokenize(input)
@@ -17,7 +19,7 @@ module RealPage
          end
 
          def parse(input)
-         	input = input.split
+            input = input.split.map { |t| InputToken.new(t) }
          end
       end
    end
