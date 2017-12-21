@@ -15,10 +15,10 @@ module RealPage
 
          public 
 
-         def initialize(input_parser = nil)
-            @input_parser = input_parser || RPNInputParser.new
-            raise ArgumentError, "input_parser does not implement method #tokenize" unless @input_parser.respond_to? :tokenize
+         def initialize(input_parser)
+            raise ArgumentError, "input_parser is nil or empty" if input_parser.nil? || input_parser.to_s.empty?
 
+            @input_parser = input_parser
             @input_stack = []
             @operand_stack = []
             @operator_stack = []
