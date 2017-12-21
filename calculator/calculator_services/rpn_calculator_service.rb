@@ -1,6 +1,7 @@
 require_relative 'calculator_service'
 require_relative '../support/rpn_input_parser'
 require_relative '../support/input_token'
+require_relative '../support/output_token'
 
 module RealPage
    module Calculator
@@ -38,9 +39,8 @@ module RealPage
 
             result = ""
 
-            input_tokens.each_with_index do |token, index|
+            input_tokens.each do |token|
                if token.operator?
-
                   # Retrieve our operands that will be used as part of our operation
                   operand_2 = input_stack.pop.token
                   operand_1 = input_stack.pop.token
@@ -56,12 +56,12 @@ module RealPage
                   input_stack << token
                   result = token.token
                elsif token.quit?
-                  result = ""
+                  result = token.token
                   break
                end
             end
 
-            return result
+            return OutputToken.new(result)
 
          end
 

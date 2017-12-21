@@ -6,6 +6,7 @@ module RealPage
       class IOInterface
          protected
 
+         attr_reader :calculator
          attr_accessor :closed
 
          public 
