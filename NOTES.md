@@ -10,3 +10,10 @@ Q. Regarding a Terminator...
 
 
 Q. I am going to ignore anything following a Terminator unless you tell me otherwise; is this acceptable?
+
+
+
+Would've liked to...
+Make operators configurable using a config class
+Localize error messages
+Document the code using rdoc
