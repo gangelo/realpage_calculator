@@ -8,7 +8,7 @@ module RealPage
          attr_accessor :token
 
          def initialize(token)
-            @token = token
+            @token = token || ""
          end
 
          public
@@ -22,12 +22,16 @@ module RealPage
          end
 
          def operand?
-            return false if operator?
+            return false if operator? || quit?
             Float(token) != nil rescue false
          end
 
+         def quit?
+            @token.downcase == "q"
+         end
+
          def valid?
-           operand? || operator?
+           operand? || operator? || quit?
          end
       end
    end
