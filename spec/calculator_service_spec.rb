@@ -3,7 +3,7 @@ require 'spec_helper'
 describe "CalculatorService" do
    
    before do
-      @calculator_service = RealPage::Calculator::CalculatorService.new
+      @calculator_service = RealPage::Calculator::CalculatorService.new RealPage::Calculator::RPNInputParser.new
    end
 
    subject { @calculator_service }
@@ -14,19 +14,14 @@ describe "CalculatorService" do
             expect { RealPage::Calculator::CalculatorService.new(RealPage::Calculator::RPNInputParser.new) }.not_to raise_error 
          end
 
-         it "should accept nil and use the default input parser" do
-            expect { RealPage::Calculator::CalculatorService.new }.not_to raise_error 
-            input_parser = RealPage::Calculator::CalculatorService.new
-            expect(input_parser.instance_variable_get(:@input_parser)).to_not be(nil)
-         end
-
          it "should set instance variable @input_parser" do
             input_parser = RealPage::Calculator::CalculatorService.new(RealPage::Calculator::RPNInputParser.new)
             expect(input_parser.instance_variable_get(:@input_parser)).to_not be(nil)
          end
 
-         it "should raise ArgumentError if input_parser is invalid" do
-            expect { RealPage::Calculator::CalculatorService.new("bad_parser") }.to raise_error(ArgumentError, "input_parser does not implement method #tokenize") 
+         it "should raise ArgumentError if input_parser is nil? or empty?" do
+            expect { RealPage::Calculator::CalculatorService.new(nil) }.to raise_error(ArgumentError, "input_parser is nil or empty") 
+            expect { RealPage::Calculator::CalculatorService.new("") }.to raise_error(ArgumentError, "input_parser is nil or empty") 
          end
       end
    end
