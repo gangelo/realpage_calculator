@@ -1,3 +1,7 @@
+
+#
+# Convenience extension that converts an array of InputTokens to an array 
+# of tokens retrieved from InputToken#token.
 class Array
    def to_token_array
       return [] if self.count == 0
