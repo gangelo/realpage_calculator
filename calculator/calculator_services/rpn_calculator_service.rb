@@ -1,8 +1,8 @@
 require_relative 'calculator_service'
+require_relative 'calculator_result'
 require_relative '../support/rpn_input_parser'
 require_relative '../support/input_token'
-require_relative '../support/output_token'
-require_relative '../errors/errors'
+require_relative '../errors/calculator_error_codes'
 
 module RealPage
    module Calculator
@@ -19,28 +19,30 @@ module RealPage
 
          public
 
-         def calculate(input)
+         def compute(input)
             input_tokens = input_parser.tokenize(input)
-            return OutputToken.new("", ValidInputExpectedError.new) if input_tokens.empty?
+            return CalculatorResult.new("", CalculatorErrorCodes::VALID_INPUT_EXPECTED) if input_tokens.empty?
 
             result = ""
 
             input_tokens.to_token_array.each do |token|
                if InputToken.operator?(token)
                    if self.input_stack.count < 2
-                     return OutputToken.new(token, OperandExpectedError.new)
+                     return CalculatorResult.new(token, CalculatorErrorCodes::OPERAND_EXPECTED) 
                   end
                   result = self.process_operator(token)
                elsif InputToken.operand?(token)
                   result = self.process_operand(token)
                elsif InputToken.quit?(token)
                   result = token
+               elsif InputToken.view_stack?(token)
+               elsif InputToken.clear_stack?(token)   
                elsif InputToken.invalid?(token)
-                  return OutputToken.new(token, ValidInputExpectedError.new) 
+                  return CalculatorResult.new(token, CalculatorErrorCodes::VALID_INPUT_EXPECTED) 
                end
             end
 
-            OutputToken.new(result)
+            CalculatorResult.new(result)
          end
 
          protected
