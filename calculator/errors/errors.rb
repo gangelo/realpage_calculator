@@ -1,2 +1,0 @@
-require_relative 'operand_expected_error'
-require_relative 'valid_input_expected_error'
