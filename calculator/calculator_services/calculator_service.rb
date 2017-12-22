@@ -26,8 +26,14 @@ module RealPage
 
          public
 
-         def calculate(input)
+         def compute(input)
             raise MustOverrideError
+         end
+
+         def clear
+            @input_stack = []
+            @operand_stack = []
+            @operator_stack = []
          end
 
       end
