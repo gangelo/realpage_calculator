@@ -26,12 +26,12 @@ describe "CalculatorService" do
       end
    end
 
-   context "methods" do
+   context "instance methods" do
 
-      describe "#calculate" do
-         it { should respond_to(:calculate).with(1).argument }
+      describe "#compute" do
+         it { should respond_to(:compute).with(1).argument }
          it "should raise MustOverrideError" do
-            expect { @calculator_service.calculate("blah blah") }.to raise_error(RealPage::Calculator::MustOverrideError) 
+            expect { @calculator_service.compute("blah blah") }.to raise_error(RealPage::Calculator::MustOverrideError) 
          end
       end
 

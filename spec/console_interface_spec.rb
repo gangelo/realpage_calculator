@@ -1,37 +1,29 @@
 require 'spec_helper'
 
 describe "ConsoleInterface" do 
-   before do
-      @interface = RealPage::Calculator::ConsoleInterface.new(RealPage::Calculator::RPNCalculatorService.new)
-   end
 
-   subject { @interface }
+   context "instance methods" do
 
-   context "methods" do
-
-=begin
-      describe "#tokenize" do
-         it { should respond_to(:tokenize).with(1).arguments }
-
-         it "should return [] if input is nil?" do
-            expect(@input_parser.tokenize(nil)).to eq([])
+      describe "#accept" do
+         before do
+            @rpn_calculator = RealPage::Calculator::ConsoleInterface.new(RealPage::Calculator::RPNCalculatorService.new)
          end
-
-         it "should return [] if input is empty?" do
-            expect(@input_parser.tokenize("")).to eq([])
-         end
-
-         it "should return [] if input is spaces" do
-            expect(@input_parser.tokenize("")).to eq([])
-         end
-
-         it "should convert string input to a token array" do
-            expect(@input_parser.tokenize("1 1 +").to_token_array).to eq(["1", "1", "+"]) 
-            expect(@input_parser.tokenize(" - 1 2 3 ").to_token_array).to eq(["-", "1", "2", "3"]) 
-            expect(@input_parser.tokenize(" 1  2  3 ").to_token_array).to eq(["1", "2", "3"]) 
+         it "should call #receive to start receiving input" do
+            expect(@rpn_calculator).to receive(:receive).once
+            @rpn_calculator.accept 
          end
       end
-=end
 
-   end # methods
+      describe "#receive" do
+         before(:each) do
+            @rpn_calculator = RealPage::Calculator::ConsoleInterface.new(RealPage::Calculator::RPNCalculatorService.new)
+         end
+         it "should call #respond to send calculator results to the output stream" do
+            allow($stdin).to receive(:gets).and_return("q")
+            expect(@rpn_calculator).to receive(:respond)
+            @rpn_calculator.accept 
+         end
+      end
+
+   end # instance methods
 end

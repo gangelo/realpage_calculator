@@ -1,4 +1,6 @@
 require_relative '../calculator/calculator_services/calculator_service'
+require_relative '../calculator/calculator_services/rpn_calculator_service'
+require_relative '../calculator/calculator_services/calculator_result'
 require_relative '../calculator/errors/must_override_error'
 require_relative '../calculator/support/rpn_input_parser'
 require_relative '../calculator/io_interfaces/io_interface'

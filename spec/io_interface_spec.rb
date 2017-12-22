@@ -12,13 +12,17 @@ describe "IOInterface" do
 
    subject { @interface }
 
-   context "methods" do
+   context "instance methods" do
 
       describe "#accept" do
          it { should respond_to(:accept).with(0).arguments }
          it "should raise MustOverrideError" do
             expect { @interface.accept }.to raise_exception(RealPage::Calculator::MustOverrideError)
          end
+      end
+
+      describe "#accept_async" do
+         it "does something special"
       end
 
       describe "#receive" do
