@@ -11,7 +11,6 @@ module RealPage
       # Question: Should the Calculator be serializable in the case of a stateless environment that needs to
       # keep track of the calculator input?
       class RPNCalculatorService < CalculatorService
-
          public 
 
          def initialize
@@ -75,7 +74,7 @@ module RealPage
             return false if input_token.operator? && self.input_stack.count < 2
             true
          end
-
       end
+
    end
 end

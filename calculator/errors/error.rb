@@ -1,11 +1,9 @@
 module RealPage
    module Calculator
+
       #
       # An operand was expected, but 'x' was encountered instead.
       class Error
-         
-         public
-
          attr_reader :token
 
          def initialize(token)
@@ -14,7 +12,7 @@ module RealPage
 
          def message
          end
-
       end
+      
    end
 end

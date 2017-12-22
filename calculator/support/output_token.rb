@@ -5,7 +5,6 @@ module RealPage
    module Calculator
    
       class OutputToken < IOToken
-
          attr_reader :error
 
          def initialize(token, error = nil)
@@ -16,7 +15,7 @@ module RealPage
          def error?
             !@error.nil?
          end
-
       end
+      
    end
 end

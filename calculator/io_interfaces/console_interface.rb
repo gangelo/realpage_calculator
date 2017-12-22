@@ -4,7 +4,6 @@ module RealPage
    module Calculator
    
       class ConsoleInterface < IOInterface
-
          public
 
          #
@@ -49,5 +48,6 @@ module RealPage
             respond("> ")
          end
       end
+      
    end
 end

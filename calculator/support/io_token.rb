@@ -2,7 +2,6 @@ module RealPage
    module Calculator
    
       class IOToken
-
          attr_accessor :token
 
          def initialize(token)
@@ -34,5 +33,6 @@ module RealPage
             @token.to_s.empty?
          end
       end
+      
    end
 end
