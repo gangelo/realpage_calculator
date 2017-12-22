@@ -1,4 +1,5 @@
 require_relative 'io_interface'
+require_relative '../support/input_token'
 
 module RealPage
    module Calculator
@@ -25,11 +26,12 @@ module RealPage
          def receive
             display_prompt
 
-            while !(output_token = self.calculator.calculate $stdin.gets.chomp).quit?
-               if output_token.error? 
-                  $stderr.print "Error: #{output_token.error.message}" 
+            while !InputToken.quit?(input = $stdin.gets.chomp)
+               calculator_result = self.calculator.compute input
+               if calculator_result.error? 
+                  $stderr.print "Error: #{calculator_result.error_code.to_s}" 
                else
-                  respond(output_token.token)
+                  respond(calculator_result.result)
                end
                display_prompt true
             end
@@ -38,7 +40,7 @@ module RealPage
          #
          # Sends processed input back to the resource previously accepted.
          def respond(output)
-            $stdout.print output
+            $stdout << output
          end
 
          private
