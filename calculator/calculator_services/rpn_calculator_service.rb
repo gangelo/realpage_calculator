@@ -20,10 +20,11 @@ module RealPage
          public
 
          def compute(input)
-            input_tokens = input_parser.tokenize(input)
+            input_tokens = self.input_parser.tokenize(input)
             return CalculatorResult.new("", CalculatorErrorCodes::VALID_INPUT_EXPECTED) if input_tokens.empty?
 
             result = ""
+            quit = false
 
             input_tokens.to_token_array.each do |token|
                if InputToken.operator?(token)
@@ -34,15 +35,23 @@ module RealPage
                elsif InputToken.operand?(token)
                   result = self.process_operand(token)
                elsif InputToken.quit?(token)
-                  result = token
+                  # If we're quitting do not update result with token (i.e. result = token);
+                  # this will wipe out any previously computed values that need to be
+                  # displayed before we quit.
+                  quit = true
+                  break
                elsif InputToken.view_stack?(token)
+                  result = self.input_stack.to_s
+                  break
                elsif InputToken.clear_stack?(token)   
+                  result = self.input_stack.clear.to_s
+                  break
                elsif InputToken.invalid?(token)
                   return CalculatorResult.new(token, CalculatorErrorCodes::VALID_INPUT_EXPECTED) 
                end
             end
 
-            CalculatorResult.new(result)
+            CalculatorResult.new(result, CalculatorErrorCodes::NONE, quit)
          end
 
          protected

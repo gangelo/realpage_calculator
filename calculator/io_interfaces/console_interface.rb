@@ -32,6 +32,10 @@ module RealPage
                   $stderr.print "Error: #{calculator_result.error_code.to_s}" 
                else
                   respond(calculator_result.result)
+                  if calculator_result.quit?
+                     display_new_line
+                     break
+                  end
                end
                display_prompt true
             end
@@ -46,8 +50,12 @@ module RealPage
          private
 
          def display_prompt(new_line = false)
-            respond("\n") if new_line
+            display_new_line if new_line
             respond("> ")
+         end
+
+         def display_new_line
+            respond("\n")
          end
       end
 

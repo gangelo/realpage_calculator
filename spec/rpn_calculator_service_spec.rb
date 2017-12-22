@@ -51,22 +51,6 @@ describe "RPNCalculatorService" do
             expect(@calculator_service.compute("/").result).to eq(0.625)
             expect(@calculator_service.compute("q").result).to eq("q")
          end
-
-=begin
-         it "should return [] if input is empty?" do
-            expect(@input_parser.tokenize("")).to eq([])
-         end
-
-         it "should return [] if input is spaces" do
-            expect(@input_parser.tokenize("")).to eq([])
-         end
-
-         it "should convert string input to a token array" do
-            expect(@input_parser.tokenize("1 1 +").to_token_array).to eq([1.0, 1.0, "+"]) 
-            expect(@input_parser.tokenize(" - 1 2 3 ").to_token_array).to eq(["-", 1.0, 2.0, 3.0]) 
-            expect(@input_parser.tokenize(" 1  2  3 ").to_token_array).to eq([1.0, 2.0, 3.0]) 
-         end
-=end
       end
    end # instance methods
 

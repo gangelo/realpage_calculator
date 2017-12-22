@@ -66,11 +66,11 @@ module RealPage
          #
          # Commands:
          #
-         # s - view the input stack
+         # v - view the input stack
          # c - clear the input stack
          # q - quit
          def self.commands
-            ['s', 'c', 'q']
+            ['v', 'c', 'q']
          end
 
          def self.operator?(token)
@@ -103,7 +103,7 @@ module RealPage
          # Commands
 
          def self.view_stack?(token)
-            token.to_s.downcase == "s"
+            token.to_s.downcase == "v"
          end
 
          def self.clear_stack?(token)
