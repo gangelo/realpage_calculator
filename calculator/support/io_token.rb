@@ -29,10 +29,14 @@ module RealPage
            operand? || operator? || quit?
          end
 
+         def invalid?
+           !valid?
+         end
+
          def empty?
             @token.to_s.empty?
          end
       end
-      
+
    end
 end

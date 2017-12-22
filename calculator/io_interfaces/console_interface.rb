@@ -27,7 +27,7 @@ module RealPage
 
             while !(output_token = self.calculator.calculate $stdin.gets.chomp).quit?
                if output_token.error? 
-                  $stderr.print output_token.error.message 
+                  $stderr.print "Error: #{output_token.error.message}" 
                else
                   respond(output_token.token)
                end
@@ -48,6 +48,6 @@ module RealPage
             respond("> ")
          end
       end
-      
+
    end
 end
