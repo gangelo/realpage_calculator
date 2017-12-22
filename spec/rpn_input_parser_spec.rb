@@ -28,9 +28,9 @@ describe "RPNInputParser" do
          end
 
          it "should convert string input to a token array" do
-            expect(@input_parser.tokenize("1 1 +").to_token_array).to eq(["1", "1", "+"]) 
-            expect(@input_parser.tokenize(" - 1 2 3 ").to_token_array).to eq(["-", "1", "2", "3"]) 
-            expect(@input_parser.tokenize(" 1  2  3 ").to_token_array).to eq(["1", "2", "3"]) 
+            expect(@input_parser.tokenize("1 1 +").to_token_array).to eq([1.0, 1.0, "+"]) 
+            expect(@input_parser.tokenize(" - 1 2 3 ").to_token_array).to eq(["-", 1.0, 2.0, 3.0]) 
+            expect(@input_parser.tokenize(" 1  2  3 ").to_token_array).to eq([1.0, 2.0, 3.0]) 
          end
       end
 
@@ -67,7 +67,7 @@ describe "RPNInputParser" do
          end
 
          it "should remove double spaces" do
-            expect(@input_parser.parse("1  2  3  4").to_token_array).to eq(["1", "2", "3", "4"])
+            expect(@input_parser.parse("1  2  3  4").to_token_array).to eq([1.0, 2.0, 3.0, 4.0])
          end
       end
 
