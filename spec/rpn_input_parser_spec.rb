@@ -10,7 +10,7 @@ describe "RPNInputParser" do
 
    subject { @input_parser }
 
-   context "methods" do
+   context "instance methods" do
 
       describe "#tokenize" do
          it { should respond_to(:tokenize).with(1).arguments }
