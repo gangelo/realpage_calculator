@@ -30,13 +30,13 @@ module RealPage
                calculator_result = self.calculator.compute input
                if calculator_result.error? 
                   $stderr.print "Error: #{calculator_result.error_code.to_s}" 
+               elsif calculator_result.quit?
+                  respond(calculator_result.result)
+                  display_new_line
+                  break
                else
                   respond(calculator_result.result)
-                  if calculator_result.quit?
-                     display_new_line
-                     break
-                  end
-               end
+               end 
                display_prompt true
             end
          end
