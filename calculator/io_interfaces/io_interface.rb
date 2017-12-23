@@ -38,7 +38,7 @@ module RealPage
          #
          # Returns true if this service is open and accepting input; false otherwise.
          def open?
-            !@closed
+            !closed?
          end
 
          protected 

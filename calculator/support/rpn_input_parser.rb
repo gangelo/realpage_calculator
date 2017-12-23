@@ -5,7 +5,6 @@ module RealPage
    module Calculator
 
       class RPNInputParser
-
          def tokenize(input)
          	return [] if nil_or_empty?(input)
          	parse(input)
@@ -34,5 +33,6 @@ module RealPage
             input = input.split.map { |t| InputToken.new(t) }
          end
       end
+      
    end
 end

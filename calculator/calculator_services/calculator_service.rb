@@ -5,7 +5,6 @@ module RealPage
    module Calculator
 
       class CalculatorService
-
          protected
 
          attr_accessor :input_stack
@@ -35,7 +34,6 @@ module RealPage
             @operand_stack = []
             @operator_stack = []
          end
-
       end
 
    end

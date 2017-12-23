@@ -1,4 +1,3 @@
-
 #
 # Convenience extension that converts an array of InputTokens to an array 
 # of tokens retrieved from InputToken#token.
