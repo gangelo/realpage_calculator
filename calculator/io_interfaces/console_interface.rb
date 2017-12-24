@@ -11,7 +11,14 @@ module RealPage
          # Starts the process of receiving input. Accept connections, 
          # open files, initial STDIN prompts, etc.
          def accept
-            receive
+            if super
+               self.receive
+               return true
+            else
+               # TODO: Return error
+               print 'stream is closed'
+               return false
+            end
          end
 
          def accept_async
@@ -24,6 +31,12 @@ module RealPage
          # Receive input from the resource previously accepted.
          # When input is received, it should be processed subsequently.
          def receive
+            # If the stream is closed, get out
+            if !self.open?
+               # TODO: Send IO error
+               return
+            end
+
             display_prompt
 
             while !InputToken.quit?(input = $stdin.gets.chomp)
@@ -31,6 +44,7 @@ module RealPage
                if calculator_result.error? 
                   $stderr.print "Error: #{calculator_result.error_code.to_s}" 
                elsif calculator_result.quit?
+                  self.close
                   respond(calculator_result.result)
                   display_new_line
                   break
