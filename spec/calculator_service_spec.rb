@@ -1,9 +1,11 @@
 require 'spec_helper'
 
 describe "CalculatorService" do
-   
    before do
       @calculator_service = RealPage::Calculator::CalculatorService.new RealPage::Calculator::RPNInputParser.new
+
+      # Change the access modifier on all protected members to public so we can test them.
+      RealPage::Calculator::CalculatorService.send(:public, *RealPage::Calculator::CalculatorService.protected_instance_methods)   
    end
 
    subject { @calculator_service }
@@ -27,7 +29,6 @@ describe "CalculatorService" do
    end
 
    context "instance methods" do
-
       describe "#compute" do
          it { should respond_to(:compute).with(1).argument }
          it "should raise MustOverrideError" do
@@ -35,6 +36,13 @@ describe "CalculatorService" do
          end
       end
 
+      describe "#clear" do
+         it { should respond_to(:clear).with(0).argument }
+         it "should clear the input stack when called" do
+            @calculator_service.input_stack = [1.0, 2.0, 3.0] 
+            expect { @calculator_service.clear }.to change { @calculator_service.input_stack }.from([1.0, 2.0, 3.0]).to([]) 
+         end
+      end
    end
 
 end

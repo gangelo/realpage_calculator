@@ -8,8 +8,6 @@ module RealPage
          protected
 
          attr_accessor :input_stack
-         attr_accessor :operand_stack
-         attr_accessor :operator_stack
          attr_accessor :input_parser
 
          public 
@@ -19,8 +17,6 @@ module RealPage
 
             @input_parser = input_parser
             @input_stack = []
-            @operand_stack = []
-            @operator_stack = []
          end
 
          public
@@ -31,8 +27,6 @@ module RealPage
 
          def clear
             @input_stack = []
-            @operand_stack = []
-            @operator_stack = []
          end
       end
 
