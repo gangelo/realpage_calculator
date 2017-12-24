@@ -1,0 +1,10 @@
+operators:
+  '+': '+'
+  '-': '-'
+  '/': '/'
+  '*': '*'
+
+commands:
+  quit: q
+  clear_stack: c
+  view_stack: v

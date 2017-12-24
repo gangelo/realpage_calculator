@@ -1,7 +1,16 @@
+require_relative '../support/configuration'
+
 module RealPage
    module Calculator
    
       class InputToken
+         protected
+
+         @@operators = nil
+         @@commands = nil
+         
+         public
+
          def initialize(token = nil)
             @token = token
          end
@@ -60,17 +69,17 @@ module RealPage
          # Class methods
 
          def self.operators
-            {'+' => '+', '-' => '-', '/' => '/', '*' => '*'}
+            if @@operators.nil?
+               @@operators = Configuration.instance.operators
+            end
+            @@operators
          end
 
-         #
-         # Commands:
-         #
-         # v - view the input stack
-         # c - clear the input stack
-         # q - quit
          def self.commands
-            ['v', 'c', 'q']
+             if @@commands.nil?
+               @@commands = Configuration.instance.commands
+            end
+            @@commands
          end
 
          def self.operator?(token)
@@ -82,8 +91,8 @@ module RealPage
             Float(token) != nil rescue false
          end
 
-          def self.command?(token)
-            InputToken.commands.include?(token)
+         def self.command?(token)
+            InputToken.commands.key(token)
          end
 
          def self.valid?(token)
@@ -103,11 +112,11 @@ module RealPage
          # Commands
 
          def self.view_stack?(token)
-            token.to_s.downcase == "v"
+            InputToken.commands.key(token).downcase == "view_stack"
          end
 
          def self.clear_stack?(token)
-            token.to_s.downcase == "c"
+            InputToken.commands.key(token).downcase == "clear_stack"
          end
 
          def self.quit?(token)
