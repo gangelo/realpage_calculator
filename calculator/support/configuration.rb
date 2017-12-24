@@ -17,6 +17,18 @@ module RealPage
             @@instance
          end
 
+         def quit_command
+            self.commands['quit']
+         end
+
+         def clear_stack_command
+            self.commands['clear_stack']
+         end
+
+         def view_stack_command
+            self.commands['view_stack']
+         end
+
          protected
 
          def load_config

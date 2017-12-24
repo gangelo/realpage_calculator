@@ -112,15 +112,24 @@ module RealPage
          # Commands
 
          def self.view_stack?(token)
-            InputToken.commands.key(token).downcase == "view_stack"
+            return false unless token.respond_to? :downcase
+            token = token.downcase
+            command_value = self.commands.key(token)
+            command_value.nil? ? false : token == Configuration.instance.view_stack_command.downcase
          end
 
          def self.clear_stack?(token)
-            InputToken.commands.key(token).downcase == "clear_stack"
+            return false unless token.respond_to? :downcase
+            token = token.downcase
+            command_value = self.commands.key(token)
+            command_value.nil? ? false : token == Configuration.instance.clear_stack_command.downcase
          end
 
          def self.quit?(token)
-            token.to_s.downcase == "q"
+            return false unless token.respond_to? :downcase
+            token = token.downcase
+            command_value = self.commands.key(token)
+            command_value.nil? ? false : token == Configuration.instance.quit_command.downcase
          end
       end
 
