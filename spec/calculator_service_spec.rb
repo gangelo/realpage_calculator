@@ -26,7 +26,7 @@ describe "CalculatorService" do
             expect { RealPage::Calculator::CalculatorService.new("") }.to raise_error(ArgumentError, "input_parser is nil or empty") 
          end
       end
-   end
+   end # initialization
 
    context "instance methods" do
       describe "#compute" do
@@ -43,6 +43,13 @@ describe "CalculatorService" do
             expect { @calculator_service.clear }.to change { @calculator_service.input_stack }.from([1.0, 2.0, 3.0]).to([]) 
          end
       end
-   end
+   end # instance methods
+
+   context "protected instance methods" do
+      describe "#attach_observer" do
+         it "should accept..."
+         it "should set..."
+      end
+   end # protected instance methods
 
 end

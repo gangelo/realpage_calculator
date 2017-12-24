@@ -61,4 +61,11 @@ describe "RPNCalculatorService" do
       end
    end # instance methods
 
+   context "protected instance methods" do
+      describe "#attach_observer" do
+         it "should accept..."
+         it "should set..."
+      end
+   end # protected instance methods
+
 end
