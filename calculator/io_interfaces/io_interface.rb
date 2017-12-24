@@ -14,6 +14,7 @@ module RealPage
          def initialize(calculator)
             @status = @@ready_status
             @calculator = calculator
+            @calculator.attach_observer(self)
          end
 
          class << self

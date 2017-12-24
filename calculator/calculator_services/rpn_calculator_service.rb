@@ -21,37 +21,47 @@ module RealPage
 
          def compute(input)
             input_tokens = self.input_parser.tokenize(input)
-            return CalculatorResult.new("", CalculatorErrorCodes::VALID_INPUT_EXPECTED) if input_tokens.empty?
+            if input_tokens.empty?
+               self.notify_observer_error("", CalculatorErrorCodes::VALID_INPUT_EXPECTED)
+               return
+            end
+
+            token_array = input_tokens.to_token_array
 
             result = ""
-            quit = false
 
-            input_tokens.to_token_array.each do |token|
+            # If we have a quit command anywhere within the command tokens, we
+            # want to pass this along to the interface so that we can quit appropriately
+            quit = token_array.include? Configuration.instance.quit_command
+
+            token_array.each do |token|
                if InputToken.operator?(token)
                    if self.input_stack.count < 2
-                     return CalculatorResult.new(token, CalculatorErrorCodes::OPERAND_EXPECTED) 
+                     self.notify_observer_error(token, CalculatorErrorCodes::OPERAND_EXPECTED, quit)
+                     return
+                  else
+                     result = self.process_operator(token)
+                     next
                   end
-                  result = self.process_operator(token)
                elsif InputToken.operand?(token)
                   result = self.process_operand(token)
+                  next
                elsif InputToken.quit?(token)
                   # If we're quitting do not update result with token (i.e. result = token);
                   # this will wipe out any previously computed values that need to be
                   # displayed before we quit.
-                  quit = true
-                  break
+                  next
                elsif InputToken.view_stack?(token)
                   result = self.input_stack.to_s
-                  break
                elsif InputToken.clear_stack?(token)   
                   result = self.input_stack.clear.to_s
-                  break
                elsif InputToken.invalid?(token)
-                  return CalculatorResult.new(token, CalculatorErrorCodes::VALID_INPUT_EXPECTED) 
+                  self.notify_observer_error(token, CalculatorErrorCodes::VALID_INPUT_EXPECTED, quit)
+                  return
                end
             end
 
-            CalculatorResult.new(result, CalculatorErrorCodes::NONE, quit)
+            self.notify_observer_result(result, quit)
          end
 
          protected

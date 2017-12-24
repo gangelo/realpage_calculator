@@ -11,13 +11,17 @@ module RealPage
          # Starts the process of receiving input. Accept connections, 
          # open files, initial STDIN prompts, etc.
          def accept
-            if super
-               self.receive
-               return true
-            else
+            if !super
                # TODO: Return error
                print 'stream is closed'
                return false
+            end
+
+            display_prompt
+
+            while !self.closed? && !InputToken.quit?(input = $stdin.gets.chomp)
+               self.calculator.compute input
+               display_prompt unless self.closed?
             end
          end
 
@@ -30,29 +34,16 @@ module RealPage
          #
          # Receive input from the resource previously accepted.
          # When input is received, it should be processed subsequently.
-         def receive
-            # If the stream is closed, get out
-            if !self.open?
-               # TODO: Send IO error
-               return
-            end
+         def receive_result(calculator_result)
+            respond(calculator_result.result)
+            display_new_line
+            self.close if calculator_result.quit?
+         end
 
-            display_prompt
-
-            while !InputToken.quit?(input = $stdin.gets.chomp)
-               calculator_result = self.calculator.compute input
-               if calculator_result.error? 
-                  $stderr.print "Error: #{calculator_result.error_code.to_s}" 
-               elsif calculator_result.quit?
-                  self.close
-                  respond(calculator_result.result)
-                  display_new_line
-                  break
-               else
-                  respond(calculator_result.result)
-               end 
-               display_prompt true
-            end
+         def receive_error(calculator_result)
+            $stderr.print "Error: #{calculator_result.error_code.to_s}" 
+            display_new_line
+            self.close if calculator_result.quit?
          end
 
          #
