@@ -16,8 +16,8 @@ describe "IOInterface" do
 
       describe "#accept" do
          it { should respond_to(:accept).with(0).arguments }
-         it "should return true if the interface has not been previously opened" do
-            expect(@interface.accept).to eq(true)
+         it "should not raise an error if the interface has not been previously opened" do
+            expect { @interface.accept }.to_not raise_exception
          end
       end
 
