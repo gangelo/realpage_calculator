@@ -16,9 +16,9 @@ module RealPage
 
          def initialize(input_parser)
             raise ArgumentError, "input_parser is nil or empty" if input_parser.nil? || input_parser.to_s.empty?
-
-            @input_parser = input_parser
             @input_stack = []
+            @input_parser = input_parser
+            @interface_observer = nil
          end
 
          public
@@ -38,11 +38,15 @@ module RealPage
          protected
 
          def notify_observer_result(calculator_result, quit = false)
-            @interface_observer.send(:receive_calculator_result, CalculatorResult.new(calculator_result, CalculatorErrorCodes::NONE, quit))
+            calculator_result = CalculatorResult.new(calculator_result, CalculatorErrorCodes::NONE, quit)
+            @interface_observer.send(:receive_calculator_result, calculator_result) unless @interface_observer.nil?
+            calculator_result
          end
 
          def notify_observer_result_error(calculator_result, calculator_error, quit = false)
-            @interface_observer.send(:receive_calculator_result_error, CalculatorResult.new(calculator_result, calculator_error, quit))
+            calculator_result = CalculatorResult.new(calculator_result, calculator_error, quit)
+            @interface_observer.send(:receive_calculator_result_error, calculator_result) unless @interface_observer.nil?
+            calculator_result
          end
       end
 

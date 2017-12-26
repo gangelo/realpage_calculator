@@ -22,8 +22,7 @@ module RealPage
          def compute(input)
             input_tokens = self.input_parser.tokenize(input)
             if input_tokens.empty?
-               self.notify_observer_result_error("", CalculatorErrorCodes::VALID_INPUT_EXPECTED)
-               return
+               return self.notify_observer_result_error("", CalculatorErrorCodes::VALID_INPUT_EXPECTED)
             end
 
             token_array = input_tokens.to_token_array
@@ -37,8 +36,7 @@ module RealPage
             token_array.each do |token|
                if InputToken.operator?(token)
                   if self.input_stack.count < 2
-                     self.notify_observer_result_error(token, CalculatorErrorCodes::OPERAND_EXPECTED, quit)
-                     return
+                     return self.notify_observer_result_error(token, CalculatorErrorCodes::OPERAND_EXPECTED, quit)
                   else
                      result = self.process_operator(token)
                      next
@@ -56,8 +54,7 @@ module RealPage
                elsif InputToken.clear_stack?(token)   
                   result = self.input_stack.clear.to_s
                elsif InputToken.invalid?(token)
-                  self.notify_observer_result_error(token, CalculatorErrorCodes::VALID_INPUT_EXPECTED, quit)
-                  return
+                  return self.notify_observer_result_error(token, CalculatorErrorCodes::VALID_INPUT_EXPECTED, quit)
                end
             end
 
