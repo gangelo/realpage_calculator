@@ -1,4 +1,5 @@
 require_relative 'input_token'
+require_relative '../support/configuration'
 require_relative '../extensions/array_extensions'
 
 module RealPage
@@ -19,6 +20,13 @@ module RealPage
                raise ArgumentError, "input_token_array element does not implement method #token" unless token.respond_to? :toke 
                input_token.token 
             end 
+         end
+
+         #
+         # Returns true if the input contains the quit command; false otherwise.
+         def self.contains_quit_command(input)
+            return false if input.nil? || input.strip.empty?
+            input.split.include? RealPage::Calculator::Configuration.instance.quit_command
          end
 
          protected
