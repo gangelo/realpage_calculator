@@ -45,7 +45,14 @@ module RealPage
          #
          # Sends processed output to the stream previously accepted.
          def respond(output)
+            p output
             $stdout << output
+         end
+
+         #
+         # Sends error output to the stream previously accepted.
+         def respond_error(output)
+            $stderr << output
          end
 
          #
@@ -63,7 +70,7 @@ module RealPage
          # When calculator input error is received, it should be subsequently
          # passed to the interface error output stream.
          def receive_calculator_result_error(calculator_result)
-            $stderr << "Error: #{calculator_result.error_code.to_s}\n"
+            self.respond_error("Error: #{calculator_result.error_code.to_s}\n")
          end
 
          protected
