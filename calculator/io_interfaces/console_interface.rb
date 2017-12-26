@@ -1,6 +1,8 @@
 require_relative 'io_interface'
 require_relative '../support/input_token'
 
+#require 'byebug'
+
 module RealPage
    module Calculator
    
@@ -15,11 +17,21 @@ module RealPage
 
             display_prompt
 
-            while !self.closed? && !InputToken.quit?(input = self.receive)
+            input = self.receive
+            while !self.closed? && !InputToken.quit?(input)
                self.calculator.compute input
-               self.display_prompt unless self.closed?
+               self.close if RPNInputParser.contains_quit_command(input)
+               if !self.closed?
+                  self.display_prompt
+                  input = self.receive
+               end
             end
 
+         end
+
+         def has_quit(input)
+            return false if input.nil? || input.strip.empty?
+            input.split.include? RealPage::Configuration.quit_command
          end
 
          def accept_async
@@ -48,7 +60,6 @@ module RealPage
          # passed to the interface output stream.
          def receive_calculator_result(calculator_result)
             self.respond("#{calculator_result.result}\n")
-            self.close if calculator_result.quit?
          end
 
          #
@@ -57,8 +68,7 @@ module RealPage
          # When calculator input error is received, it should be subsequently
          # passed to the interface error output stream.
          def receive_calculator_result_error(calculator_result)
-            $stderr << "Error: #{calculator_result.error_code.to_s}\n" 
-            self.close if calculator_result.quit?
+            $stderr << "Error: #{calculator_result.error_code.to_s}\n"
          end
 
          protected

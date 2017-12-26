@@ -29,14 +29,10 @@ module RealPage
 
             result = ""
 
-            # If we have a quit command anywhere within the command tokens, we
-            # want to pass this along to the interface so that we can quit appropriately
-            quit = token_array.include? Configuration.instance.quit_command
-
             token_array.each do |token|
                if InputToken.operator?(token)
                   if self.input_stack.count < 2
-                     return self.notify_observer_result_error(token, CalculatorErrorCodes::OPERAND_EXPECTED, quit)
+                     return self.notify_observer_result_error(token, CalculatorErrorCodes::OPERAND_EXPECTED)
                   else
                      result = self.process_operator(token)
                      next
@@ -45,20 +41,18 @@ module RealPage
                   result = self.process_operand(token)
                   next
                elsif InputToken.quit?(token)
-                  # If we're quitting do not update result with token (i.e. result = token);
-                  # this will wipe out any previously computed values that need to be
-                  # displayed before we quit.
+                  # If we're quitting just ignore it and move on, the interface will deal with it.
                   next
                elsif InputToken.view_stack?(token)
                   result = self.input_stack.to_s
                elsif InputToken.clear_stack?(token)   
                   result = self.input_stack.clear.to_s
                elsif InputToken.invalid?(token)
-                  return self.notify_observer_result_error(token, CalculatorErrorCodes::VALID_INPUT_EXPECTED, quit)
+                  return self.notify_observer_result_error(token, CalculatorErrorCodes::VALID_INPUT_EXPECTED)
                end
             end
 
-            self.notify_observer_result(result, quit)
+            self.notify_observer_result(result)
          end
 
          protected
