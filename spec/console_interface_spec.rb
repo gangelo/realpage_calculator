@@ -5,10 +5,8 @@ describe "ConsoleInterface" do
       @console_interface = RealPage::Calculator::ConsoleInterface.new(RealPage::Calculator::RPNCalculatorService.new)
       # Change the access modifier on all protected members to public so we can test them.
       RealPage::Calculator::ConsoleInterface.send(:public, *RealPage::Calculator::ConsoleInterface.protected_instance_methods)
-      # Suppress the prompt so that we don't muddy out test output
-      allow_any_instance_of(RealPage::Calculator::ConsoleInterface).to receive(:display_prompt).and_return(nil)
       # Suppress output to the console so that we don't muddy our test output
-      # expect(@console_interface).to receive(:respond).and_return(nil)
+      allow(@console_interface).to receive(:respond).and_return(nil)
    end
 
    subject { @console_interface }
@@ -44,35 +42,49 @@ describe "ConsoleInterface" do
 
       describe "#receive_calculator_result" do
          it { should respond_to(:receive_calculator_result).with(1).arguments }
-         it "should receive output from the calendar after a compute operation" do
-            input = "1 1 + #{quit_command}\n"
-
-            #allow($stdin).to receive(:gets).and_return(input)
-            allow(@console_interface).to receive(:receive).and_return(input.chomp)
-            #allow_any_instance_of(RealPage::Calculator::ConsoleInterface).to receive(:receive).and_return(input.chomp)
-
-            allow(@console_interface).to receive(:respond).and_return(nil)
-            
-            #expect(@console_interface).to receive(:receive).and_return(input)
-            
-            #.with(instance_of(RealPage::Calculator::CalculatorResult))
+         it "should receive output from the calculator after a compute operation" do
+            input = "1 1 + #{quit_command}"
+            allow(@console_interface).to receive(:receive).and_return(input)
             expect(@console_interface).to receive(:receive_calculator_result) do |calculator_result|
                expect(calculator_result.result).to eq(2.0)
             end
-            #expect(@console_interface).to receive(:receive_calculator_result)
             @console_interface.accept
          end
 
-         it "should pass output from the calendar to the output stream after a compute operation"
-         it "should close the interface if the quit command is found"
+         it "should pass output from the calculator to #respond after a compute operation" do
+            allow(@console_interface).to receive(:receive).and_return("1 1 + #{quit_command}")
+            expect(@console_interface).to receive(:respond).with("2.0\n")
+            @console_interface.accept
+         end
       end
 
       describe "#receive_calculator_result_error" do
-          it "should do something..."
+         it { should respond_to(:receive_calculator_result_error).with(1).arguments }
+         it "should receive errors from the calculator" do
+            allow(@console_interface).to receive(:receive).and_return("+ + #{quit_command}")
+            expect(@console_interface).to receive(:receive_calculator_result_error) do |calculator_result|
+               expect(calculator_result.error_code).to_not eq(0)
+            end
+            @console_interface.accept
+         end
+
+         it "should pass errors from the calculator to #respond_error" do
+            allow(@console_interface).to receive(:receive).and_return("+ + #{quit_command}")
+            expect(@console_interface).to receive(:respond_error).with(/Error:/)
+            @console_interface.accept
+         end
       end
 
       describe "#display_prompt" do
-          it "should do something..."
+         it "should display a prompt" do
+            expect(@console_interface).to receive(:respond).with(/> /)
+            @console_interface.display_prompt
+         end
+
+         it "should display a prompt on a new line" do
+             expect(@console_interface).to receive(:respond).with(/\n> /)
+            @console_interface.display_prompt true
+         end
       end
    end # instance methods
 
