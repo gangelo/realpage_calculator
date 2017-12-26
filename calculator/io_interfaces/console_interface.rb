@@ -11,18 +11,15 @@ module RealPage
          # Starts the process of receiving input. Accept connections, 
          # open files, initial STDIN prompts, etc.
          def accept
-            if !super
-               # TODO: Return error
-               print 'stream is closed'
-               return false
-            end
+            super
 
             display_prompt
 
-            while !self.closed? && !InputToken.quit?(input = $stdin.gets.chomp)
+            while !self.closed? && !InputToken.quit?(input = self.receive)
                self.calculator.compute input
-               display_prompt unless self.closed?
+               self.display_prompt unless self.closed?
             end
+
          end
 
          def accept_async
@@ -32,35 +29,42 @@ module RealPage
          protected 
 
          #
-         # Receive input from the resource previously accepted.
-         # When input is received, it should be processed subsequently.
-         def receive_result(calculator_result)
-            respond(calculator_result.result)
-            display_new_line
-            self.close if calculator_result.quit?
-         end
-
-         def receive_error(calculator_result)
-            $stderr.print "Error: #{calculator_result.error_code.to_s}" 
-            display_new_line
-            self.close if calculator_result.quit?
+         # Receives input from the stream previously accepted.
+         def receive
+            input = $stdin.gets
+            input.chomp
          end
 
          #
-         # Sends processed input back to the resource previously accepted.
+         # Sends processed output to the stream previously accepted.
          def respond(output)
             $stdout << output
          end
 
-         private
-
-         def display_prompt(new_line = false)
-            display_new_line if new_line
-            respond("> ")
+         #
+         # Receives the calculator result from the calculator via 
+         # notification as a result of attaching to the calculator as an observer.
+         # When calculator input is received, it should be subsequently
+         # passed to the interface output stream.
+         def receive_calculator_result(calculator_result)
+            self.respond("#{calculator_result.result}\n")
+            self.close if calculator_result.quit?
          end
 
-         def display_new_line
-            respond("\n")
+         #
+         # Receives the calculator result error from the calculator via
+         # notification as a result of attaching to the calculator as an observer.
+         # When calculator input error is received, it should be subsequently
+         # passed to the interface error output stream.
+         def receive_calculator_result_error(calculator_result)
+            $stderr << "Error: #{calculator_result.error_code.to_s}\n" 
+            self.close if calculator_result.quit?
+         end
+
+         protected
+
+         def display_prompt(new_line = false)
+            new_line ? respond("\n> ") : respond("> ")
          end
       end
 

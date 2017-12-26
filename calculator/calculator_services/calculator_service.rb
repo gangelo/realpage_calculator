@@ -38,11 +38,11 @@ module RealPage
          protected
 
          def notify_observer_result(calculator_result, quit = false)
-            @interface_observer.send(:receive_result, CalculatorResult.new(calculator_result, CalculatorErrorCodes::NONE, quit))
+            @interface_observer.send(:receive_calculator_result, CalculatorResult.new(calculator_result, CalculatorErrorCodes::NONE, quit))
          end
 
-         def notify_observer_error(calculator_result, calculator_error, quit = false)
-            @interface_observer.send(:receive_error, CalculatorResult.new(calculator_result, calculator_error, quit))
+         def notify_observer_result_error(calculator_result, calculator_error, quit = false)
+            @interface_observer.send(:receive_calculator_result_error, CalculatorResult.new(calculator_result, calculator_error, quit))
          end
       end
 

@@ -76,7 +76,7 @@ module RealPage
          end
 
          def self.commands
-             if @@commands.nil?
+            if @@commands.nil?
                @@commands = Configuration.instance.commands
             end
             @@commands

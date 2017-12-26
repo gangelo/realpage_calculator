@@ -81,7 +81,7 @@ describe "IOInterface" do
          it { should respond_to(:close).with(0).arguments }
          it "should change #closed? from false to true" do
             @interface.accept
-            expect { @interface.close }.to change(@interface, :closed?)#.from(false).to(true)
+            expect { @interface.close }.to change(@interface, :closed?).from(false).to(true)
          end
       end
 
