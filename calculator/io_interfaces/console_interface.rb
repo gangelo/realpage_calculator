@@ -29,11 +29,6 @@ module RealPage
 
          end
 
-         def has_quit(input)
-            return false if input.nil? || input.strip.empty?
-            input.split.include? RealPage::Configuration.quit_command
-         end
-
          def accept_async
             raise MustOverrideError
          end
