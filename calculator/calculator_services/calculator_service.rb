@@ -37,14 +37,14 @@ module RealPage
 
          protected
 
-         def notify_observer_result(calculator_result, quit = false)
-            calculator_result = CalculatorResult.new(calculator_result, CalculatorErrorCodes::NONE, quit)
+         def notify_observer_result(calculator_result)
+            calculator_result = CalculatorResult.new(calculator_result, CalculatorErrorCodes::NONE,)
             @interface_observer.send(:receive_calculator_result, calculator_result) unless @interface_observer.nil?
             calculator_result
          end
 
-         def notify_observer_result_error(calculator_result, calculator_error, quit = false)
-            calculator_result = CalculatorResult.new(calculator_result, calculator_error, quit)
+         def notify_observer_result_error(calculator_result, calculator_error)
+            calculator_result = CalculatorResult.new(calculator_result, calculator_error)
             @interface_observer.send(:receive_calculator_result_error, calculator_result) unless @interface_observer.nil?
             calculator_result
          end
