@@ -5,6 +5,14 @@ module RSpecHelpers
       def quit_command
          RealPage::Calculator::Configuration.instance.quit_command.downcase
       end
+
+      def clear_stack_command
+         RealPage::Calculator::Configuration.instance.clear_stack_command.downcase
+      end
+
+      def view_stack_command
+         RealPage::Calculator::Configuration.instance.view_stack_command.downcase
+      end
    end
 end
 
