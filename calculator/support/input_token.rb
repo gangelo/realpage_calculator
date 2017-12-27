@@ -27,7 +27,7 @@ module RealPage
          end
 
          def operator?
-            !InputToken.operator?(@token).nil?
+            InputToken.operator?(@token)
          end
 
          def operand?
@@ -92,7 +92,7 @@ module RealPage
          end
 
          def self.command?(token)
-            InputToken.commands.key(token)
+            !InputToken.commands.key(token).nil?
          end
 
          def self.valid?(token)
