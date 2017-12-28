@@ -3,11 +3,8 @@ require 'i18n'
 module RealPage
    module Calculator
 
-      # Singleton. Provides a single interface to translate
+      # Singleton. Provides a single interface for translation.
       class I18nTranslator
-
-         attr_accessor :operators
-         attr_accessor :commands
 
          def initialize
             self.load_config
