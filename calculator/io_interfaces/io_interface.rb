@@ -4,22 +4,26 @@ require_relative '../errors/interface_not_ready_error'
 module RealPage
    module Calculator
    
+      # Provides a base for interfaces. Classes inheriting IOInterface are responsible
+      # for overriding and implementing several methods in order to provide functionality specific 
+      # to the interface in question.
       class IOInterface
          protected
 
-         attr_reader :calculator
+         attr_reader :calculator_service
          attr_accessor :status
 
          public 
 
-         def initialize(calculator)   
+         def initialize(calculator_service)   
             @status = IOInterface.ready_status
-            @calculator = calculator
-            @calculator.attach_observer(self)
+            @calculator_service = calculator_service
+            @calculator_service.attach_observer(self)
          end
 
-         #
+         #--
          # Class attributes
+         #++
 
          #
          # The interface has been neither opened or closed e.g. awaiting a connection (#accept).
@@ -89,18 +93,18 @@ module RealPage
          end
 
          #
-         # Should receive the calculator result from the calculator via 
-         # notification as a result of attaching to the calculator as an observer.
-         # When calculator input is received, it should be subsequently
+         # Should receive the calculator_service result from the calculator_service via 
+         # notification as a result of attaching to the calculator_service as an observer.
+         # When calculator_service input is received, it should be subsequently
          # passed to the interface output stream.
          def receive_calculator_result(calculator_result)
             raise MustOverrideError
          end
 
          #
-         # Should receive the calculator result error from the calculator via
-         # notification as a result of attaching to the calculator as an observer.
-         # When calculator input error is received, it should be subsequently
+         # Should receive the calculator_service result error from the calculator_service via
+         # notification as a result of attaching to the calculator_service as an observer.
+         # When calculator_service input error is received, it should be subsequently
          # passed to the interface error output stream.
          def receive_calculator_result_error(calculator_result)
             raise MustOverrideError
