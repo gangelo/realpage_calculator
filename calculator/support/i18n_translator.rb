@@ -3,6 +3,7 @@ require 'i18n'
 module RealPage
    module Calculator
 
+      # Singleton. Provides a single interface to translate
       class I18nTranslator
 
          attr_accessor :operators
@@ -47,7 +48,7 @@ module RealPage
          protected
 
          def load_config
-            i18n_folder = File.join(__dir__, '../config/*.yml')
+            i18n_folder = File.join(__dir__, '../config/i18n.yml')
             I18n.load_path = Dir[i18n_folder]
          end
 
