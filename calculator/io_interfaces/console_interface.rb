@@ -22,7 +22,7 @@ module RealPage
             input = self.receive
             while !self.closed? && !InputToken.quit?(input)
                self.calculator_service.compute input
-               self.close if RPNInputParser.contains_quit_command(input)
+               self.close if RPNInputParser.contains_quit_command?(input)
                if !self.closed?
                   self.display_prompt
                   input = self.receive
