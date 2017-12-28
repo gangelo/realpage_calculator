@@ -14,11 +14,11 @@ describe "ConsoleInterface" do
    context "instance methods" do
       describe "#accept" do
          it { should respond_to(:accept).with(0).arguments }
-         it "should change the interface #status from #ready? to #open?" do
+         it "should change the interface #state from #ready? to #open?" do
             allow(@console_interface).to receive(:receive).and_return(quit_command)
-            ready_status = RealPage::Calculator::ConsoleInterface.ready_status
-            open_status = RealPage::Calculator::ConsoleInterface.opened_status
-            expect { @console_interface.accept }.to change { @console_interface.status }.from(ready_status).to(open_status)
+            ready_state = RealPage::Calculator::ConsoleInterface.ready_state
+            open_state = RealPage::Calculator::ConsoleInterface.opened_state
+            expect { @console_interface.accept }.to change { @console_interface.state }.from(ready_state).to(open_state)
          end
          it "should raise an InterfaceNotReadyError if the interface is not #ready?" do
             allow($stdin).to receive(:gets).and_return(quit_command)

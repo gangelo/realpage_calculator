@@ -19,7 +19,7 @@ module RealPage
          # Holds the calculator error encountered, if any.
          attr_reader :error
 
-         # Initializes this object
+         # Initializes an object of this type.
          #
          # @param [Object] result the calculator's computed result or calculator output.
          #     In the case of an error, it will contain the calculator's initial input. An

@@ -7,18 +7,24 @@ require_relative '../errors/errors'
 module RealPage
    module Calculator
    
-      #
-      # Question: Should the Calculator be serializable in the case of a stateless environment that needs to
-      # keep track of the calculator input?
+      # Provides Reverse Polish Notation computation services to a given IOInterface 
+      # object or derived class object.
       class RPNCalculatorService < CalculatorService
          public 
 
+         # Initializes an object of this type.
          def initialize
             super RPNInputParser.new
          end
 
          public
 
+         # Performs a compulation given the input.
+         #
+         # @param [String] input The input to be used in the computation.
+         #
+         # @return [CalculatorResult] A CalculatorResult object containing the
+         # computation result or error encountered.
          def compute(input)
             input_tokens = self.input_parser.tokenize(input)
             if input_tokens.empty?
@@ -57,6 +63,12 @@ module RealPage
 
          protected
 
+         # Performs the processesing necessary when an operator is encountered
+         # and returns the result.
+         #
+         # @param [String] operator The operator to process.
+         #
+         # @return [Float]
          def process_operator(operator) 
             # Retrieve our operands that will be used as part of our operation
             operand_2 = self.input_stack.pop
@@ -71,6 +83,12 @@ module RealPage
             result
          end
 
+         # Performs the processesing necessary when an operand is encountered
+         # and returns the input.
+         #
+         # @param [String] token The operand to process.
+         #
+         # @return [Float]
          def process_operand(token) 
             # Operand get pushed onto the input stack for later
             self.input_stack << token

@@ -24,7 +24,7 @@ module RealPage
 
          public 
 
-         # Initializes this object
+         # Initializes an object of this type.
          #
          # @param [Object] input_parser A reference to an IOInterface object responsible for sending CalculatorService
          #     output in the form of a CalculatorResult object to the output stream. An ArgumentError is raised
@@ -38,9 +38,12 @@ module RealPage
 
          public
 
-         # Performs a compulation given the input.
+         # Performs a compulation given the input. This method needs to be overridden.
          #
          # @param [String] input The input to be used in the computation.
+         #
+         # @return [CalculatorResult] This method, when overridden, should return
+         # a CalculatorResult object.
          def compute(input)
             raise MustOverrideError
          end
