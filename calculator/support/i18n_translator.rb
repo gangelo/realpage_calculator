@@ -25,7 +25,10 @@ module RealPage
          end
 
          #
-         # 
+         # Returns the translated text given a key, scope and
+         # optional translation arguments.
+         #
+         #
          def translate(key_scope_hash, translation_args_hash = nil)
             if key_scope_hash.nil?
                return I18n.translate :default
