@@ -74,8 +74,8 @@ module RealPage
             operand_2 = self.input_stack.pop
             operand_1 = self.input_stack.pop
 
-            # Formulate the operation, save the result and execute the operation
-            result = eval("#{operand_1}#{operator}#{operand_2}")
+            # Eval the operation, save the computation and return the result
+            result = self.safe_eval(operator, operand_1, operand_2)
             
             # The result gets pushed to the input stack for later
             self.input_stack << result
@@ -93,6 +93,12 @@ module RealPage
             # Operand get pushed onto the input stack for later
             self.input_stack << token
             token
+         end
+
+         def safe_eval(operator, operand_1, operand_2)
+            raise ArgumentError unless InputToken.operator?(operator)
+            raise ArgumentError unless InputToken.operand?(operand_1) && InputToken.operand?(operand_2)
+            operand_1.public_send(operator, operand_2)
          end
       end
 
