@@ -70,8 +70,8 @@ describe "ConsoleInterface" do
 
          it "should pass errors from the calculator to #respond_error" do
             allow(@console_interface).to receive(:receive).and_return("+ + #{quit_command}")
-            error_prefix = RealPage::Calculator::I18nTranslator.instance.translate(:prefix, :errors)
-            expect(@console_interface).to receive(:respond_error).with(/#{error_prefix}/)
+            error_label = RealPage::Calculator::I18nTranslator.instance.translate(:error_label, :errors)
+            expect(@console_interface).to receive(:respond_error).with(/#{error_label}/)
             @console_interface.accept
          end
       end

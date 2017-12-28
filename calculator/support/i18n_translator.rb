@@ -33,9 +33,9 @@ module RealPage
          end
 
          def translate_error(error, translation_args = nil)
-            error_prefix = I18n.translate :prefix, scope: :errors
+            error_label = I18n.translate :error_label, scope: :errors
             error_message = self.translate(error[:key], error[:scope], translation_args)
-            "#{error_prefix}: #{error_message}"
+            "#{error_label}: #{error_message}"
          end
 
          protected
