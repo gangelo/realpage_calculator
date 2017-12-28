@@ -17,7 +17,7 @@ describe "CalculatorResult" do
          end
 
          it "should NOT raise an error if error is a valid error code" do
-            RealPage::Calculator::CalculatorErrors::Errors.each do |error|
+            RealPage::Calculator::Errors::Calculator::all_errors.each do |error|
                expect { RealPage::Calculator::CalculatorResult.new("1", error) }.to_not raise_exception
             end
          end
@@ -32,12 +32,12 @@ describe "CalculatorResult" do
          end
 
          it "should return false if NONE error is provided" do
-            calculator_result = RealPage::Calculator::CalculatorResult.new("1", RealPage::Calculator::CalculatorErrors::NONE)
+            calculator_result = RealPage::Calculator::CalculatorResult.new("1", RealPage::Calculator::Errors::Calculator::NONE)
             expect(calculator_result.error?).to eq(false)
          end
 
          it "should return true if an error other than NONE is provided" do
-            RealPage::Calculator::CalculatorErrors::Errors.each do |error|
+            RealPage::Calculator::Errors::Calculator::all_errors.each do |error|
                next if error[:key] == :none
                calculator_result = RealPage::Calculator::CalculatorResult.new("1", error)
                expect(calculator_result.error?).to eq(true)
@@ -56,8 +56,8 @@ describe "CalculatorResult" do
 
       describe "#error" do
          it "should return the error provided to #initialize" do
-            calculator_result = RealPage::Calculator::CalculatorResult.new("", RealPage::Calculator::CalculatorErrors::OPERAND_EXPECTED)
-            expect(calculator_result.error).to eq(RealPage::Calculator::CalculatorErrors::OPERAND_EXPECTED)
+            calculator_result = RealPage::Calculator::CalculatorResult.new("", RealPage::Calculator::Errors::Calculator::OPERAND_EXPECTED)
+            expect(calculator_result.error).to eq(RealPage::Calculator::Errors::Calculator::OPERAND_EXPECTED)
          end
       end
    end # attributes

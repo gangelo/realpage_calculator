@@ -24,18 +24,21 @@ module RealPage
             I18n.locale
          end
 
-         def translate(key, scope, translation_args = nil)
-            if translation_args.nil?
+         #
+         # 
+         def translate(key_scope_hash, translation_args_hash = nil)
+            if key_scope_hash.nil?
+               return I18n.translate :default
+            end
+
+            key = key_scope_hash[:key]
+            scope = key_scope_hash[:scope]
+
+            if translation_args_hash.nil?
                I18n.translate key, scope: scope
             else
-               I18n.translate key, scope: scope, **translation_args
+               I18n.translate key, scope: scope, **translation_args_hash
             end
-         end
-
-         def translate_error(error, translation_args = nil)
-            error_label = I18n.translate :error_label, scope: :errors
-            error_message = self.translate(error[:key], error[:scope], translation_args)
-            "#{error_label}: #{error_message}"
          end
 
          protected

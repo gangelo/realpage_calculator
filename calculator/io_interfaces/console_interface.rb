@@ -70,8 +70,10 @@ module RealPage
          # When calculator input error is received, it should be subsequently
          # passed to the interface error output stream.
          def receive_calculator_result_error(calculator_result)
-            calculator_result_error = I18nTranslator.instance.translate_error(calculator_result.error, { token: calculator_result.result })
-            self.respond_error("#{calculator_result_error}\n")
+            error_label = I18nTranslator.instance.translate(Errors.error_label)
+            #calculator_result_error = I18nTranslator.instance.translate_error(calculator_result.error, { token: calculator_result.result })
+            error_message = I18nTranslator.instance.translate(calculator_result.error, { token: calculator_result.result })
+            self.respond_error("#{error_label}: #{error_message}\n")
          end
 
          protected
