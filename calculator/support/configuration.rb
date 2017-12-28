@@ -10,7 +10,7 @@ module RealPage
          attr_accessor :commands
 
          def initialize
-            load_config
+            self.load_config
          end
 
          def self.instance
