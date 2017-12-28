@@ -21,10 +21,6 @@ describe "IOInterface" do
          end
       end
 
-      describe "#accept_async" do
-         it "does something special"
-      end
-
       describe "#receive" do
          it { should respond_to(:receive).with(0).arguments }
          it "should raise MustOverrideError" do
