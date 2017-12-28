@@ -43,12 +43,43 @@ describe "CalculatorService" do
             expect { @calculator_service.clear }.to change { @calculator_service.input_stack }.from([1.0, 2.0, 3.0]).to([]) 
          end
       end
+
+      describe "#attach_observer" do
+         it "should assign the observer" do
+            expect { @calculator_service.attach_observer("x") }.to change { @calculator_service.interface_observer }.from(nil).to("x") 
+         end
+      end
    end # instance methods
 
    context "protected instance methods" do
-      describe "#attach_observer" do
-         it "should accept..."
-         it "should set..."
+      describe "#notify_observer_result" do
+         it { should respond_to(:notify_observer_result).with(1).arguments }
+         it "should nofity the observer with a calculator result by calling Observer#receive_calculator_result if an observer is attached" do
+            expected_result = 1.0
+            io_interface = instance_double("RealPage::Calculator::IOInterface", receive_calculator_result: nil)
+            expect(io_interface).to receive(:receive_calculator_result).with(an_instance_of(RealPage::Calculator::CalculatorResult)) do |calculator_result|
+               expect(calculator_result.result).to eq(expected_result)
+               expect(calculator_result.error?).to eq(false)
+            end
+            @calculator_service.attach_observer io_interface
+            @calculator_service.notify_observer_result(expected_result)
+         end
+      end
+
+      describe "#notify_observer_result_error" do
+         it { should respond_to(:notify_observer_result_error).with(2).arguments }
+         it "should nofity the observer with a calculator error by calling Observer#receive_calculator_result_error if an observer is attached" do
+            expected_result = "invalid_input"
+            expected_error = RealPage::Calculator::CalculatorErrorCodes::VALID_INPUT_EXPECTED
+            io_interface = instance_double("RealPage::Calculator::IOInterface", receive_calculator_result_error: nil)
+            expect(io_interface).to receive(:receive_calculator_result_error).with(an_instance_of(RealPage::Calculator::CalculatorResult)) do |calculator_result_error|
+               expect(calculator_result_error.result).to eq(expected_result)
+               expect(calculator_result_error.error?).to eq(true)
+               expect(calculator_result_error.error_code).to eq(expected_error)
+            end
+            @calculator_service.attach_observer io_interface
+            @calculator_service.notify_observer_result_error(expected_result, expected_error)
+         end
       end
    end # protected instance methods
 
