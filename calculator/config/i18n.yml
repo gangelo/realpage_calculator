@@ -1,5 +1,7 @@
 ---
 en:
+  defaults:
+    not_found: Unavailable
   errors:
     error_label: Error
     calculator: 

@@ -6,30 +6,46 @@ module RealPage
       # Singleton. Provides a single interface for translation.
       class I18nTranslator
 
+         # Initializes an object of this type.
          def initialize
             self.load_config
          end
 
+         # Returns the I18nTranslator instance.
+         #
+         # @return [I18nTranslator] Returns the single(ton) instance of
+         # this I18nTranslator object.
          def self.instance
             @@instance
          end
 
+         # Manually sets the current locale.
+         #
+         # @param [Symbol] locale The locale to set (e.g. :en, :de, etc.)
          def locale=(locale)
            I18n.locale = locale
          end
 
+         # Returns the current locale.
+         #
+         # @return [Symbol] Returns the current locale.
          def locale
             I18n.locale
          end
 
+         # Returns the translated text given the key, scope, and optional additional
+         # arguments used in the translation.
          #
-         # Returns the translated text given a key, scope and
-         # optional translation arguments.
+         # @param [Hash] key_scope_hash A Hash containing values for :key
+         # and :scope.
          #
+         # @param [Hash] translation_args_hash A hash containing additional
+         # arguments used in the translation.
          #
+         # @return [String] Returns the translated string.
          def translate(key_scope_hash, translation_args_hash = nil)
             if key_scope_hash.nil?
-               return I18n.translate :default
+               return I18n.translate :not_found, scope: :defaults
             end
 
             key = key_scope_hash[:key]
@@ -44,6 +60,7 @@ module RealPage
 
          protected
 
+         # Loads the translation values from the translation yaml file.
          def load_config
             i18n_folder = File.join(__dir__, '../config/i18n.yml')
             I18n.load_path = Dir[i18n_folder]
