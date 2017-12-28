@@ -38,7 +38,7 @@ module RealPage
          protected
 
          def notify_observer_result(calculator_result)
-            calculator_result = CalculatorResult.new(calculator_result, CalculatorErrors::NONE,)
+            calculator_result = CalculatorResult.new(calculator_result, CalculatorErrors::NONE)
             @interface_observer.send(:receive_calculator_result, calculator_result) unless @interface_observer.nil?
             calculator_result
          end
