@@ -1,0 +1,8 @@
+---
+en:
+  errors:
+    prefix: Error
+    calculator: 
+      none: None
+      operand_expected: An operand was expected but '%{token}' was encountered
+      valid_input_expected: A valid operator, operand, or input terminating sequence was expected but '%{token}' was encountered

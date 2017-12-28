@@ -2,7 +2,7 @@ require_relative 'calculator_service'
 require_relative 'calculator_result'
 require_relative '../support/rpn_input_parser'
 require_relative '../support/input_token'
-require_relative '../errors/calculator_error_codes'
+require_relative '../errors/calculator_errors'
 
 module RealPage
    module Calculator
@@ -22,7 +22,7 @@ module RealPage
          def compute(input)
             input_tokens = self.input_parser.tokenize(input)
             if input_tokens.empty?
-               return self.notify_observer_result_error("", CalculatorErrorCodes::VALID_INPUT_EXPECTED)
+               return self.notify_observer_result_error("", CalculatorErrors::VALID_INPUT_EXPECTED)
             end
 
             token_array = input_tokens.to_token_array
@@ -32,7 +32,7 @@ module RealPage
             token_array.each do |token|
                if InputToken.operator?(token)
                   if self.input_stack.count < 2
-                     return self.notify_observer_result_error(token, CalculatorErrorCodes::OPERAND_EXPECTED)
+                     return self.notify_observer_result_error(token, CalculatorErrors::OPERAND_EXPECTED)
                   else
                      result = self.process_operator(token)
                      next
@@ -48,7 +48,7 @@ module RealPage
                elsif InputToken.clear_stack?(token)   
                   result = self.input_stack.clear.to_s
                elsif InputToken.invalid?(token)
-                  return self.notify_observer_result_error(token, CalculatorErrorCodes::VALID_INPUT_EXPECTED)
+                  return self.notify_observer_result_error(token, CalculatorErrors::VALID_INPUT_EXPECTED)
                end
             end
 

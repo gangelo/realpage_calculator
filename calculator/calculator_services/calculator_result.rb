@@ -1,4 +1,4 @@
-require_relative '../errors/calculator_error_codes'
+require_relative '../errors/calculator_errors'
 
 module RealPage
    module Calculator
@@ -7,20 +7,20 @@ module RealPage
          public
 
          attr_reader :result
-         attr_reader :error_code
+         attr_reader :error
          attr_reader :quit
 
-         def initialize(result, error_code = CalculatorErrorCodes::NONE, quit = false)
+         def initialize(result, error = CalculatorErrors::NONE, quit = false)
             raise ArgumentError, "result parameter is nil" if result.nil?
-            raise ArgumentError, "error_code #{error_code} is invalid" if !CalculatorErrorCodes::Codes.include?(error_code)
+            raise ArgumentError, "error is invalid" if !CalculatorErrors::Errors.include?(error)
 
             @result = result
-            @error_code = error_code
+            @error = error
             @quit = quit
          end
 
          def error?
-            error_code != CalculatorErrorCodes::NONE
+            error != CalculatorErrors::NONE
          end
 
          def quit?

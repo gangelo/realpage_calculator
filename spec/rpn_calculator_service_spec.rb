@@ -80,12 +80,12 @@ describe "RPNCalculatorService" do
          it { should respond_to(:notify_observer_result_error).with(2).arguments }
          it "should nofity the observer with the calculator error by calling Observer#receive_calculator_result_error if an observer is attached" do
             expected_result = "invalid_input"
-            expected_error = RealPage::Calculator::CalculatorErrorCodes::VALID_INPUT_EXPECTED
+            expected_error = RealPage::Calculator::CalculatorErrors::VALID_INPUT_EXPECTED
             io_interface = instance_double("RealPage::Calculator::IOInterface", receive_calculator_result_error: nil)
             expect(io_interface).to receive(:receive_calculator_result_error).with(an_instance_of(RealPage::Calculator::CalculatorResult)) do |calculator_result_error|
                expect(calculator_result_error.result).to eq(expected_result)
                expect(calculator_result_error.error?).to eq(true)
-               expect(calculator_result_error.error_code).to eq(expected_error)
+               expect(calculator_result_error.error).to eq(expected_error)
             end
             @calculator_service.attach_observer io_interface
             @calculator_service.notify_observer_result_error(expected_result, expected_error)

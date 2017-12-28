@@ -1,6 +1,6 @@
 require_relative '../support/rpn_input_parser'
 require_relative '../errors/must_override_error'
-require_relative '../errors/calculator_error_codes'
+require_relative '../errors/calculator_errors'
 
 module RealPage
    module Calculator
@@ -38,7 +38,7 @@ module RealPage
          protected
 
          def notify_observer_result(calculator_result)
-            calculator_result = CalculatorResult.new(calculator_result, CalculatorErrorCodes::NONE,)
+            calculator_result = CalculatorResult.new(calculator_result, CalculatorErrors::NONE,)
             @interface_observer.send(:receive_calculator_result, calculator_result) unless @interface_observer.nil?
             calculator_result
          end

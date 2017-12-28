@@ -1,5 +1,6 @@
 require_relative 'io_interface'
 require_relative '../support/input_token'
+require_relative '../support/i18n_translator'
 
 #require 'byebug'
 
@@ -45,7 +46,6 @@ module RealPage
          #
          # Sends processed output to the stream previously accepted.
          def respond(output)
-            p output
             $stdout << output
          end
 
@@ -70,7 +70,8 @@ module RealPage
          # When calculator input error is received, it should be subsequently
          # passed to the interface error output stream.
          def receive_calculator_result_error(calculator_result)
-            self.respond_error("Error: #{calculator_result.error_code.to_s}\n")
+            calculator_result_error = I18nTranslator.instance.translate_error(calculator_result.error, { token: calculator_result.result })
+            self.respond_error("#{calculator_result_error}\n")
          end
 
          protected
