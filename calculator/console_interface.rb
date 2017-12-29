@@ -43,11 +43,6 @@ module RealPage
             end
          end
 
-         # Provides and alias to the #accept method which is a little more intuative
-         # in the case of a console interface than it may be for WebSocket, TcpSocket
-         # or file.
-         alias_method :run, :accept
-
          def accept_async
             raise MustOverrideError
          end

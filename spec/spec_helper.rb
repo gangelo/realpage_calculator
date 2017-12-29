@@ -1,6 +1,7 @@
 require_relative 'support/rspec_support'
 
-require_relative '../calculator/calculators'
+require_relative '../calculator/rpn_calculator_service'
+require_relative '../calculator/console_interface'
 
 Dir[
   "../calculator/base_classes/*.rb",
