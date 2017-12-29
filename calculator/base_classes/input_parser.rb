@@ -14,8 +14,9 @@ module RealPage
          #
          # @param [String] input The input to tokenize.
          #
-         # @return [Array<InputToken>, []] Returns an Array of InputTokens or an empty 
-         # array if input is nil? or empty?
+         # @return [Array<Object>, []] Returns an Array of Objects or an empty 
+         # array if input is nil? or empty? The array element object types depends
+         # on the #parse method implementation that must be overridden.
          def tokenize(input)
             return [] if input.blank?
             self.parse(input)
