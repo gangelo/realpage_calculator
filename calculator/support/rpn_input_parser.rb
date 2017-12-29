@@ -1,6 +1,7 @@
 require_relative 'input_token'
 require_relative '../support/configuration'
 require_relative '../extensions/array_extensions'
+require_relative '../extensions/object_extensions'
 
 module RealPage
    module Calculator
@@ -15,7 +16,7 @@ module RealPage
          # @return [Array<InputToken>, []] Returns an Array of InputTokens or an empty 
          # array if input is nil? or empty?
          def tokenize(input)
-         	return [] if self.nil_or_empty?(input)
+         	return [] if input.blank?
          	self.parse(input)
          end
 
@@ -41,20 +42,11 @@ module RealPage
          #
          # @return [TrueClass,FlaseClass] Returns true if input is a quit command; false otherwise.
          def self.contains_quit_command?(input)
-            return false if input.nil? || input.respond_to?(:to_s) ? input.to_s.strip.empty? : false
+            return false if input.blank?
             input.split.include? RealPage::Calculator::Configuration.instance.quit_command
          end
 
          protected
-
-         # This member simply checks to make sure the input is not nil? or empty?.
-         #
-         # @param [String, Float] input The input to be interrogated.
-         #
-         # @return [TrueClass, FalseClass] Returns true if input is nil? or empty?; false otherwise.
-         def nil_or_empty?(input)
-         	input.nil? || input.respond_to?(:to_s) ? input.to_s.strip.empty? : false
-         end
 
          # Parses the input and returns an Array comprised of InputTokens.
          #

@@ -34,31 +34,6 @@ describe "RPNInputParser" do
          end
       end
 
-      describe "#nil_or_empty?" do
-         it { should respond_to(:nil_or_empty?).with(1).arguments }
-
-         it "should return true if input is nil?" do
-            expect(@input_parser.nil_or_empty?(nil)).to eq(true)
-         end
-
-         it "should return true if input is empty?" do
-            expect(@input_parser.nil_or_empty?("")).to eq(true)
-         end
-
-         it "should return true if input is spaces" do
-            expect(@input_parser.nil_or_empty?("  ")).to eq(true)
-         end
-
-         it "should return false if input is not nil?, empty?, or spaces" do
-            expect(@input_parser.nil_or_empty?("1 2 3")).to eq(false)
-            expect(@input_parser.nil_or_empty?("1 2 3 +")).to eq(false)
-            expect(@input_parser.nil_or_empty?(" 1 2 3 ")).to eq(false)
-            expect(@input_parser.nil_or_empty?("+")).to eq(false)
-            expect(@input_parser.nil_or_empty?(" -")).to eq(false)
-            expect(@input_parser.nil_or_empty?("/ ")).to eq(false)
-         end
-      end
-
       describe "#parse" do
          it { should respond_to(:parse).with(1).arguments }
 
