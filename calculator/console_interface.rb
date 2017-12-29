@@ -1,3 +1,5 @@
+require 'readline'
+
 require_relative 'base_classes/io_interface'
 require_relative 'support/input_token'
 require_relative 'i18n/i18n_translator'
@@ -9,7 +11,19 @@ module RealPage
       # Provides a console interface that obtains user input from $stdin to be processed by a 
       # CalculatorService or derived class object and returned to the $stdout output stream. 
       class ConsoleInterface < IOInterface
-         public
+         # Initializes an object of this type.
+         #
+         # @param [CalculatorService] calculator_service A CalculatorService or derived class object
+         # that this interface will use to compute input and receive output from in order to
+         # send back to the output stream.
+         def initialize(calculator_service)   
+            super
+
+            # This is strictly here to remove the task name that Rake inserts
+            # when running this script as a task. This will be needed as well
+            # if we process any files from the command-line.
+            # ARGV.shift
+         end
 
          # Starts the process of receiving input from $stdin and sets the interface state to 
          # the #opened_state.
@@ -20,6 +34,8 @@ module RealPage
 
             input = self.receive
             while !self.closed? && !InputToken.quit?(input)
+               p input.class
+               p input
                self.calculator_service.compute input
                self.close if RPNInputParser.contains_quit_command?(input)
                if !self.closed?
@@ -39,16 +55,29 @@ module RealPage
          #
          # @return [String] Returns the input received with new line characters removed.
          def receive
-            input = $stdin.gets
-            input.chomp
-         # Capture Ctrl-C, valid interrupt is Ctrl-D according to the spec.
-         rescue Interrupt => e
+            if Configuration.instance.use_readline
+               # Ignore Ctrl-C
+               trap("INT", "SIG_IGN")
+               input = Readline.readline
+               # If Ctrl-D, input will be nil? Just quit.
+               if input.nil?
+                  self.respond "\n"
+                  return Configuration.instance.quit_command
+               end
+               input.strip
+            else
+               # input = ARGF.gets
+               input = $stdin.gets 
+               if input.nil?
+                  self.respond "\n"
+                  return Configuration.instance.quit_command
+               end
+               input.strip
+            end
+         rescue SystemExit, Interrupt
+            # Capture Ctrl-C.
             self.respond "\n"
             return nil
-         # Capture Ctrl-D and quit.
-         rescue StandardError => e
-            self.respond "\n"
-            return Configuration.instance.quit_command
          end
 
          # Sends processed output to the output stream. 

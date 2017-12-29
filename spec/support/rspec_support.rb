@@ -13,6 +13,10 @@ module RSpecHelpers
       def view_stack_command
          RealPage::Calculator::Configuration.instance.view_stack_command.downcase
       end
+
+      def use_readline
+         RealPage::Calculator::Configuration.instance.use_readline
+      end
    end
 end
 

@@ -12,6 +12,9 @@ module RealPage
          # Holds an array of valid commands that may be used by the interface.
          attr_accessor :commands
 
+         # Holds an array of options specific to the console interface.
+         attr_accessor :console_interface_options
+
          # Initializes an object of this type.
          def initialize
             self.load_config
@@ -46,6 +49,14 @@ module RealPage
             self.commands['view_stack']
          end
 
+         #--
+         # Console-specific
+         #++
+
+         def use_readline
+            self.console_interface_options['use_readline']
+         end
+
          protected
 
          # Loads the configuration values from the configuration file.
@@ -53,6 +64,7 @@ module RealPage
             configuration = YAML::load_file(File.join(__dir__, '../config/calculator_service_config.yml'))
             self.operators = configuration['operators']
             self.commands = configuration['commands']
+            self.console_interface_options = configuration['console_interface_options']
          end
 
          @@instance = Configuration.new

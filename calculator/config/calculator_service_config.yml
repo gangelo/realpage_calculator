@@ -8,3 +8,6 @@ commands:
   quit: q
   clear_stack: c
   view_stack: v
+
+console_interface_options:
+  use_readline: true

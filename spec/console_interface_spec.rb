@@ -21,7 +21,11 @@ describe "ConsoleInterface" do
             expect { @console_interface.accept }.to change { @console_interface.state }.from(ready_state).to(open_state)
          end
          it "should raise an InterfaceNotReadyError if the interface is not #ready?" do
-            allow($stdin).to receive(:gets).and_return(quit_command)
+            if use_readline
+               allow(Readline).to receive(:readline).and_return(quit_command)
+            else
+               allow($stdin).to receive(:gets).and_return(quit_command)
+            end
             expect { @console_interface.accept }.to_not raise_error
             expect { @console_interface.accept }.to raise_error(RealPage::Calculator::InterfaceNotReadyError) 
          end
@@ -35,7 +39,11 @@ describe "ConsoleInterface" do
 
             input = "1 1 + #{quit_command}\n"
             expect(@console_interface).to receive(:receive).and_return(input)
-            allow($stdin).to receive(:gets).and_return(input)
+            if use_readline
+               allow(Readline).to receive(:readline).and_return(input)
+            else
+               allow($stdin).to receive(:gets).and_return(input)
+            end
             @console_interface.accept
          end
       end
