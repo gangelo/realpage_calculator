@@ -73,6 +73,7 @@ module RealPage
          def notify_observer_result(calculator_result)
             calculator_result = CalculatorResult.new(calculator_result, Errors::Calculator::NONE)
             @interface_observer.send(:receive_calculator_result, calculator_result) unless @interface_observer.nil?
+            # Return the calculator result as it makes life a little easier for testing.
             calculator_result
          end
 
@@ -86,6 +87,7 @@ module RealPage
          def notify_observer_result_error(calculator_result, calculator_error)
             calculator_result = CalculatorResult.new(calculator_result, calculator_error)
             @interface_observer.send(:receive_calculator_result_error, calculator_result) unless @interface_observer.nil?
+            # Return the calculator result as it makes life a little easier for testing.
             calculator_result
          end
       end

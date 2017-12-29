@@ -26,15 +26,18 @@ module RealPage
          # @return [CalculatorResult] A CalculatorResult object containing the
          # computation result or error encountered.
          def compute(input)
+            # Parse our input into an array of InputTokens.
             input_tokens = self.input_parser.tokenize(input)
             if input_tokens.empty?
                return self.notify_observer_result_error("", Errors::Calculator::VALID_INPUT_EXPECTED)
             end
 
+            # Convert our InputTokens into an array of token values.
             token_array = input_tokens.to_token_array
 
             result = ""
 
+            # Loop through our tokens so we can process each one.
             token_array.each do |token|
                if InputToken.operator?(token)
                   if self.input_stack.count < 2
