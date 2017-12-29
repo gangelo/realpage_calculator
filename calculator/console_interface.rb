@@ -103,6 +103,9 @@ module RealPage
 
          protected
 
+         # Receives input from Readline#readline.
+         #
+         # @return [String] Returns the input received with new line characters and leading, trailing spaces removed.
          def receive_readline
             # Ignore Ctrl-C
             trap("INT", "SIG_IGN")
@@ -115,6 +118,9 @@ module RealPage
             input.strip
          end
 
+         # Receives input from $stdin.
+         #
+         # @return [String] Returns the input received with new line characters and leading, trailing spaces removed.
          def receive_stdin
             input = $stdin.gets 
             if input.nil?
