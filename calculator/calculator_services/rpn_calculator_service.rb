@@ -32,35 +32,40 @@ module RealPage
                return self.notify_observer_result_error("", Errors::Calculator::VALID_INPUT_EXPECTED)
             end
 
-            # Convert our InputTokens into an array of token values.
-            token_array = input_tokens.to_token_array
-
             result = ""
 
-            # Loop through our tokens so we can process each one.
-            token_array.each do |token|
-               if InputToken.operator?(token)
+            # Loop through our input tokens so we can process each one.
+            input_tokens.each do |input_token|
+               if input_token.operator?
+                  # We have to have at least 2 operands before we're able to perform a computaton, if 
+                  # we have less than 2 operands, notify with an error.
                   if self.input_stack.count < 2
-                     return self.notify_observer_result_error(token, Errors::Calculator::OPERAND_EXPECTED)
+                     return self.notify_observer_result_error(input_token.token, Errors::Calculator::OPERAND_EXPECTED)
                   else
-                     result = self.process_operator(token)
+                     # If we have at least 2 operands, perform the computation and return the result.
+                     result = self.process_operator(input_token.token)
                      next
                   end
-               elsif InputToken.operand?(token)
-                  result = self.process_operand(token)
+               elsif input_token.operand?
+                  # Operands just get added to the input stack until we encounter an operator, then
+                  # we pop the most recent 2 operands and perform the computation and push the result
+                  # back on to the input stack as we await the next computation.
+                  result = self.process_operand(input_token.token)
                   next
-               elsif InputToken.quit?(token)
+               elsif input_token.quit?
                   # If we're quitting just ignore it and move on, the interface will deal with it.
                   next
-               elsif InputToken.view_stack?(token)
+               elsif input_token.view_stack?
                   result = self.input_stack.to_s
-               elsif InputToken.clear_stack?(token)   
+               elsif input_token.clear_stack?   
                   result = self.input_stack.clear.to_s
-               elsif InputToken.invalid?(token)
-                  return self.notify_observer_result_error(token, Errors::Calculator::VALID_INPUT_EXPECTED)
+               elsif input_token.invalid?
+                  # If we don't have a operator, operand or command, notify with an error.
+                  return self.notify_observer_result_error(input_token.token, Errors::Calculator::VALID_INPUT_EXPECTED)
                end
             end
 
+            # Notify with the result.
             self.notify_observer_result(result)
          end
 
@@ -73,14 +78,15 @@ module RealPage
          #
          # @return [Float]
          def process_operator(operator) 
-            # Retrieve our operands that will be used as part of our operation
+            # Pop the most recent 2 operands, perform the computation and push the result
+            # back on to the input stack as we await the next computation.
             operand_2 = self.input_stack.pop
             operand_1 = self.input_stack.pop
 
-            # Eval the operation, save the computation and return the result
+            # Eval the operation, save the computation and return the result.
             result = self.safe_eval(operator, operand_1, operand_2)
             
-            # The result gets pushed to the input stack for later
+            # The result gets pushed to the input stack for later.
             self.input_stack << result
 
             result
@@ -93,14 +99,26 @@ module RealPage
          #
          # @return [Float]
          def process_operand(token) 
-            # Operand get pushed onto the input stack for later
+            # Operands just get added to the input stack until we encounter an operator, then
+            # we pop the most recent 2 operands and perform the computation and push the result
+            # back on to the input stack as we await the next computation.
             self.input_stack << token
             token
          end
 
+         # Safely performs the computation of two operands given an operator.
+         #
+         # @param [String] operator The operator to use in the computation.
+         # @param [Float] operator_1 The first operator to use in the computation.
+         # @param [Float] operator_2 The second operator to use in the conputation.
+         #
+         # @ returns [Float] Returns the computed result.
          def safe_eval(operator, operand_1, operand_2)
             raise ArgumentError unless InputToken.operator?(operator)
             raise ArgumentError unless InputToken.operand?(operand_1) && InputToken.operand?(operand_2)
+            # Floats are objects just like any other class object; we can consequently send a call the
+            # operator as a method on the Float object, passing operator_2 as a param. We can get the
+            # computed results that way, as opposed to using (unsafe) eval.
             operand_1.public_send(operator, operand_2)
          end
       end
