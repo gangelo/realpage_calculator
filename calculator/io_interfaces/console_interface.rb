@@ -86,8 +86,11 @@ module RealPage
          # @param [CalculatorResult] calculator_result A CalculatorResult object that contains the CalculatorService 
          # error to send to the error output stream.
          def receive_calculator_result_error(calculator_result)
+            # Get the error label to prefix the error message.
             error_label = I18nTranslator.instance.translate(Errors.error_label)
+            # Get the error message to send.
             error_message = I18nTranslator.instance.translate(calculator_result.error, { token: calculator_result.result })
+            # Interpolate the error label and error message so that it's formatted nicely for display, in the user's locale.
             self.respond_error("#{error_label}: #{error_message}\n")
          end
 

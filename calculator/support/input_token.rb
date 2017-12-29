@@ -118,6 +118,7 @@ module RealPage
          # @return [Hash] Returns the list of operators.
          def self.operators
             if @@operators.nil?
+               # Only assign first time, after that, we're good to go.
                @@operators = Configuration.instance.operators
             end
             @@operators
@@ -128,6 +129,7 @@ module RealPage
          # @return [Hash] Returns the list of commands.
          def self.commands
             if @@commands.nil?
+               # Only assign first time, after that, we're good to go.
                @@commands = Configuration.instance.commands
             end
             @@commands

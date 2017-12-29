@@ -98,6 +98,7 @@ module RealPage
          # @return [TrueClass, FalseClass] Returns true ONLY if this interface has been opened 
          # and closed; returns false otherwise.
          def closed?
+            # We're not considered
             @state == (IOInterface.opened_state | IOInterface.closed_state)
          end
 
@@ -152,7 +153,7 @@ module RealPage
          # Closes this interface (e.g. Close connections, files, etc.) and should prohibit receiving 
          # input from the input stream. Calling this method sets the #closed_state of this interface.
          def close
-            @state |= IOInterface.closed_state
+            @state = (IOInterface.opened_state | IOInterface.closed_state)
          end
       end
 

@@ -45,15 +45,20 @@ module RealPage
          # @return [String] Returns the translated string.
          def translate(key_scope_hash, translation_args_hash = nil)
             if key_scope_hash.nil?
+               # If no key and scope sent, return the deafult (:not_found)
                return I18n.translate :not_found, scope: :defaults
             end
 
+            # Get the key and scope of the translation we need.
             key = key_scope_hash[:key]
             scope = key_scope_hash[:scope]
 
             if translation_args_hash.nil?
                I18n.translate key, scope: scope
             else
+               # If there are traslation arguments to pass along for translation
+               # use the double splat to pass them alond to the translator
+               # as hash arguments.
                I18n.translate key, scope: scope, **translation_args_hash
             end
          end
