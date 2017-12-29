@@ -1,6 +1,7 @@
 require_relative 'io_interface'
 require_relative '../support/input_token'
 require_relative '../support/i18n_translator'
+require_relative '../support/configuration'
 
 #require 'byebug'
 
@@ -28,7 +29,6 @@ module RealPage
                   input = self.receive
                end
             end
-
          end
 
          def accept_async
@@ -43,6 +43,14 @@ module RealPage
          def receive
             input = $stdin.gets
             input.chomp
+         # Capture Ctrl-C, valid interrupt is Ctrl-D according to the spec.
+         rescue Interrupt => e
+            self.respond "\n"
+            return nil
+         # Capture Ctrl-D and quit.
+         rescue StandardError => e
+            self.respond "\n"
+            return Configuration.instance.quit_command
          end
 
          # Sends processed output to the output stream. 
@@ -91,7 +99,7 @@ module RealPage
          # be added before the prompt is displayed; the prompt will be displayed on the same line otherwise.
          #
          def display_prompt(new_line = false)
-            new_line ? respond("\n> ") : respond("> ")
+            new_line ? self.respond("\n> ") : self.respond("> ")
          end
       end
 
