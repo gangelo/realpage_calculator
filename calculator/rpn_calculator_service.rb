@@ -1,8 +1,8 @@
-require_relative 'calculator_service'
-require_relative 'calculator_result'
-require_relative '../support/rpn_input_parser'
-require_relative '../support/input_token'
-require_relative '../errors/errors'
+require_relative 'base_classes/calculator_service'
+require_relative 'support/calculator_result'
+require_relative 'support/rpn_input_parser'
+require_relative 'support/input_token'
+require_relative 'errors/errors'
 
 module RealPage
    module Calculator

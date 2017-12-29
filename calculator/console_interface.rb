@@ -1,9 +1,7 @@
-require_relative 'io_interface'
-require_relative '../support/input_token'
-require_relative '../support/i18n_translator'
-require_relative '../support/configuration'
-
-#require 'byebug'
+require_relative 'base_classes/io_interface'
+require_relative 'support/input_token'
+require_relative 'i18n/i18n_translator'
+require_relative 'support/configuration'
 
 module RealPage
    module Calculator
