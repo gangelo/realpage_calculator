@@ -34,8 +34,6 @@ module RealPage
 
             input = self.receive
             while !self.closed? && !InputToken.quit?(input)
-               p input.class
-               p input
                self.calculator_service.compute input
                self.close if RPNInputParser.contains_quit_command?(input)
                if !self.closed?
@@ -56,28 +54,10 @@ module RealPage
          # @return [String] Returns the input received with new line characters removed.
          def receive
             if Configuration.instance.use_readline
-               # Ignore Ctrl-C
-               trap("INT", "SIG_IGN")
-               input = Readline.readline
-               # If Ctrl-D, input will be nil? Just quit.
-               if input.nil?
-                  self.respond "\n"
-                  return Configuration.instance.quit_command
-               end
-               input.strip
+               self.receive_readline
             else
-               # input = ARGF.gets
-               input = $stdin.gets 
-               if input.nil?
-                  self.respond "\n"
-                  return Configuration.instance.quit_command
-               end
-               input.strip
+               self.receive_stdin
             end
-         rescue SystemExit, Interrupt
-            # Capture Ctrl-C.
-            self.respond "\n"
-            return nil
          end
 
          # Sends processed output to the output stream. 
@@ -122,6 +102,31 @@ module RealPage
          end
 
          protected
+
+         def receive_readline
+            # Ignore Ctrl-C
+            trap("INT", "SIG_IGN")
+            input = Readline.readline
+            # If Ctrl-D, input will be nil? Just quit.
+            if input.nil?
+               self.respond "\n"
+               return Configuration.instance.quit_command
+            end
+            input.strip
+         end
+
+         def receive_stdin
+            input = $stdin.gets 
+            if input.nil?
+               self.respond "\n"
+               return Configuration.instance.quit_command
+            end
+            input.strip
+         rescue SystemExit, Interrupt
+            # Capture Ctrl-C.
+            self.respond "\n"
+            return nil
+         end
 
          # Displays the input prompt.
          #
