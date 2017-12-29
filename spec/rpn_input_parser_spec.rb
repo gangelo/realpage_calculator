@@ -11,7 +11,6 @@ describe "RPNInputParser" do
    subject { @input_parser }
 
    context "instance methods" do
-
       describe "#tokenize" do
          it { should respond_to(:tokenize).with(1).arguments }
 
@@ -45,6 +44,35 @@ describe "RPNInputParser" do
             expect(@input_parser.parse("1  2  3  4").to_token_array).to eq([1.0, 2.0, 3.0, 4.0])
          end
       end
+   end # instance methods
 
-   end
+   context "class methods" do
+      describe "#to_token_array" do
+         it { expect(RealPage::Calculator::RPNInputParser).to respond_to(:to_token_array).with(1).arguments }
+
+         it "should return an array of tokens given an array of InputTokens" do
+            input_token_array = [
+               RealPage::Calculator::InputToken.new("x"),
+               RealPage::Calculator::InputToken.new("y"),
+               RealPage::Calculator::InputToken.new("z")
+            ]
+            expect(RealPage::Calculator::RPNInputParser.to_token_array input_token_array).to eq(["x", "y", "z"])
+         end
+
+         it "should return [] if the input array is nil? or contains no elements" do
+            expect(RealPage::Calculator::RPNInputParser.to_token_array nil).to eq([])
+            expect(RealPage::Calculator::RPNInputParser.to_token_array []).to eq([])
+         end
+
+         it "should raise an ArgumentError unless all of the input array elements respond_to? :token" do
+            bad_input_array = [
+               RealPage::Calculator::InputToken.new("x"),
+               "y",
+               RealPage::Calculator::InputToken.new("z")
+            ]
+            expect { RealPage::Calculator::RPNInputParser.to_token_array bad_input_array }.to raise_error(ArgumentError, /does not implement method #token/)
+         end
+      end
+   end # class methods
+
 end
