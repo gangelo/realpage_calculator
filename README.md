@@ -3,16 +3,20 @@
 Original specifications may be found [here][specs].
 
 ## Solution Overview
-The RPC project consists of two _primary class categories_, several _secondary class categories_ whose sole purpose is to facilitate the functionality of the _primary classes_, and a series of _miscellaneous classes/modules_ that support the overall funcionality of the RPC project.
+The RPC project consists of: 
++ Two _primary class categories_.
++ Several _secondary class categories_ whose sole purpose is to facilitate the functionality of the _primary classes_.
++ A series of _miscellaneous classes/modules_ that support the overall funcionality of this project.
++ _Configuration files_ used to dynamically configure this project.
 
-__The _primary class categories_, along with their high-level functionality as as follows__
+__The _primary class categories_, along with their high-level functionality is as follows__
 
 | Primary Class Category        | Example Class | High-Level Function |
 |-------------:|:-------------|:------------------|
 | IO Interfaces | `RealPage::Calculator::IOInterface` `RealPage::Calculator::ConsoleInterface`  | _IO Interface_ class objects (_IO Interface_) are responsible for the communication between the stream (input, output, error) and the _Calculator Service_ class object (_Calculator Service_) and vise versa. |
 | Calculator Services | `RealPage::Calculator::CalculatorService` `RealPage::Calculator::RPNCalculatorService`  | _Calculator Services_ are responsible for computing the input received from the _IO Interface_ and returning the result and/or any errors encountered back to the _IO Interface_.|
 
-__The _secondary class categories_, along with their high-level functionality as as follows__
+__The _secondary class categories_, along with their high-level functionality is as follows__
 
 | Secondary Class Category        | Example Class | High-Level Function |
 |-------------:|:-------------|:------------------|
@@ -20,7 +24,7 @@ __The _secondary class categories_, along with their high-level functionality as
 | Input Parsers | `RealPage::Calculator::InputParser` `RealPage::Calculator::RPNInputParser`  | _InputParser_ class objects (_InputParser_) are used by _Calculator Services_ and responsible for parsing input received from an _IO Interface_ into a format suitable for processing by the _Calculator Service_. |
 | Input Tokens | `RealPage::Calculator::InputToken`  | _InputToken_ class objects (_InputToken_) represent an individual, space delimited token received from the input stream. _InputToken_ is responsible for identifying the _nature_ and _type_ of the token it encapsulates. For example, _InputToken_ identifies the following token types: _operators_, _operands_ and _commands_; it also identifies whether or not a token is _valid_. |
 
-___Miscellaneous classes/modules_, along with their high-level functionality as as follows__
+___Miscellaneous classes/modules_, along with their high-level functionality is as follows__
 
 | Class/Module | High-Level Function |
 |:-------------|:------------------|
@@ -28,9 +32,15 @@ ___Miscellaneous classes/modules_, along with their high-level functionality as 
 | `RealPage::Calculator::I18nTranslator`  | The _i18n Tranclator_ Singleton object (_i18n Translator_) is responsible for loading the /configuration/config/i18n.yml file and providing a single(ton) interface for _translation_ services used by _IO Interfaces_. |
 | `RealPage::Calculator::InterfaceNotReadyError` `RealPage::Calculator::MustOverrideError`  | The _Error_ class objects (_Errors_) are used throughout the RPC project wherever a custom error needs to be raised.|
 | `RealPage::Calculator::Errors`  | The _Error Support_ module (_Error Support_) defines errors in the form of _Hash_ values. When the _Calculator Service_ encounters an error, a _CalculatorResult_ object is created and the _Error Support_ error is embedded in the _CalculatorResult_ object and sent to the _IO Interface_. The _Error Support_ error Hash embedded in the _CalculatorResult_ object is then used by the _IO Interface_ as input to the _i18n Translator_ ({key: :key, scope: :scope}) to return a locale specific error message to the output stream. |
-| `RealPage::Calculator::ArrayExtension`  | The _Array Extensions_ extensions (_Array Extensions_) |
-| `RealPage::Calculator::ObjectExtension`  | The _Object Extensions_ extensions (_Object Extensions_) |
+| `RealPage::Calculator::ArrayExtension`  | The _Array Extensions_ extensions (_Array Extensions_) add convenience functionality to the Ruby _Array_ class in support of _InputToken_ array processing. |
+| `RealPage::Calculator::ObjectExtension`  | The _Object Extensions_ extensions (_Object Extensions_) add convenience functionality to the Ruby _Object_ class in support of _InputToken_ array processing. |
 
-# TODO: Finish the Rest Tomorrow
+__The _configuration files_, along with their high-level purpose are as follows__
+
+| File        | High-Level Purpose |
+|-------------:|:------------------|
+| `/calculator/config/calculator.yml`  | The _Calculator Configuration_ file is used to configure _operators_ and command-line _commands_ that will be acknowledged by the _CalculatorServices_ and _IO Interfaces_, as well as options to configure specific _IO Interface_ behavior. |
+| `/calculator/config/i18n.yml`  | The _i18n Configuration_ file provides locale-specific translation entries in the form of _key/scope pairs_ used by the _i18n Translator_ |
+
 
    [specs]: <https://gist.github.com/joedean/078a62b9ec03b38dfc519b3a5f168b07>
