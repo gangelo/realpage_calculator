@@ -4,10 +4,10 @@ Original specifications may be found [here][specs].
 
 ## In This Document
 
-[Solution Overview](#solution-overview)
-[Technical/Architectural Reasoning](#technicalarchitectural-reasoning)
-[Technical/Architectural Reflections](#technicalarchitectural-reflections)
-[Creating a New Interface](#creating-a-new-interface)
++ [Solution Overview](#solution-overview)
++ [Technical/Architectural Reasoning](#technicalarchitectural-reasoning)
++ [Technical/Architectural Reflections](#technicalarchitectural-reflections)
++ [Creating a New Interface](#creating-a-new-interface)
 
 ## Solution Overview
 The RPC project consists of: 
