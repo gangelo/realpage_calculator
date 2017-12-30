@@ -28,7 +28,7 @@ The RPC project consists of:
 
 | Secondary Class Category        | Example Class | High-Level Function |
 |-------------:|:-------------|:------------------|
-| Calculator Results | `RealPage::Calculator::CalculatorResults`  | _CalculatorResult_ class objects (_CalclulatorResult_) are returned to the _IO Interace_ as a result of a _Calculator Service_ request initiated by the _IO Interface_. The _CalculatorResult_ contains the computed result and/or any error that may have been encountered during the request. |
+| Calculator Results | `RealPage::Calculator::CalculatorResults`  | _CalculatorResult_ class objects (_CalculatorResult_) are returned to the _IO Interace_ as a result of a _Calculator Service_ request initiated by the _IO Interface_. The _CalculatorResult_ contains the computed result and/or any error that may have been encountered during the request. |
 | Input Parsers | `RealPage::Calculator::InputParser` `RealPage::Calculator::RPNInputParser`  | _InputParser_ class objects (_InputParser_) are used by _Calculator Services_ and responsible for parsing input received from an _IO Interface_ into a format suitable for processing by the _Calculator Service_. |
 | Input Tokens | `RealPage::Calculator::InputToken`  | _InputToken_ class objects (_InputToken_) represent an individual, space delimited token received from the input stream. _InputToken_ is responsible for identifying the _nature_ and _type_ of the token it encapsulates. For example, _InputToken_ identifies the following token types: _operators_, _operands_ and _commands_; it also identifies whether or not a token is _valid_. |
 
@@ -81,6 +81,18 @@ The _IO Interface_ acts as a liaison between the _Calculator Service_ and the pa
 ### Reasoning
 
 The _IO Interface_ and _Calculator Service_ are interdependent; therefore, they need to communicate with eachother. However, the _IO Interface_ and _Calculator Service_ have _distinct concerns_. As a result, the decision was made to create _two_ categories of classes - each concerned solely with its own, distinct, funcionality - maintaining a clear _separation of concern_. In addition to this, the decision was made to require that a `RealPage::Calculator::CalculatorService` object be provided when instantiating a `RealPage::Calculator::IOInterface` object. This _losely coupled relationship_ (as opposed to _Composition_) makes for a more _extensible_, _testable_, and potentially DRY framework, and opens up the ability for future non-RPN-based _Calculator Services_ to be implemented using existing _IO Interfaces_. Similar rationale and implementation can be witnessed between the _Calculator Service_ -> _Input Parser_ relationship (i.e. `RealPage::Calculator::CalculatorService`, `RealPage::Calculator::InputParser`)
+
+### Secondary Class Categories
+#### Overview
+_Secondary class categories_ include _Calculator Results_, _Input Parsers_ and _Input Tokens_. Classes and those that derive from `RealPage::Calculator::CalculatorResult`, `RealPage::Calculator::InputParser` and `RealPage::Calculator::InputToken`, respectfully, fall into these categories. These are considered _secondary class categories_ because their sole purpose is to facilitate the functionality of the _primary classes_.
+
+A _Calculator Result_ is returned via notification from a _Calculator Service_ to an _IO Service_ in response to a _Calculator Service_ request (e.g. `RealPage::Calculator::CalculatorService#compute`). A _Calculator Result_ object encapsulates a _Calculator Service_ computation or error encountered along with the offending token. _Calculator Result_ provides a standard container class for communicating results from the _Calculator Service_ to the _IO Interface_.
+
+_Input Parsers_ are used by _Calculator Services_. A `RealPage::Calculator::CalculatorService`, in fact, cannot be instantiated without providing an `RealPage::Calculator::InputParser`. _Input Parsers_ are responsible for parsing input received from an _IO Interface_ into a format suitable for processing by the _Calculator Service_. 
+
+_Input Tokens_ are used by classes derived from `RealPage::Calculator::InputParser` and represent an individual, space delimited token received from the input stream. _Input Token_ is responsible for identifying the _nature_ and _type_ of the token it encapsulates. For example, _Input Token_ identifies the following token types: _operators_, _operands_ and _commands_; it also identifies whether or not a token is _valid_.
+
+### Reasoning
 
 ## Technical/Architectural Reflections
 ## Creating a New Interface
