@@ -2,6 +2,12 @@
 ## A Ruby command-line reverse polish notation (RPN) calculator
 Original specifications may be found [here][specs].
 
+## In This Document
+
+[Solution Overview](#solution-overview)
+[Technical/Architectural Reasoning](#technical-architectural-reasoning)
+[Creating a New Interface](#creating-a-new-interface)
+
 ## Solution Overview
 The RPC project consists of: 
 + Two _primary class categories_.
@@ -48,5 +54,10 @@ The RPC project consists of:
 | Script        | Purpose |
 |-------------:|:------------------|
 | `/calculator/console_rpn_calculator.rb`  | The _Console RPN Calculator_ file is an _executable Ruby script_ that Users can use to run and interact with the RPN calculator in a UNIX-like CLI. |
+
+## Technical/Architectural Reasoning
+## Technical/Architectural Musings
+## Creating a New Interface
+## Script Execution
 
    [specs]: <https://gist.github.com/joedean/078a62b9ec03b38dfc519b3a5f168b07>
