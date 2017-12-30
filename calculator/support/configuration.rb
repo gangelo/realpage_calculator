@@ -61,7 +61,7 @@ module RealPage
 
          # Loads the configuration values from the configuration file.
          def load_config
-            configuration = YAML::load_file(File.join(__dir__, '../config/calculator_service_config.yml'))
+            configuration = YAML::load_file(File.join(__dir__, '../config/calculator.yml'))
             self.operators = configuration['operators']
             self.commands = configuration['commands']
             self.console_interface_options = configuration['console_interface_options']
