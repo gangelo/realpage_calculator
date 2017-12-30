@@ -64,6 +64,8 @@ From an _architectural perspective_, the RPC project consists of a series of wha
 _Primary class categories_ include _IO Interfaces_ and _Calculator Services_. Classes that derive from `RealPage::Calculator::IOInterface` and `RealPage::Calculator::CalculatorService`, respectfully, fall into these categories. _IO Interfaces_ and _Calculator Services_ are considered _Primary classes_ because these are the categories of classes Developers _and_ Users will interact with most often. 
 
 ### Reasoning
+According to the [specification][specs], the RPC project was to create a _command-line, Reverse Polish Notation calculator for people who are comfortable with UNIX-like CLI utilities_. The specification also dictated that the initial project installment must implement the four basic calculator operators (+, -, /, *), and be designed in such a way as to allow for additional operators and interfaces (WebSocket, file or TCP Socket) in the future.
+
 _IO Interfaces_ and _Calculator Services_ category classes are dependent upon each other; together, they provide the means for a particular _IO Interface_ to interact with a _Calculator Service_. However, _IO Interfaces_ and _Calculator Services_ remain distinct so as to maintain _separation of concern_, a _losely coupled relationship_, and provide ease of testability.
 
 ## Technical/Architectural Reflections
