@@ -60,8 +60,10 @@ The RPC project consists of:
 From an _architectural perspective_, the RPC project consists of a series of what will be referred to (arbitrarily) as _primary class categories_, _secondary class categories_, _support classes/modules_ and _executable command-line scripts_.
 
 ### Primary Class Categories
+#### Overview
 _Primary class categories_ include _IO Interfaces_ and _Calculator Services_. Classes that derive from `RealPage::Calculator::IOInterface` and `RealPage::Calculator::CalculatorService`, respectfully, fall into these categories. _IO Interfaces_ and _Calculator Services_ are considered _Primary classes_ because these are the categories of classes Developers _and_ Users will interact with most often. 
 
+### Reasoning
 _IO Interfaces_ and _Calculator Services_ category classes are dependent upon each other; together, they provide the means for a particular _IO Interface_ to interact with a _Calculator Service_. However, _IO Interfaces_ and _Calculator Services_ remain distinct so as to maintain _separation of concern_, a _losely coupled relationship_, and provide ease of testability.
 
 ## Technical/Architectural Reflections
