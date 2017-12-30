@@ -8,15 +8,16 @@ The RPC project consists of:
 + Several _secondary class categories_ whose sole purpose is to facilitate the functionality of the _primary classes_.
 + A series of _miscellaneous classes/modules_ that support the overall funcionality of this project.
 + _Configuration files_ used to dynamically configure this project.
++ An _executable command-line Ruby script_ that allows Users to run and interact with the RPN calculator in a UNIX-like CLI.
 
-__The _primary class categories_, along with their high-level functionality is as follows__
+__The _primary class categories_, along with their high-level functionality are as follows__
 
 | Primary Class Category        | Example Class | High-Level Function |
 |-------------:|:-------------|:------------------|
 | IO Interfaces | `RealPage::Calculator::IOInterface` `RealPage::Calculator::ConsoleInterface`  | _IO Interface_ class objects (_IO Interface_) are responsible for the communication between the stream (input, output, error) and the _Calculator Service_ class object (_Calculator Service_) and vise versa. |
 | Calculator Services | `RealPage::Calculator::CalculatorService` `RealPage::Calculator::RPNCalculatorService`  | _Calculator Services_ are responsible for computing the input received from the _IO Interface_ and returning the result and/or any errors encountered back to the _IO Interface_.|
 
-__The _secondary class categories_, along with their high-level functionality is as follows__
+__The _secondary class categories_, along with their high-level functionality are as follows__
 
 | Secondary Class Category        | Example Class | High-Level Function |
 |-------------:|:-------------|:------------------|
@@ -24,7 +25,7 @@ __The _secondary class categories_, along with their high-level functionality is
 | Input Parsers | `RealPage::Calculator::InputParser` `RealPage::Calculator::RPNInputParser`  | _InputParser_ class objects (_InputParser_) are used by _Calculator Services_ and responsible for parsing input received from an _IO Interface_ into a format suitable for processing by the _Calculator Service_. |
 | Input Tokens | `RealPage::Calculator::InputToken`  | _InputToken_ class objects (_InputToken_) represent an individual, space delimited token received from the input stream. _InputToken_ is responsible for identifying the _nature_ and _type_ of the token it encapsulates. For example, _InputToken_ identifies the following token types: _operators_, _operands_ and _commands_; it also identifies whether or not a token is _valid_. |
 
-___Miscellaneous classes/modules_, along with their high-level functionality is as follows__
+___Miscellaneous classes/modules_, along with their high-level functionality are as follows__
 
 | Class/Module | High-Level Function |
 |:-------------|:------------------|
@@ -42,5 +43,10 @@ __The _configuration files_, along with their high-level purpose are as follows_
 | `/calculator/config/calculator.yml`  | The _Calculator Configuration_ file is used to configure _operators_ and command-line _commands_ that will be acknowledged by the _CalculatorServices_ and _IO Interfaces_, as well as options to configure specific _IO Interface_ behavior. |
 | `/calculator/config/i18n.yml`  | The _i18n Configuration_ file provides locale-specific translation entries in the form of _key/scope pairs_ used by the _i18n Translator_ |
 
+__The _executable command-line Ruby script_, along with its purpose is as follows__
+
+| Script        | Purpose |
+|-------------:|:------------------|
+| `/calculator/console_rpn_calculator.rb`  | The _Console RPN Calculator_ file is an _executable Ruby script_ that Users can use to run and interact with the RPN calculator in a UNIX-like CLI. |
 
    [specs]: <https://gist.github.com/joedean/078a62b9ec03b38dfc519b3a5f168b07>
