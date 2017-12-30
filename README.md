@@ -94,6 +94,8 @@ _Input Tokens_ are used by classes derived from `RealPage::Calculator::InputPars
 
 ### Reasoning
 
+Encapsulating the result returned from a _Calculator Service_ (in a _Calculator Result_ object)  enforces a standard in the way _Calculator Services_ and _IO Interfaces_ exchange _Calculator Service_ results. _Calculator Result_ provides rudimentary methods to retrieve computed results and identify/retrieve errors when the occur (_single responsibility_). _Calculator Result_ can be easily extended to provide additional information or functionality should it be required by a future _Calculator Service_ or _IO Interface_. Finally, in addition to providing _extensibility_, _Calculator Result_ classes are _testable_, and its enforced use helps to maintain the DRY principle.
+
 ## Technical/Architectural Reflections
 ## Creating a New Interface
 ## Script Execution
