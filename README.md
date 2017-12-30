@@ -76,14 +76,11 @@ The remainder of this section will give an overview of each, as well as the tech
 #### Overview
 _Primary class categories_ include _IO Interfaces_ and _Calculator Services_. Classes that derive from `RealPage::Calculator::IOInterface` and `RealPage::Calculator::CalculatorService`, respectfully, fall into these categories. _IO Interfaces_ and _Calculator Services_ are considered _Primary classes_ because these are the categories of classes Developers _and_ Users will interact with most often. 
 
-The _IO Interface_ acts as a liaison between the _Calculator Service_ and the particular stream the _IO Interface_ represents. Consequently, the _IO Interface_ is also responsible for translating any output sent to the output stream using i18n. The _Calculator Service_ is a service responsible for accepting input from, and returning the result (a computation or error) to, the _IO Interface_. Consequently, the _Calculator Service_ is responsible for manipulating the raw input received from the _IO Interface_ into a format specific to its own needs.
+The _IO Interface_ acts as a liaison between the _Calculator Service_ and the particular stream the _IO Interface_ represents. Consequently, the _IO Interface_ is also responsible for the format (plain text, json, xml, etc.) and translation any output sent to the output stream using i18n. The _Calculator Service_ is a service responsible for accepting input from, and returning a result (computation or error) to, the _IO Interface_. Consequently, the _Calculator Service_ is responsible for manipulating the raw input received from the _IO Interface_ into a format specific to its own needs, and returning the raw result (_CalculatorResult_ object) back to the _IO Interface_. 
 
 ### Reasoning
 
-
-
-_IO Interfaces_ and _Calculator Services_ category classes are dependent upon each other. 
-; together, they provide the means for a particular _IO Interface_ to interact with a _Calculator Service_. However, _IO Interfaces_ and _Calculator Services_ remain distinct so as to maintain _separation of concern_, a _losely coupled relationship_, and provide ease of testability.
+The _IO Interface_ and _Calculator Service_ are interdependent; therefore, they need to communicate with eachother. However, the _IO Interface_ and _Calculator Service_ have _distinct concerns_. As a result, the decision was made to create _two_ categories of classes - each concerned solely with its own, distinct, funcionality - maintaining a clear _separation of concern_. In addition to this, the decision was made to require that a `RealPage::Calculator::CalculatorService` object be provided when instantiating a `RealPage::Calculator::IOInterface` object. This _losely coupled relationship_ (as opposed to _Composition_) makes for a more _extensible_, _testable_, and potentially DRY framework, and opens up the ability for future non-RPN-based _Calculator Services_ to be implemented.
 
 ## Technical/Architectural Reflections
 ## Creating a New Interface
