@@ -13,9 +13,9 @@ Original specifications may be found [here][specs].
 The RPC project consists of: 
 + Two _primary class categories_.
 + Several _secondary class categories_ whose sole purpose is to facilitate the functionality of the _primary classes_.
-+ A series of _miscellaneous classes/modules_ that support the overall funcionality of this project.
++ A series of _support classes/modules_ that assist with the overall funcionality of this project.
 + _Configuration files_ used to dynamically configure this project.
-+ An _executable command-line Ruby script_ that allows Users to run and interact with the RPN calculator in a UNIX-like CLI.
++ An _executable command-line scripts_ that allows Users to run and interact with a particular _Calculator_ in a UNIX-like CLI.
 
 ### Primary class categories
 
@@ -32,9 +32,9 @@ The RPC project consists of:
 | Input Parsers | `RealPage::Calculator::InputParser` `RealPage::Calculator::RPNInputParser`  | _InputParser_ class objects (_InputParser_) are used by _Calculator Services_ and responsible for parsing input received from an _IO Interface_ into a format suitable for processing by the _Calculator Service_. |
 | Input Tokens | `RealPage::Calculator::InputToken`  | _InputToken_ class objects (_InputToken_) represent an individual, space delimited token received from the input stream. _InputToken_ is responsible for identifying the _nature_ and _type_ of the token it encapsulates. For example, _InputToken_ identifies the following token types: _operators_, _operands_ and _commands_; it also identifies whether or not a token is _valid_. |
 
-### Miscellaneous classes/modules
+### Support classes/modules
 
-| Class/Module | High-Level Function |
+| Support Class/Module | High-Level Function |
 |:-------------|:------------------|
 | `RealPage::Calculator::Configuration`  | The _Configuration_ Singleton object (_Configuration_) is responsible for loading the _/calculator/config/calculator_service_config.yml_ file and providing a single(ton) interface to configuration settings user by _Calculator Services_. Configuration settings such as valid _operators_, _commands_ (i.e. as _quit_, _view stack_, _clear stack_) and _console_interface_options_ are made available through the _Configuration_ Singleton. |
 | `RealPage::Calculator::I18nTranslator`  | The _i18n Tranclator_ Singleton object (_i18n Translator_) is responsible for loading the /configuration/config/i18n.yml file and providing a single(ton) interface for _translation_ services used by _IO Interfaces_. |
@@ -50,13 +50,20 @@ The RPC project consists of:
 | `/calculator/config/calculator.yml`  | The _Calculator Configuration_ file is used to configure _operators_ and command-line _commands_ that will be acknowledged by the _CalculatorServices_ and _IO Interfaces_, as well as options to configure specific _IO Interface_ behavior. |
 | `/calculator/config/i18n.yml`  | The _i18n Configuration_ file provides locale-specific translation entries in the form of _key/scope pairs_ used by the _i18n Translator_ |
 
-### Executable command-line Ruby script
+### Executable command-line scripts
 
-| Script        | Purpose |
-|-------------:|:------------------|
-| `/calculator/console_rpn_calculator.rb`  | The _Console RPN Calculator_ file is an _executable Ruby script_ that Users can use to run and interact with the RPN calculator in a UNIX-like CLI. |
+| Script        | Type | Purpose |
+|-------------:|:------------------|:------------------|
+| `/calculator/console_rpn_calculator.rb`  | Ruby | The _Console RPN Calculator_ file is an _executable Ruby script_ that Users can use to run and interact with the RPN calculator in a UNIX-like CLI. |
 
 ## Technical/Architectural Reasoning
+From an _architectural perspective_, the RPC project consists of a series of what will be referred to (arbitrarily) as _primary class categories_, _secondary class categories_, _support classes/modules_ and _executable command-line scripts_.
+
+### Primary Class Categories
+_Primary class categories_ include _IO Interfaces_ and _Calculator Services_. Classes that derive from `RealPage::Calculator::IOInterface` and `RealPage::Calculator::CalculatorService`, respectfully, fall into these categories. _IO Interfaces_ and _Calculator Services_ are considered _Primary classes_ because these are the categories of classes Developers _and_ Users will interact with most often. 
+
+_IO Interfaces_ and _Calculator Services_ category classes are dependent upon each other; together, they provide the means for a particular _IO Interface_ to interact with a _Calculator Service_. However, _IO Interfaces_ and _Calculator Services_ remain distinct so as to maintain _separation of concern_, a _losely coupled relationship_, and provide ease of testability.
+
 ## Technical/Architectural Reflections
 ## Creating a New Interface
 ## Script Execution
