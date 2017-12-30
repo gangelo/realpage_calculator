@@ -5,7 +5,8 @@ Original specifications may be found [here][specs].
 ## In This Document
 
 [Solution Overview](#solution-overview)
-[Technical/Architectural Reasoning](#technical-architectural-reasoning)
+[Technical/Architectural Reasoning](#technicalarchitectural-reasoning)
+[Technical/Architectural Reflections](#technicalarchitectural-reflections)
 [Creating a New Interface](#creating-a-new-interface)
 
 ## Solution Overview
@@ -56,7 +57,7 @@ The RPC project consists of:
 | `/calculator/console_rpn_calculator.rb`  | The _Console RPN Calculator_ file is an _executable Ruby script_ that Users can use to run and interact with the RPN calculator in a UNIX-like CLI. |
 
 ## Technical/Architectural Reasoning
-## Technical/Architectural Musings
+## Technical/Architectural Reflections
 ## Creating a New Interface
 ## Script Execution
 
