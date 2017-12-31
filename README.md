@@ -73,23 +73,34 @@ From an _architectural perspective_, the RPC project consists of a series of wha
 The remainder of this section will give an overview of each, as well as the technical/architectural reasoning behind the same.
 
 ### Primary Class Categories
+
+#### Classes
+`RealPage::Calculator::CalculatorService` `RealPage::Calculator::RPNCalculatorService` `RealPage::Calculator::IOInterface` `RealPage::Calculator::ConsoleInterface`
+
 #### Reasoning
 _Primary class categories_ include _IO Interfaces_ and _Calculator Services_. Classes that derive from `RealPage::Calculator::IOInterface` and `RealPage::Calculator::CalculatorService`, respectfully, fall into these categories. _IO Interfaces_ and _Calculator Services_ are considered _Primary classes_ because these are the categories of classes Developers _and_ Users will interact with most often. 
 
-The _IO Interface_ acts as a liaison between the _Calculator Service_ and the particular stream the _IO Interface_ represents. Consequently, the _IO Interface_ is also responsible for the format (plain text, json, xml, etc.) and translation any output sent to the output stream using i18n. The _Calculator Service_ is a service responsible for accepting input from, and returning a result (computation or error) to, the _IO Interface_. Consequently, the _Calculator Service_ is responsible for manipulating the raw input received from the _IO Interface_ into a format specific to its own needs, and returning the raw result (_CalculatorResult_ object) back to the _IO Interface_. 
+##### IO Interface
+
+The _IO Interface_ acts as a liaison between the _Calculator Service_ and the particular stream the _IO Interface_ represents. Consequently, the _IO Interface_ is also responsible for the format (plain text, json, xml, etc.) and translation any output sent to the output stream using i18n. 
+
+##### Calculator Service
+
+The _Calculator Service_ is a service responsible for accepting input from, and returning a result (computation or error) to, the _IO Interface_. Consequently, the _Calculator Service_, by implementing an _Input Parser_, is responsible for manipulating the raw input received from the _IO Interface_ into a format specific to its own needs, and returning the raw result (_CalculatorResult_ object) back to the _IO Interface_.
+
+##### Interdependence
 
 The _IO Interface_ and _Calculator Service_ are interdependent; therefore, they need to communicate with eachother. However, the _IO Interface_ and _Calculator Service_ have _distinct concerns_. As a result, the decision was made to create _two_ categories of classes - each concerned solely with its own, distinct, funcionality - maintaining a clear _separation of concern_. In addition to this, the decision was made to require that a `RealPage::Calculator::CalculatorService` object be provided when instantiating a `RealPage::Calculator::IOInterface` object. This _losely coupled relationship_ (as opposed to _Composition_) makes for a more _extensible_, _testable_, and potentially DRY framework, and opens up the ability for future non-RPN-based _Calculator Services_ to be implemented using existing _IO Interfaces_. Similar rationale and implementation can be witnessed between the _Calculator Service_ -> _Input Parser_ relationship (i.e. `RealPage::Calculator::CalculatorService`, `RealPage::Calculator::InputParser`)
 
 ### Secondary Class Categories
 
- `RealPage::Calculator::CalculatorResult`
- `RealPage::Calculator::InputParser` 
- `RealPage::Calculator::RPNInputParser` 
- `RealPage::Calculator::InputToken`
+#### Classes
+`RealPage::Calculator::CalculatorResult` `RealPage::Calculator::InputParser` `RealPage::Calculator::RPNInputParser` `RealPage::Calculator::InputToken`
 
 #### Reasoning
 
 ##### Calculator Result
+
 A _Calculator Result_ is returned via notification from a _Calculator Service_ to an _IO Service_ in response to a _Calculator Service_ request (e.g. `RealPage::Calculator::CalculatorService#compute`). A _Calculator Result_ object encapsulates a _Calculator Service_ computation or error encountered along with the offending token. _Calculator Result_ provides a standard container class for communicating results from the _Calculator Service_ to the _IO Interface_.
 
 Encapsulating the result returned from a _Calculator Service_ (in a _Calculator Result_ object)  enforces a standard in the way _Calculator Services_ and _IO Interfaces_ exchange _Calculator Service_ results. _Calculator Result_ provides rudimentary methods to retrieve computed results and identify/retrieve errors when the occur (_single responsibility_). _Calculator Result_ can be easily extended to provide additional information or functionality should it be required by a future _Calculator Service_ or _IO Interface_. Finally, in addition to providing _extensibility_, _Calculator Result_ classes are _testable_, and its enforced use helps to maintain the DRY principle.
@@ -106,19 +117,37 @@ _Input Tokens_ are used by classes derived from `RealPage::Calculator::InputPars
 
 _Input Tokens_ exist to identify the _nature_ (`#empty?`, `#invalid?`, `#valid?`) and _type_ (`#command?`, `#operator?`, `#operand?`, `#quit?`, etc.) of each input token encountered; this relieves the other classes of this responsibility and makes for better _testability_. _Input Token_ provides the same class methods as the instance implementation so that input may be interrogated without the need to instantiate an _Input Token_ object.
 
-### Support Classes/Modules
+### Support Classes/Modules 
+
+#### Classes
+
+`RealPage::Calculator::Configuration` `RealPage::Calculator::I18nTranslator` `RealPage::Calculator::InterfaceNotReadyError` `RealPage::Calculator::MustOverrideError`  `RealPage::Calculator::ArrayExtension` `RealPage::Calculator::ObjectExtension`
+
+#### Modules
+
+`RealPage::Calculator::Errors`
 
 #### Reasoning
 
 The functionality that each of these classes/modules provides is necessary to the RPC project. However, that doesn't justify the existance of any of these classes/modules in particular - this is true of any class/module in this project. In general, however, the justification for _these particular_ classes/modules _primarily_ includes the need to _separate the concern_ each class has from the rest of the application, and to limit this concern to a _single responsibility_. The _reason_ they are coded the way they are, depends on their individual _purpose_.
 
+##### Configuration
+
 The `RealPage::Calculator::Configuration` class provides application _configuration settings_. This is necessary to make the project more _dynamic_. For example, you should not have to change the program code in order to add a new operator, or change the value of the _quit_ command. It is a _Singleton_. It is also a Singleton because only one instance of this class ever needs to exist. This is because the data it makes available never changes after the class has been instantiated. It is not a _Module_, because it needs to load a yaml file as part of its instantiation processing and it makes the most sense to do this one time, during object instantiation. Modules do not get instantiated. This is not regular a _Class_ either, for slightly different reasons; it doesn't make sense to instantiate multiple objects of this types, only to have to load the yaml file over and over.
+
+##### i18n
 
 The `RealPage::Calculator::I18nTranslator` classes provides _i18n translation key/scope pairs_ used for text translation. This is necessary to provide localization. For example, if I speak Spanish and am using the RPN Calculator, I should see error messages in Spanish. It also is a _Singleton_ for the same reasons mentioned previously.
 
+##### Errors Module
+
 `RealPage::Calculator::Errors` is a _module_. Likewise, the data it makes available never changes; however, the data it makes available is static (not dependant upon loading a yaml file). Therefore, a Module makes the most sense.
 
+##### Extensions
+
 `RealPage::Calculator::ArrayExtension` and `RealPage::Calculator::ObjectExtension` are convenience extensions. `RealPage::Calculator::ArrayExtension` provides an extension to convert an Array of _InputTokens_ to an Array of _token_ values. `RealPage::Calculator::ObjectExtension` provides an extension to determine whether or not an object is nil? or empty? Both of these extensions are not justified, at least not as extensions. See [Technical/Architectural Reflections](#technicalarchitectural-reflections) for more detail.
+
+##### Errors 
 
 The `RealPage::Calculator::InterfaceNotReadyError` and `RealPage::Calculator::MustOverrideError` error classes provide custom errors where the standard Ruby errors fall short.
 
