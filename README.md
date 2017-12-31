@@ -175,7 +175,36 @@ Some of the other things I would do or do differently would be:
 + Refactor `RealPage::Calculator::InputParser` to allow a _token delimiter_ param during initialization to be used to parse and tokenize raw input; currently, only spaces are recognized.
 + Add a _help_ command to be associated with `RealPage::Calculator::RPNCalculatorService` that returns a lists all available commands and in the case of a _Console Interface_, displays help in a UNIX-like CLI fashion.
 
-## Creating a New Interface
 ## Script Execution
+
+There are two ways to run the RPN calculator using the console as the interface, _Rake task_ and _Ruby script_. The instructions for each are outlined below.
+
+For your convenience, _view stack_ (v) and _clear stack_ \(c\) commands have been implemented. These RPN calculator commands allow you to _view the input stack_ and _clear the input stack_ respectfully.
+
+### Rake Task
+
+To run a version of the RPN calculator from the console using _Rake_, make sure you are in the project root directory (`/realpage_calculator`), then type the following command into the command-line followed by ENTER:
+
+`$ rake console`
+
+### Ruby Script
+
+To run a version of the RPN calculator from the console using _Ruby script_, from the project root folder (`/realpage_calculator`), change to the `/calculator` folder by typing the following into the command-line followed by ENTER: 
+
+`$ cd calculator`
+
+Now type the following command into the command-line followed by ENTER to run the RPN calculator:
+
+`$ ruby rpn_calc.rb`
+
+#### Make the Script Permanently Executable
+
+If you don't wish to have to type `$ ruby` followed by the the script name every time you run this script, from the `/calculator` folder, type the following into the command-line followed by ENTER:
+
+`$ chmod 755 rpn_calc.rb`
+
+You may now execute the `rpn_calc.rb` script by typing the following into the command-line followed by ENTER:
+
+`$ ./rpn_calc.rb`
 
    [specs]: <https://gist.github.com/joedean/078a62b9ec03b38dfc519b3a5f168b07>
