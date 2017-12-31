@@ -7,7 +7,7 @@
 + [Solution Overview](#solution-overview)
 + [Technical/Architectural Reasoning](#technicalarchitectural-reasoning)
 + [Technical/Architectural Reflections](#technicalarchitectural-reflections)
-+ [Creating a New Interface](#creating-a-new-interface)
++ [Script Execution](#script-execution) 
 
 ## Solution Overview
 The RPC project consists of: 
