@@ -152,6 +152,18 @@ The `RealPage::Calculator::I18nTranslator` classes provides _i18n translation ke
 The `RealPage::Calculator::InterfaceNotReadyError` and `RealPage::Calculator::MustOverrideError` error classes provide custom errors where the standard Ruby errors fall short.
 
 ## Technical/Architectural Reflections
+
+There are a few things I would have done differently if I spent more time on the project. The first thing I would do, is make this project a _Ruby gem_. A gem would enable this project to be distributed properly and easily incorporated into any Ruby or Rails application. In fact, I would most likely break the project up into multiple gems, for example, an _rpc_core_ gem and perhaps one gem for each additional _IO Interface_ type. This would also eliminate the need to hard-code yaml file names in the `RealPage::Calculator::Configuration` and `RealPage::Calculator::I81nTranslator` classes and probably eliminate these classes altogether in favor of Ruby standard config scripts.
+
+Some of the other things I would do or do differently would be:
+
++ Refactor `RealPage::Calculator::CalculatorService` to allow _input stack_ as a param during initialization so the _Calculator Service_ state could be restored in a stateless environment, _HTTP Interface_ for example.
++ Move the convenience extensions found in `RealPage::Calculator::ArrayExtension` and `RealPage::Calculator::ObjectExtension` to a helper module to avoid any potential name collisions in consuming applications.
++ Provide a means of _setting_ (in the case of stateful environments) or _accepting_ (in the case of stateless environments) a locale to be used for localization.
++ Refactor `RealPage::Calculator::InputToken` into a base class by eliminating calculator-specific command methods (class and instance) and force _Calculator Services_ to implement their own, calculator-specific _InputToken_ class. It's not very extensible the way it is.
++ Refactor `RealPage::Calculator::InputParser` to allow a _token delimiter_ param during initialization to be used to parse and tokenize raw input; currently, only spaces are recognized.
++ Add a _help_ command to be associated with `RealPage::Calculator::ConsoleRPNCalculator` that lists all available commands in a UNIX-like CLI.
+
 ## Creating a New Interface
 ## Script Execution
 
