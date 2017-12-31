@@ -15,7 +15,7 @@ The RPC project consists of:
 + Several _secondary class categories_ whose sole purpose is to facilitate the functionality of the _primary classes_.
 + A series of _support classes/modules_ that assist with the overall funcionality of this project.
 + _Configuration files_ used to dynamically configure this project.
-+ An _executable command-line scripts_ that allows Users to run and interact with a particular _Calculator_ in a UNIX-like CLI.
++ An _executable command-line script_ that allows Users to run and interact with the _RPN Calculator_ from the console.
 
 ### Primary Class Categories
 
