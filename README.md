@@ -82,7 +82,7 @@ _Primary class categories_ include _IO Interfaces_ and _Calculator Services_. Cl
 
 ##### IO Interface
 
-The _IO Interface_ acts as a liaison between the _Calculator Service_ and the particular stream the _IO Interface_ represents. Consequently, the _IO Interface_ is also responsible for the format (plain text, json, xml, etc.) and translation any output sent to the output stream using i18n. 
+The _IO Interface_ acts as a liaison between the _Calculator Service_ and the particular stream the _IO Interface_ represents. Consequently, the _IO Interface_ is also responsible for the format (plain text, json, xml, etc.) and translation of all output sent to the output stream using i18n. 
 
 ##### Calculator Service
 
