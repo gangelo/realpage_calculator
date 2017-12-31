@@ -98,7 +98,37 @@ Encapsulating the result returned from a _Calculator Service_ (in a _Calculator 
 
 _Calculator Services_ have the _single responsibility_ of computing. Likewise, _Input Parsers_ have the _single responsibility_ of parsing input received from an _IO Interface_ into a format suitable for processing by the _Calculator Service_. _Input Parsers_ relieve the _Calculator Service_ of this burden by eliminating this concern. _Input Parsers_ help keep things DRY as they may be shared between _Calculator Services_ or _extended_. In addition to this, _Input Parsers_ provide better, isolated _testability_. 
 
+_Input Tokens_ exist to identify the _nature_ (`#empty?`, `#invalid?`, `#valid?`) and _type_ (`#command?`, `#operator?`, `#operand?`, `#quit?`, etc.) of each input token encountered; this relieves the other classes of this responsibility and makes for better _testability_. _Input Token_ provides the same class methods as the instance implementation so that input may be interrogated without the need to instantiate an _Input Token_ object.
 
+### Support Classes/Modules
+
+#### Overview
+
+Support classes/modules consist of the following:
+
++ `RealPage::Calculator::Configuration`
++ `RealPage::Calculator::I18nTranslator`
++ `RealPage::Calculator::InterfaceNotReadyError`
++ `RealPage::Calculator::MustOverrideError`
++ `RealPage::Calculator::Errors`
++ `RealPage::Calculator::ArrayExtension`
++ `RealPage::Calculator::ObjectExtension`
+
+### Reasoning
+
+The functionality that each of these classes/modules provides is necessary to the RPC project. However, that doesn't justify the existance of any of these classes/modules in particular - this is true of any class/module in this project. In general, however, the justification for _these particular_ classes/modules _primarily_ includes the need to _separate the concern_ each class has from the rest of the application, and to limit this concern to a _single responsibility_. The _reason_ they are coded the way they are, depends on their individual _purpose_.
+
+For example:
+
+The `RealPage::Calculator::Configuration` class provides application _configuration settings_. This is necessary to make the project more _dynamic_. For example, you should not have to change the program code in order to add a new operator, or change the value of the _quit_ command. It is a _Singleton_. It is also a Singleton because only one instance of this class ever needs to exist. This is because the data it makes available never changes after the class has been instantiated. It is not a _Module_, because it needs to load a yaml file as part of its instantiation processing and it makes the most sense to do this one time, during object instantiation. Modules do not get instantiated. This is not regular a _Class_ either, for slightly different reasons; it doesn't make sense to instantiate multiple objects of this types, only to have to load the yaml file over and over.
+
+The `RealPage::Calculator::I18nTranslator` classes provides _i18n translation key/scope pairs_ used for text translation. This is necessary to provide localization. For example, if I speak Spanish and am using the RPN Calculator, I should see error messages in Spanish. It also is a _Singleton_ for the same reasons mentioned previously.
+
+`RealPage::Calculator::Errors` is a _module_. Likewise, the data it makes available never changes; however, the data it makes available is static (not dependant upon loading a yaml file). Therefore, a Module makes the most sense.
+
+`RealPage::Calculator::ArrayExtension` and `RealPage::Calculator::ObjectExtension` are convenience extensions. `RealPage::Calculator::ArrayExtension` provides an extension to convert an Array of _InputTokens_ to an Array of _token_ values. `RealPage::Calculator::ObjectExtension` provides an extension to determine whether or not an object is nil? or empty? Both of these extensions are not justified, at least not as extensions. See [Technical/Architectural Reflections](#technicalarchitectural-reflections) for more detail.
+
+Finally, the `RealPage::Calculator::InterfaceNotReadyError` and `RealPage::Calculator::MustOverrideError` error classes provide adequate, meaningful, errors where Ruby is unable to provide.
 
 ## Technical/Architectural Reflections
 ## Creating a New Interface
