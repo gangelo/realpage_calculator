@@ -19,17 +19,30 @@ module RealPage
          # on the #parse method implementation that must be overridden.
          def tokenize(input)
             return [] if input.blank?
-            self.parse(input)
+            self.parse input
          end
 
          # Returns true if the input contains the quit command; false otherwise.
+         # This method must be overridden.
          #
          # @param [Object] input The input to be interrogated.
          #
-         # @return [TrueClass,FlaseClass] Returns true if input is a quit command; false otherwise.
-         def self.contains_quit_command?(input)
-            return false if input.blank?
-            input.split.include? RealPage::Calculator::Configuration.instance.quit_command
+         # @return [TrueClass, FlaseClass] Returns true if input is a quit command; false otherwise.
+         def contains_quit_command?(input)
+            raise MustOverrideError
+         end
+
+         # Returns true if the input equals the quit command; false otherwise.
+         # This method must be overridden.
+         # This member is differant than the #contains_quit_command? member in that
+         # input is not split into a token array and Array#include? used to see if
+         # input is a token within the token array. Rather, this is simply a == comparison.
+         #
+         # @param [Object] input The input to be interrogated.
+         #
+         # @return [TrueClass, FlaseClass] Returns true if input is a quit command; false otherwise.
+         def is_quit_command?(input)
+            raise MustOverrideError
          end
 
          protected

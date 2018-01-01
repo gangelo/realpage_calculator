@@ -10,6 +10,29 @@ module RealPage
       # Provides input parsing capabilities suitabe for an RPNCalculatorService object.
       class RPNInputParser < InputParser
 
+         # Returns true if the input contains the quit command; false otherwise.
+         #
+         # @param [Object] input The input to be interrogated.
+         #
+         # @return [TrueClass, FlaseClass] Returns true if input is a quit command; false otherwise.
+         def contains_quit_command?(input)
+            return false if input.blank?
+            input.split.include? RealPage::Calculator::Configuration.instance.quit_command
+         end
+
+         # Returns true if the input equals the quit command; false otherwise.
+         # This member is differant than the #contains_quit_command? member in that
+         # input is not split into a token array and Array#include? used to see if
+         # input is a token within the token array. Rather, this is simply a == comparison.
+         #
+         # @param [Object] input The input to be interrogated.
+         #
+         # @return [TrueClass, FlaseClass] Returns true if input is a quit command; false otherwise.
+         def is_quit_command?(input)
+            return false if input.blank?
+            input == RealPage::Calculator::Configuration.instance.quit_command
+         end
+
          # Converts an array of InputTokens to an array of tokens comprised ot 
          # InputToken#token.
          #

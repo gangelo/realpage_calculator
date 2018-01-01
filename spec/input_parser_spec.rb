@@ -34,20 +34,22 @@ describe "InputParser" do
             expect { @input_parser.parse("xyz") }.to raise_error(RealPage::Calculator::MustOverrideError)
          end
       end
-   end # instance methods
 
-   context "class methods" do
       describe "#contains_quit_command?" do
-         it { expect(RealPage::Calculator::InputParser).to respond_to(:contains_quit_command?).with(1).arguments }
+         it { expect(@input_parser).to respond_to(:contains_quit_command?).with(1).arguments }
 
-         it "should return true if the input contains the quit command" do
-            expect(RealPage::Calculator::InputParser.contains_quit_command? quit_command).to eq(true)
-         end
-
-         it "should return false if the input does not contain the quit command" do
-            expect(RealPage::Calculator::InputParser.contains_quit_command? "not_#{quit_command}").to eq(false)
+         it "should raise an MustOverrideError if the method is not overridden" do
+            expect { @input_parser.contains_quit_command?("xyz") }.to raise_error(RealPage::Calculator::MustOverrideError)
          end
       end
-   end # class methods
+
+      describe "#is_quit_command?" do
+         it { expect(@input_parser).to respond_to(:is_quit_command?).with(1).arguments }
+
+         it "should raise an MustOverrideError if the method is not overridden" do
+            expect { @input_parser.is_quit_command?("xyz") }.to raise_error(RealPage::Calculator::MustOverrideError)
+         end
+      end
+   end # instance methods
 
 end

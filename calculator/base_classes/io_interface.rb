@@ -15,6 +15,11 @@ module RealPage
          # send back to the output stream.
          attr_reader :calculator_service
 
+         # Holds a reference to the InputParser derived class object that this
+         # interface will use to interrogate input when necessary. For example,
+         # to detect the quit command.
+         attr_reader :input_parser
+
          # Holds the state of this interface - ready, open or closed.
          attr_accessor :state
 
@@ -29,6 +34,7 @@ module RealPage
             @state = IOInterface.ready_state
             @calculator_service = calculator_service
             @calculator_service.attach_observer(self)
+            @input_parser = calculator_service.input_parser
          end
 
          #--

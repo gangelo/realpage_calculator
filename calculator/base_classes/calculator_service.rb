@@ -14,15 +14,15 @@ module RealPage
          # Holds input to the calculator in a stack.
          attr_accessor :input_stack
 
-         # Holds a reference to the object responsible for parsing input specific to the calculator's
-         # input format needs.
-         attr_accessor :input_parser
-
          # Holds a reference to an IOInterface object responsible for sending CalculatorService 
          # output in the form of a CalculatorResult object to the output stream.
          attr_reader :interface_observer
 
          public 
+
+         # Holds a reference to the object responsible for parsing input specific to the calculator's
+         # input format needs.
+         attr_accessor :input_parser
 
          # Initializes an object of this type.
          #

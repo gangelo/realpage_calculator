@@ -33,9 +33,9 @@ module RealPage
             display_prompt
 
             input = self.receive
-            while !self.closed? && !InputToken.quit?(input)
+            while !self.closed? && !self.input_parser.is_quit_command?(input)
                self.calculator_service.compute input
-               self.close if RPNInputParser.contains_quit_command?(input)
+               self.close if self.input_parser.contains_quit_command? input
                if !self.closed?
                   self.display_prompt
                   input = self.receive
@@ -113,9 +113,10 @@ module RealPage
             # If Ctrl-D, input will be nil? Just quit.
             if input.nil?
                self.respond "\n"
-               return Configuration.instance.quit_command
+               self.close
+            else
+               input.strip
             end
-            input.strip
          end
 
          # Receives input from $stdin.
@@ -125,9 +126,10 @@ module RealPage
             input = $stdin.gets 
             if input.nil?
                self.respond "\n"
-               return Configuration.instance.quit_command
+               self.close
+            else
+               input.strip
             end
-            input.strip
          rescue SystemExit, Interrupt
             # Capture Ctrl-C.
             self.respond "\n"

@@ -44,6 +44,42 @@ describe "RPNInputParser" do
             expect(@input_parser.parse("1  2  3  4").to_token_array).to eq([1.0, 2.0, 3.0, 4.0])
          end
       end
+
+      describe "#contains_quit_command?" do
+         it { expect(@input_parser).to respond_to(:contains_quit_command?).with(1).arguments }
+
+         it "should return true if the input contains the quit command" do
+            expect(@input_parser.contains_quit_command? quit_command).to eq(true)
+         end
+
+         it "should return true if the input contains the quit command as part of a series of input tokens" do
+            expect(@input_parser.contains_quit_command? "1 1 + #{quit_command}").to eq(true)
+         end
+
+         it "should return false if the input does not contain the quit command" do
+            expect(@input_parser.contains_quit_command? "not_#{quit_command}").to eq(false)
+         end
+
+         it "should return false if the input does not contain the quit command as part of a series of input tokens" do
+            expect(@input_parser.contains_quit_command? "1 1 + not_#{quit_command}").to eq(false)
+         end
+      end
+
+      describe "#is_quit_command?" do
+         it { expect(@input_parser).to respond_to(:contains_quit_command?).with(1).arguments }
+
+         it "should return true if the input is the quit command" do
+            expect(@input_parser.is_quit_command? quit_command).to eq(true)
+         end
+
+         it "should return false if the input is not the quit command" do
+            expect(@input_parser.is_quit_command? "not_#{quit_command}").to eq(false)
+         end
+
+         it "should return false if the input contains the quit command as part of a series of input tokens" do
+            expect(@input_parser.is_quit_command? "1 1 + #{quit_command}").to eq(false)
+         end
+      end
    end # instance methods
 
    context "class methods" do
