@@ -2,7 +2,6 @@ require 'yaml'
 
 module RealPage
   module Calculator
-
     # Singleton. Provides a single interface into configuration values.
     class Configuration
 
@@ -70,6 +69,5 @@ module RealPage
       @@instance = Configuration.new
       private_class_method :new
     end
-
   end
 end

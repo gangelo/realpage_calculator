@@ -2,7 +2,6 @@ require_relative '../support/configuration'
 
 module RealPage
   module Calculator
-
     # Provides a class that represents an individual, space delimited token received from
     # an IOInterface.
     class InputToken
@@ -151,7 +150,7 @@ module RealPage
       # @return [TrueClass, FalseClass] returns true if token is an operand; false otherwise.
       def self.operand?(token)
         return false if InputToken.operator?(token) || InputToken.command?(token)
-        Float(token) != nil rescue false
+        !Float(token).nil? rescue false
       end
 
       # Returns true or false based on whether or not token is a command.
@@ -231,6 +230,5 @@ module RealPage
         command_value.nil? ? false : token == Configuration.instance.quit_command.downcase
       end
     end
-
   end
 end

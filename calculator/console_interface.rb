@@ -7,7 +7,6 @@ require_relative 'support/configuration'
 
 module RealPage
   module Calculator
-
     # Provides a console interface that obtains user input from $stdin to be processed by a
     # CalculatorService or derived class object and returned to the $stdout output stream.
     class ConsoleInterface < IOInterface
@@ -36,7 +35,7 @@ module RealPage
         while !closed? && !input_parser.quit_command?(input)
           calculator_service.compute input
           close if input_parser.contains_quit_command? input
-          if !closed?
+          unless closed?
             display_prompt
             input = receive
           end
@@ -96,12 +95,10 @@ module RealPage
         # Get the error label to prefix the error message.
         error_label = I18nTranslator.instance.translate(Errors.error_label)
         # Get the error message to send.
-        error_message = I18nTranslator.instance.translate(calculator_result.error, { token: calculator_result.result })
+        error_message = I18nTranslator.instance.translate(calculator_result.error, token: calculator_result.result)
         # Interpolate the error label and error message so that it's formatted nicely for display, in the user's locale.
         respond_error("#{error_label}: #{error_message}\n")
       end
-
-      protected
 
       # Receives input from Readline#readline.
       #
@@ -145,6 +142,5 @@ module RealPage
         new_line ? respond("\n> ") : respond("> ")
       end
     end
-
   end
 end

@@ -1,6 +1,5 @@
 module RealPage
   module Calculator
-
     # Contains all errors to be used in the RealPage::Calculator namespace.
     module Errors
       # The Hash values neccessary to retrieve the error label used for prefixing errors.
@@ -20,7 +19,7 @@ module RealPage
         #
         # @return [Hash] A Hash to be used when calling I18nTranslator.instance.translate
         # in order to obtain the translated error description.
-        NONE = { key: :none, scope: [:errors, :calculator] }
+        NONE = { key: :none, scope: [:errors, :calculator] }.freeze
 
         # The hash values neccessary to retrieve the 'operand expected' error description.
         # This hash is used when calling I18nTranslator.instance.translate.
@@ -29,7 +28,7 @@ module RealPage
         #
         # @return [Hash] A Hash to be used when calling I18nTranslator.instance.translate
         # in order to obtain the translated error description.
-        OPERAND_EXPECTED = { key: :operand_expected, scope: [:errors, :calculator] }
+        OPERAND_EXPECTED = { key: :operand_expected, scope: [:errors, :calculator] }.freeze
 
         # The hash values neccessary to retrieve the 'valid input expected' error description.
         # This hash is used when calling I18nTranslator.instance.translate.
@@ -39,7 +38,7 @@ module RealPage
         #
         # @return [Hash] A Hash to be used when calling I18nTranslator.instance.translate
         # in order to obtain the translated error description.
-        VALID_INPUT_EXPECTED = { key: :valid_input_expected, scope: [:errors, :calculator] }
+        VALID_INPUT_EXPECTED = { key: :valid_input_expected, scope: [:errors, :calculator] }.freeze
 
         # Returns an array of all errors in this namespace.
         #
@@ -51,6 +50,5 @@ module RealPage
         end
       end
     end
-
   end
 end

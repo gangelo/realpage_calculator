@@ -4,7 +4,6 @@ require_relative '../errors/errors'
 
 module RealPage
   module Calculator
-
     # Provides a base for calculators. Classes inheriting CalculatorService are responsible
     # for overriding the #compute method in order to provide computation specific to the
     # calculator in question.
@@ -89,6 +88,5 @@ module RealPage
         calculator_result
       end
     end
-
   end
 end

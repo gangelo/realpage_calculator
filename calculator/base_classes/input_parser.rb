@@ -6,7 +6,6 @@ require_relative '../errors/must_override_error'
 
 module RealPage
   module Calculator
-
     # Provides input parsing capabilities suitabe for an RPNCalculatorService object.
     class InputParser
       # Converts input into a suitable format to be used by an RPNCalculatorService objext.
@@ -55,6 +54,5 @@ module RealPage
         raise MustOverrideError
       end
     end
-      
   end
 end

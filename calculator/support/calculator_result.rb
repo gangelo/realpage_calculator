@@ -2,7 +2,6 @@ require_relative '../errors/errors'
 
 module RealPage
   module Calculator
-
     # Provides a container for the result returned from a Calculator computation.
     class CalculatorResult
       public
@@ -43,6 +42,5 @@ module RealPage
         error != Errors::Calculator::NONE
       end
     end
-
   end
 end

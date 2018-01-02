@@ -3,7 +3,6 @@ require_relative '../errors/interface_not_ready_error'
 
 module RealPage
   module Calculator
-
     # Provides a base for interfaces. Classes inheriting IOInterface are responsible
     # for overriding and implementing several methods in order to provide functionality specific 
     # to the interface in question.
@@ -157,6 +156,5 @@ module RealPage
         @state = (IOInterface.opened_state | IOInterface.closed_state)
       end
     end
-
   end
 end

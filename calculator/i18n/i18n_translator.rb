@@ -2,7 +2,6 @@ require 'i18n'
 
 module RealPage
   module Calculator
-
     # Singleton. Provides a single interface for translation.
     class I18nTranslator
 
@@ -74,6 +73,5 @@ module RealPage
       @@instance = I18nTranslator.new
       private_class_method :new
     end
-
   end
 end

@@ -6,7 +6,6 @@ require_relative 'errors/errors'
 
 module RealPage
   module Calculator
-
     # Provides Reverse Polish Notation computation services to a given IOInterface
     # object or derived class object.
     class RPNCalculatorService < CalculatorService
@@ -113,6 +112,5 @@ module RealPage
         operand_1.public_send(operator, operand_2)
       end
     end
-
   end
 end

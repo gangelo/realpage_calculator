@@ -6,7 +6,6 @@ require_relative '../extensions/object_extensions'
 
 module RealPage
   module Calculator
-
     # Provides input parsing capabilities suitabe for an RPNCalculatorService object.
     class RPNInputParser < InputParser
 
@@ -60,6 +59,5 @@ module RealPage
         input = input.split.map { |t| InputToken.new(t) }
       end
     end
-
   end
 end
