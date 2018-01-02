@@ -21,6 +21,10 @@ module RealPage
         @instance
       end
 
+      # Returns the instance variable of this instance.
+      #
+      # @return [Configuration] Returns the single(ton) instance of this
+      # Configuration object.
       def instance
         self.class.instance
       end
@@ -55,6 +59,11 @@ module RealPage
       # Console-specific
       #++
 
+      # Retrieves the value indicating whether or not Readline#readline should
+      # be used to obtain input in console interfaces as opposed to $stdin.
+      #
+      # @return [TrueClass, FalseClass] The value that repesents the view stack
+      # command.
       def use_readline
         @console_interface_options['use_readline']
       end
