@@ -4,8 +4,6 @@ module RealPage
   module Calculator
     # Provides a container for the result returned from a Calculator computation.
     class CalculatorResult
-      public
-
       # Holds the calculator's computed result or calculator output.
       # In the case of an error, it will contain the calculator's initial input.
       attr_reader :result
@@ -13,7 +11,7 @@ module RealPage
       # An alias for #result which would make more sense in the case if an error
       # is encountered. In this case, #result would hold the offending input token.
       # Referencing the offending token via #result is misleading.
-      alias :token :result
+      alias token result
 
       # Holds the calculator error encountered, if any.
       attr_reader :error
@@ -28,8 +26,8 @@ module RealPage
       #     RealPage::Calculator::Errors::Calculator.all_errors. An ArgumentError is
       #     raised if error is not incuded in RealPage::Calculator::Errors::Calculator.all_errors.
       def initialize(result, error = Errors::Calculator::NONE)
-        raise ArgumentError, "result parameter is nil" if result.nil?
-        raise ArgumentError, "error is invalid" if !Errors::Calculator::all_errors.include?(error)
+        raise ArgumentError, 'result parameter is nil' if result.nil?
+        raise ArgumentError, 'error is invalid' if !Errors::Calculator::all_errors.include?(error)
 
         @result = result
         @error = error

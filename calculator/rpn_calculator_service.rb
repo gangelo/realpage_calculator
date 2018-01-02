@@ -23,7 +23,7 @@ module RealPage
       def compute(input)
         # Parse our input into an array of InputTokens.
         input_tokens = input_parser.tokenize(input)
-        return notify_observer_result_error("", Errors::Calculator::VALID_INPUT_EXPECTED) if input_tokens.empty?
+        return notify_observer_result_error('', Errors::Calculator::VALID_INPUT_EXPECTED) if input_tokens.empty?
 
         result = ""
 

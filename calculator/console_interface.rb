@@ -105,7 +105,7 @@ module RealPage
       # @return [String] Returns the input received with new line characters and leading, trailing spaces removed.
       def receive_readline
         # Ignore Ctrl-C
-        trap("INT", "SIG_IGN")
+        trap('INT', 'SIG_IGN')
         input = Readline.readline
         # If Ctrl-D, input will be nil? Just quit.
         if input.nil?
@@ -139,7 +139,7 @@ module RealPage
       # be added before the prompt is displayed; the prompt will be displayed on the same line otherwise.
       #
       def display_prompt(new_line = false)
-        new_line ? respond("\n> ") : respond("> ")
+        new_line ? respond("\n> ") : respond('> ')
       end
     end
   end

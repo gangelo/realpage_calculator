@@ -4,9 +4,8 @@ class Object
   # @return [TrueClass, FalseClass] Returns true if the object is
   # nil? or empty?; false otherwise.
   def blank?
-    if nil?
-      return true
-    elsif respond_to? :to_s
+    return true if nil?
+    if respond_to? :to_s
       return to_s.strip.empty?
     elsif respond_to? :empty?
       return empty?

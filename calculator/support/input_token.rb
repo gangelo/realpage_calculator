@@ -5,15 +5,11 @@ module RealPage
     # Provides a class that represents an individual, space delimited token received from
     # an IOInterface.
     class InputToken
-      protected
-
       # A Hash list of valid operators.
       @@operators = nil
 
       # A Hash list of valid commands.
       @@commands = nil
-
-      public
 
       # Initializes an object of this type.
       #
@@ -118,7 +114,7 @@ module RealPage
       def self.operators
         if @@operators.nil?
           # Only assign first time, after that, we're good to go.
-          @@operators = Configuration.instance.operators
+          InputToken.operators = Configuration.instance.operators
         end
         @@operators
       end
@@ -129,7 +125,7 @@ module RealPage
       def self.commands
         if @@commands.nil?
           # Only assign first time, after that, we're good to go.
-          @@commands = Configuration.instance.commands
+          InputToken.commands = Configuration.instance.commands
         end
         @@commands
       end
@@ -226,8 +222,20 @@ module RealPage
       def self.quit?(token)
         return false unless token.respond_to? :downcase
         token = token.downcase
-        command_value = commands.key(token)
+        command_value = InputToken.commands.key(token)
         command_value.nil? ? false : token == Configuration.instance.quit_command.downcase
+      end
+
+      class << self
+        protected
+
+        def commands=(value)
+          @@commands = value
+        end
+
+        def operators=(value)
+          @@operators = value
+        end
       end
     end
   end

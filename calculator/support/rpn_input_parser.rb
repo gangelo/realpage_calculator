@@ -43,7 +43,7 @@ module RealPage
       def self.to_token_array(input_token_array)
         return [] if input_token_array.nil? || input_token_array.count == 0
         input_token_array.map do |input_token|
-          raise ArgumentError, "input_token_array element does not implement method #token" unless input_token.respond_to? :token
+          raise ArgumentError, 'input_token_array element does not implement method #token' unless input_token.respond_to? :token
           input_token.token
         end
       end
@@ -56,7 +56,7 @@ module RealPage
       #
       # @return [Array<InputToken> Returns an Array of InputTokens.
       def parse(input)
-        input = input.split.map { |t| InputToken.new(t) }
+        input.split.map { |t| InputToken.new(t) }
       end
     end
   end

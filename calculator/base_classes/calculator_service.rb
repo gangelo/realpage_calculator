@@ -29,7 +29,7 @@ module RealPage
       #     output in the form of a CalculatorResult object to the output stream. An ArgumentError is raised
       #     if input_parser is nil or an empty String.
       def initialize(input_parser)
-        raise ArgumentError, "input_parser is nil or empty" if input_parser.nil? || input_parser.to_s.empty?
+        raise ArgumentError, 'input_parser is nil or empty' if input_parser.nil? || input_parser.to_s.empty?
         @input_stack = []
         @input_parser = input_parser
         @interface_observer = nil
