@@ -14,7 +14,11 @@ module RealPage
       # @return [I18nTranslator] Returns the single(ton) instance of
       # this I18nTranslator object.
       def self.instance
-        @@instance
+        @instance
+      end
+
+      def instance
+        self.class.instance
       end
 
       # Manually sets the current locale.
@@ -69,7 +73,7 @@ module RealPage
         I18n.load_path = Dir[i18n_folder]
       end
 
-      @@instance = I18nTranslator.new
+      @instance = I18nTranslator.new
       private_class_method :new
     end
   end
