@@ -4,7 +4,6 @@ module RealPage
   module Calculator
     # Singleton. Provides a single interface into configuration values.
     class Configuration
-
       # Holds an array of valid operators that may be used in computations.
       attr_reader :operators
 
@@ -60,7 +59,7 @@ module RealPage
 
       # Loads the configuration values from the configuration file.
       def load_config
-        configuration = YAML::load_file(File.join(__dir__, '../config/calculator.yml'))
+        configuration = YAML.load_file(File.join(__dir__, '../config/calculator.yml'))
         @operators = configuration['operators']
         @commands = configuration['commands']
         @console_interface_options = configuration['console_interface_options']

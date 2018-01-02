@@ -27,7 +27,7 @@ module RealPage
       #     raised if error is not incuded in RealPage::Calculator::Errors::Calculator.all_errors.
       def initialize(result, error = Errors::Calculator::NONE)
         raise ArgumentError, 'result parameter is nil' if result.nil?
-        raise ArgumentError, 'error is invalid' if !Errors::Calculator::all_errors.include?(error)
+        raise ArgumentError, 'error is invalid' unless Errors::Calculator::all_errors.include?(error)
 
         @result = result
         @error = error

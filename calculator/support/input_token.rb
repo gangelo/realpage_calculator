@@ -5,6 +5,11 @@ module RealPage
     # Provides a class that represents an individual, space delimited token received from
     # an IOInterface.
     class InputToken
+      # Sets the token.
+      #
+      # @param [Object] value The value to set #token to.
+      attr_writer :token
+
       # A Hash list of valid operators.
       @@operators = nil
 
@@ -21,13 +26,6 @@ module RealPage
       #--
       # Instance methods
       #++
-
-      # Sets the token.
-      #
-      # @param [Object] value The value to set #token to.
-      def token=(value)
-        @token = value
-      end
 
       # Returns the token value.
       #
@@ -146,7 +144,9 @@ module RealPage
       # @return [TrueClass, FalseClass] returns true if token is an operand; false otherwise.
       def self.operand?(token)
         return false if InputToken.operator?(token) || InputToken.command?(token)
-        !Float(token).nil? rescue false
+        !Float(token).nil?
+      rescue ArgumentError, TypeError
+        false
       end
 
       # Returns true or false based on whether or not token is a command.
