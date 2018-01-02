@@ -31,8 +31,8 @@ module RealPage
         I18n.locale
       end
 
-      # Returns the translated text given the key, scope, and optional additional
-      # arguments used in the translation.
+      # Returns the translated text given the key, scope, and optional
+      # additional arguments used in the translation.
       #
       # @param [Hash] key_scope_hash A Hash containing values for :key
       # and :scope.
