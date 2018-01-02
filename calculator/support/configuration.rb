@@ -13,17 +13,21 @@ module RealPage
       # Holds an array of options specific to the console interface.
       attr_reader :console_interface_options
 
-      # Initializes an object of this type.
-      def initialize
-        load_config
-      end
-
       # Returns the Configuration instance.
       #
       # @return [Configuration] Returns the single(ton) instance of
       # this Configuraton object.
       def self.instance
-        @@instance
+        @instance
+      end
+
+      def instance
+        self.class.instance
+      end
+
+      # Initializes an object of this type.
+      def initialize
+        load_config
       end
 
       # Retrieves the quit command.
@@ -65,7 +69,7 @@ module RealPage
         @console_interface_options = configuration['console_interface_options']
       end
 
-      @@instance = Configuration.new
+      @instance = Configuration.new
       private_class_method :new
     end
   end

@@ -1,8 +1,7 @@
 require_relative 'input_token'
 require_relative '../base_classes/input_parser'
 require_relative '../support/configuration'
-require_relative '../extensions/array_extensions'
-require_relative '../extensions/object_extensions'
+require_relative '../support/helpers'
 
 module RealPage
   module Calculator
@@ -16,7 +15,7 @@ module RealPage
       # @return [TrueClass, FlaseClass] Returns true if input is a quit command;
       # false otherwise.
       def contains_quit_command?(input)
-        return false if input.blank?
+        return false if Helpers.blank?(input)
         input.split.include? RealPage::Calculator::Configuration.instance.quit_command
       end
 
@@ -31,7 +30,7 @@ module RealPage
       # @return [TrueClass, FlaseClass] Returns true if input is a quit command;
       # false otherwise.
       def quit_command?(input)
-        return false if input.blank?
+        return false if Helpers.blank?(input)
         input == RealPage::Calculator::Configuration.instance.quit_command
       end
 

@@ -1,7 +1,6 @@
 require_relative '../support/input_token'
 require_relative '../support/configuration'
-require_relative '../extensions/array_extensions'
-require_relative '../extensions/object_extensions'
+require_relative '../support/helpers'
 require_relative '../errors/must_override_error'
 
 module RealPage
@@ -18,7 +17,7 @@ module RealPage
       # array if input is nil? or empty? The array element object types depends
       # on the #parse method implementation that must be overridden.
       def tokenize(input)
-        return [] if input.blank?
+        return [] if Helpers.blank?(input)
         parse input
       end
 

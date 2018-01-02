@@ -10,12 +10,6 @@ module RealPage
       # @param [Object] value The value to set #token to.
       attr_writer :token
 
-      # A Hash list of valid operators.
-      @@operators = nil
-
-      # A Hash list of valid commands.
-      @@commands = nil
-
       # Initializes an object of this type.
       #
       # @param [String] token The token value.
@@ -123,22 +117,22 @@ module RealPage
       #
       # @return [Hash] Returns the list of operators.
       def self.operators
-        if @@operators.nil?
+        if @operators.nil?
           # Only assign first time, after that, we're good to go.
-          InputToken.operators = Configuration.instance.operators
+          @operators = Configuration.instance.operators
         end
-        @@operators
+        @operators
       end
 
       # Returns a valid list of commands.
       #
       # @return [Hash] Returns the list of commands.
       def self.commands
-        if @@commands.nil?
+        if @commands.nil?
           # Only assign first time, after that, we're good to go.
-          InputToken.commands = Configuration.instance.commands
+          @commands = Configuration.instance.commands
         end
-        @@commands
+        @commands
       end
 
       # Returns true or false based on whether or not token is an operator.
@@ -248,20 +242,16 @@ module RealPage
       def self.quit?(token)
         return false unless token.respond_to? :downcase
         token = token.downcase
-        command_value = InputToken.commands.key(token)
+        command_value = commands.key(token)
         command_value.nil? ? false : token == Configuration.instance.quit_command.downcase
       end
 
-      class << self
-        protected
+      def operators
+        self.class.operators
+      end
 
-        def commands=(value)
-          @@commands = value
-        end
-
-        def operators=(value)
-          @@operators = value
-        end
+      def commands
+        self.class.commands
       end
     end
   end
