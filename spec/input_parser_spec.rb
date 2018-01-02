@@ -43,11 +43,11 @@ describe "InputParser" do
       end
     end
 
-    describe "#is_quit_command?" do
-      it { expect(@input_parser).to respond_to(:is_quit_command?).with(1).arguments }
+    describe "#quit_command?" do
+      it { expect(@input_parser).to respond_to(:quit_command?).with(1).arguments }
 
       it "should raise an MustOverrideError if the method is not overridden" do
-        expect { @input_parser.is_quit_command?("xyz") }.to raise_error(RealPage::Calculator::MustOverrideError)
+        expect { @input_parser.quit_command?("xyz") }.to raise_error(RealPage::Calculator::MustOverrideError)
       end
     end
   end # instance methods

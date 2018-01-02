@@ -8,7 +8,7 @@ module RealPage
 
       # Initializes an object of this type.
       def initialize
-        self.load_config
+        load_config
       end
 
       # Returns the I18nTranslator instance.

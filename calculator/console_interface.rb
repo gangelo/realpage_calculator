@@ -32,13 +32,13 @@ module RealPage
 
         display_prompt
 
-        input = self.receive
-        while !self.closed? && !self.input_parser.is_quit_command?(input)
-          self.calculator_service.compute input
-          self.close if self.input_parser.contains_quit_command? input
-          if !self.closed?
-            self.display_prompt
-            input = self.receive
+        input = receive
+        while !closed? && !input_parser.quit_command?(input)
+          calculator_service.compute input
+          close if input_parser.contains_quit_command? input
+          if !closed?
+            display_prompt
+            input = receive
           end
         end
       end
@@ -54,9 +54,9 @@ module RealPage
       # @return [String] Returns the input received with new line characters removed.
       def receive
         if Configuration.instance.use_readline
-          self.receive_readline
+          receive_readline
         else
-          self.receive_stdin
+          receive_stdin
         end
       end
 
@@ -82,7 +82,7 @@ module RealPage
       # @param [CalculatorResult] calculator_result A CalculatorResult object that contains the CalculatorService
       # result to send to the output stream.
       def receive_calculator_result(calculator_result)
-        self.respond("#{calculator_result.result}\n")
+        respond("#{calculator_result.result}\n")
       end
 
       # Receives a CalculatorResult from a CalculatorService or derived class object via
@@ -98,7 +98,7 @@ module RealPage
         # Get the error message to send.
         error_message = I18nTranslator.instance.translate(calculator_result.error, { token: calculator_result.result })
         # Interpolate the error label and error message so that it's formatted nicely for display, in the user's locale.
-        self.respond_error("#{error_label}: #{error_message}\n")
+        respond_error("#{error_label}: #{error_message}\n")
       end
 
       protected
@@ -112,8 +112,8 @@ module RealPage
         input = Readline.readline
         # If Ctrl-D, input will be nil? Just quit.
         if input.nil?
-          self.respond "\n"
-          self.close
+          respond "\n"
+          close
         else
           input.strip
         end
@@ -125,14 +125,14 @@ module RealPage
       def receive_stdin
         input = $stdin.gets
         if input.nil?
-          self.respond "\n"
-          self.close
+          respond "\n"
+          close
         else
           input.strip
         end
       rescue SystemExit, Interrupt
         # Capture Ctrl-C.
-        self.respond "\n"
+        respond "\n"
         return nil
       end
 
@@ -142,7 +142,7 @@ module RealPage
       # be added before the prompt is displayed; the prompt will be displayed on the same line otherwise.
       #
       def display_prompt(new_line = false)
-        new_line ? self.respond("\n> ") : self.respond("> ")
+        new_line ? respond("\n> ") : respond("> ")
       end
     end
 

@@ -4,12 +4,12 @@ class Object
   # @return [TrueClass, FalseClass] Returns true if the object is
   # nil? or empty?; false otherwise.
   def blank?
-    if self.nil?
+    if nil?
       return true
-    elsif self.respond_to? :to_s
-      return self.to_s.strip.empty?
-    elsif self.respond_to? :empty?
-      return self.empty?
+    elsif respond_to? :to_s
+      return to_s.strip.empty?
+    elsif respond_to? :empty?
+      return empty?
     else
       return false
     end

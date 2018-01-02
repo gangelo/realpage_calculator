@@ -10,14 +10,10 @@ module RealPage
     # Provides Reverse Polish Notation computation services to a given IOInterface
     # object or derived class object.
     class RPNCalculatorService < CalculatorService
-      public
-
       # Initializes an object of this type.
       def initialize
         super RPNInputParser.new
       end
-
-      public
 
       # Performs a compulation given the input.
       #
@@ -27,10 +23,8 @@ module RealPage
       # computation result or error encountered.
       def compute(input)
         # Parse our input into an array of InputTokens.
-        input_tokens = self.input_parser.tokenize(input)
-        if input_tokens.empty?
-          return self.notify_observer_result_error("", Errors::Calculator::VALID_INPUT_EXPECTED)
-        end
+        input_tokens = input_parser.tokenize(input)
+        return notify_observer_result_error("", Errors::Calculator::VALID_INPUT_EXPECTED) if input_tokens.empty?
 
         result = ""
 
@@ -39,34 +33,31 @@ module RealPage
           if input_token.operator?
             # We have to have at least 2 operands before we're able to perform a computaton, if
             # we have less than 2 operands, notify with an error.
-            if self.input_stack.count < 2
-              return self.notify_observer_result_error(input_token.token, Errors::Calculator::OPERAND_EXPECTED)
-            else
-              # If we have at least 2 operands, perform the computation and return the result.
-              result = self.process_operator(input_token.token)
-              next
-            end
+            return notify_observer_result_error(input_token.token, Errors::Calculator::OPERAND_EXPECTED) if input_stack.count < 2
+            # If we have at least 2 operands, perform the computation and return the result.
+            result = process_operator(input_token.token)
+            next
           elsif input_token.operand?
             # Operands just get added to the input stack until we encounter an operator, then
             # we pop the most recent 2 operands and perform the computation and push the result
             # back on to the input stack as we await the next computation.
-            result = self.process_operand(input_token.token)
+            result = process_operand(input_token.token)
             next
           elsif input_token.quit?
             # If we're quitting just ignore it and move on, the interface will deal with it.
             next
           elsif input_token.view_stack?
-            result = self.input_stack.to_s
+            result = input_stack.to_s
           elsif input_token.clear_stack?
-            result = self.input_stack.clear.to_s
+            result = input_stack.clear.to_s
           elsif input_token.invalid?
             # If we don't have a operator, operand or command, notify with an error.
-            return self.notify_observer_result_error(input_token.token, Errors::Calculator::VALID_INPUT_EXPECTED)
+            return notify_observer_result_error(input_token.token, Errors::Calculator::VALID_INPUT_EXPECTED)
           end
         end
 
         # Notify with the result.
-        self.notify_observer_result(result)
+        notify_observer_result(result)
       end
 
       protected
@@ -80,14 +71,14 @@ module RealPage
       def process_operator(operator)
         # Pop the most recent 2 operands, perform the computation and push the result
         # back on to the input stack as we await the next computation.
-        operand_2 = self.input_stack.pop
-        operand_1 = self.input_stack.pop
+        operand_2 = input_stack.pop
+        operand_1 = input_stack.pop
 
         # Eval the operation, save the computation and return the result.
-        result = self.safe_eval(operator, operand_1, operand_2)
+        result = safe_eval(operator, operand_1, operand_2)
 
         # The result gets pushed to the input stack for later.
-        self.input_stack << result
+        input_stack << result
 
         result
       end
@@ -102,7 +93,7 @@ module RealPage
         # Operands just get added to the input stack until we encounter an operator, then
         # we pop the most recent 2 operands and perform the computation and push the result
         # back on to the input stack as we await the next computation.
-        self.input_stack << token
+        input_stack << token
         token
       end
 

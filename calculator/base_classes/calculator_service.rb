@@ -36,15 +36,13 @@ module RealPage
         @interface_observer = nil
       end
 
-      public
-
       # Performs a compulation given the input. This method needs to be overridden.
       #
       # @param [String] input The input to be used in the computation.
       #
       # @return [CalculatorResult] This method, when overridden, should return
       # a CalculatorResult object.
-      def compute(input)
+      def compute(_input)
         raise MustOverrideError
       end
 

@@ -18,7 +18,7 @@ module RealPage
       # on the #parse method implementation that must be overridden.
       def tokenize(input)
         return [] if input.blank?
-        self.parse input
+        parse input
       end
 
       # Returns true if the input contains the quit command; false otherwise.
@@ -27,7 +27,7 @@ module RealPage
       # @param [Object] input The input to be interrogated.
       #
       # @return [TrueClass, FlaseClass] Returns true if input is a quit command; false otherwise.
-      def contains_quit_command?(input)
+      def contains_quit_command?(_input)
         raise MustOverrideError
       end
 
@@ -40,7 +40,7 @@ module RealPage
       # @param [Object] input The input to be interrogated.
       #
       # @return [TrueClass, FlaseClass] Returns true if input is a quit command; false otherwise.
-      def is_quit_command?(input)
+      def quit_command?(_input)
         raise MustOverrideError
       end
 
@@ -51,7 +51,7 @@ module RealPage
       # @param [Object] input The input to be parsed.
       #
       # @return [Object] Should return the parsed input.
-      def parse(input)
+      def parse(_input)
         raise MustOverrideError
       end
     end

@@ -65,19 +65,19 @@ describe "RPNInputParser" do
       end
     end
 
-    describe "#is_quit_command?" do
-      it { expect(@input_parser).to respond_to(:contains_quit_command?).with(1).arguments }
+    describe "#quit_command?" do
+      it { expect(@input_parser).to respond_to(:quit_command?).with(1).arguments }
 
       it "should return true if the input is the quit command" do
-        expect(@input_parser.is_quit_command? quit_command).to eq(true)
+        expect(@input_parser.quit_command? quit_command).to eq(true)
       end
 
       it "should return false if the input is not the quit command" do
-        expect(@input_parser.is_quit_command? "not_#{quit_command}").to eq(false)
+        expect(@input_parser.quit_command? "not_#{quit_command}").to eq(false)
       end
 
       it "should return false if the input contains the quit command as part of a series of input tokens" do
-        expect(@input_parser.is_quit_command? "1 1 + #{quit_command}").to eq(false)
+        expect(@input_parser.quit_command? "1 1 + #{quit_command}").to eq(false)
       end
     end
   end # instance methods

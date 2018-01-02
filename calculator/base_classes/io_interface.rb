@@ -65,18 +65,13 @@ module RealPage
         0b01
       end
 
-      public
-
       # Starts the process of receiving input (e.g. accepts connect requests, 
       # open files, initial STDIN prompts, etc.) and sets the interface state to 
       # #opened_state. An InterfaceNotReadyError is raised if this interface is not 
       # in a #ready? state.
       def accept
-        if self.ready?
-          @state = IOInterface.opened_state
-        else
-          raise InterfaceNotReadyError
-        end
+        raise InterfaceNotReadyError unless ready?
+        @state = IOInterface.opened_state
       end
 
       def accept_async
@@ -122,7 +117,7 @@ module RealPage
       #
       # @param [Object] output This method, when overridden, should send the output passed
       # to the output stream.
-      def respond(output)
+      def respond(_output)
         raise MustOverrideError
       end
 
@@ -130,7 +125,7 @@ module RealPage
       #
       # @param [Object] output This method, when overridden, should send the output passed
       # to the appropriate error output stream.
-      def respond_error(output)
+      def respond_error(_output)
         raise MustOverrideError
       end
 
@@ -141,7 +136,7 @@ module RealPage
       #
       # @param [CalculatorResult] calculator_result A CalculatorResult object that contains the CalculatorService 
       # result to send to the output stream.
-      def receive_calculator_result(calculator_result)
+      def receive_calculator_result(_calculator_result)
         raise MustOverrideError
       end
 
@@ -152,7 +147,7 @@ module RealPage
       #
       # @param [CalculatorResult] calculator_result A CalculatorResult object that contains the CalculatorService 
       # error to send to the error output stream.
-      def receive_calculator_result_error(calculator_result)
+      def receive_calculator_result_error(_calculator_result)
         raise MustOverrideError
       end
 

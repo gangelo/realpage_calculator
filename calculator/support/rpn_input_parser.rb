@@ -28,7 +28,7 @@ module RealPage
       # @param [Object] input The input to be interrogated.
       #
       # @return [TrueClass, FlaseClass] Returns true if input is a quit command; false otherwise.
-      def is_quit_command?(input)
+      def quit_command?(input)
         return false if input.blank?
         input == RealPage::Calculator::Configuration.instance.quit_command
       end
