@@ -13,14 +13,6 @@ module RealPage
       # Holds an array of options specific to the console interface.
       attr_reader :console_interface_options
 
-      # Returns the Configuration instance.
-      #
-      # @return [Configuration] Returns the single(ton) instance of
-      # this Configuraton object.
-      def self.instance
-        @instance
-      end
-
       # Returns the instance variable of this instance.
       #
       # @return [Configuration] Returns the single(ton) instance of this
@@ -76,6 +68,14 @@ module RealPage
         @operators = configuration['operators']
         @commands = configuration['commands']
         @console_interface_options = configuration['console_interface_options']
+      end
+
+      class << self
+        # Returns the Configuration instance.
+        #
+        # @return [Configuration] Returns the single(ton) instance of
+        # this Configuraton object.
+        attr_reader :instance
       end
 
       @instance = Configuration.new

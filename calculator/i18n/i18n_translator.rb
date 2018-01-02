@@ -9,14 +9,10 @@ module RealPage
         load_config
       end
 
-      # Returns the I18nTranslator instance.
+      # Returns the instance variable of this instance.
       #
-      # @return [I18nTranslator] Returns the single(ton) instance of
-      # this I18nTranslator object.
-      def self.instance
-        @instance
-      end
-
+      # @return [I18nTranslator] Returns the single(ton) instance of this
+      # I18nTranslator object.
       def instance
         self.class.instance
       end
@@ -71,6 +67,14 @@ module RealPage
       def load_config
         i18n_folder = File.join(__dir__, '../config/i18n.yml')
         I18n.load_path = Dir[i18n_folder]
+      end
+
+      class << self
+        # Returns the Configuration instance.
+        #
+        # @return [Configuration] Returns the single(ton) instance of
+        # this Configuraton object.
+        attr_reader :instance
       end
 
       @instance = I18nTranslator.new
