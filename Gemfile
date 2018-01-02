@@ -14,6 +14,7 @@ end
 
 group :development do
   gem 'rake', '~> 12.3'
+  gem 'rubocop', '~> 0.39.0'
 end
 
 gem 'i18n', '~> 0.9.1'
