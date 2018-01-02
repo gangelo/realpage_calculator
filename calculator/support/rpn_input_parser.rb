@@ -8,7 +8,6 @@ module RealPage
   module Calculator
     # Provides input parsing capabilities suitabe for an RPNCalculatorService object.
     class RPNInputParser < InputParser
-
       # Returns true if the input contains the quit command; false otherwise.
       #
       # @param [Object] input The input to be interrogated.

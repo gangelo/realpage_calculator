@@ -25,7 +25,7 @@ module RealPage
         input_tokens = input_parser.tokenize(input)
         return notify_observer_result_error('', Errors::Calculator::VALID_INPUT_EXPECTED) if input_tokens.empty?
 
-        result = ""
+        result = ''
 
         # Loop through our input tokens so we can process each one.
         input_tokens.each do |input_token|

@@ -4,7 +4,6 @@ module RealPage
   module Calculator
     # Singleton. Provides a single interface for translation.
     class I18nTranslator
-
       # Initializes an object of this type.
       def initialize
         load_config
