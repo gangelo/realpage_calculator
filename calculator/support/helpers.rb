@@ -1,5 +1,6 @@
 module RealPage
   module Calculator
+    # Namespace that contains all helper methods used in this project.
     module Helpers
       # Method that checks an object for nil or empty.
       #
