@@ -75,7 +75,7 @@ module RealPage
       # method.
       #
       # @return [CalculatorResult]
-      def notify_observer_result(calculator_result)
+      def notify(calculator_result)
         calculator_result = CalculatorResult.new(calculator_result,
                                                  Errors::Calculator::NONE)
         @interface_observer.send(:receive_calculator_result, calculator_result) unless @interface_observer.nil?
@@ -93,7 +93,7 @@ module RealPage
       # with the offending input contained in CalculatorResult#token.
       #
       # @return [CalculatorResult]
-      def notify_observer_result_error(calculator_result, calculator_error)
+      def notify_error(calculator_result, calculator_error)
         calculator_result = CalculatorResult.new(calculator_result,
                                                  calculator_error)
         @interface_observer.send(:receive_calculator_result_error, calculator_result) unless @interface_observer.nil?

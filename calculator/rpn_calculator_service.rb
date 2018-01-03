@@ -26,9 +26,9 @@ module RealPage
       def compute(input)
         # Parse our input into an array of InputTokens.
         input_tokens = input_parser.tokenize(input)
-        return notify_observer_result_error('', Errors::Calculator::VALID_INPUT_EXPECTED) if input_tokens.empty?
+        return notify_error('', Errors::Calculator::VALID_INPUT_EXPECTED) if input_tokens.empty?
         return if input_parser.contains_invalid_tokens?(input_tokens) do |invalid_tokens|
-          notify_observer_result_error(invalid_tokens.join(','), Errors::Calculator::VALID_INPUT_EXPECTED)
+          notify_error(invalid_tokens.join(','), Errors::Calculator::VALID_INPUT_EXPECTED)
         end
         compute_loop input_tokens
       end
@@ -48,7 +48,7 @@ module RealPage
           when input_token.operator? && input_stack.count < 2
             # We have to have at least 2 operands before we're able to perform a
             # computaton, if we have less than 2 operands, notify with an error.
-            calculator_result = notify_observer_result_error(input_token.token, Errors::Calculator::OPERAND_EXPECTED) if input_stack.count < 2
+            calculator_result = notify_error(input_token.token, Errors::Calculator::OPERAND_EXPECTED) if input_stack.count < 2
             break
           when input_token.operator?
             # If we have at least 2 operands, perform the computation and return
@@ -64,7 +64,7 @@ module RealPage
             result = process_command(input_token)
           end
 
-          calculator_result = notify_observer_result(result) if upper_bound(input_tokens) == index
+          calculator_result = notify(result) if upper_bound(input_tokens) == index
         end
 
         calculator_result

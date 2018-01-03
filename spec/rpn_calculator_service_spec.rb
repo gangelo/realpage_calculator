@@ -62,8 +62,8 @@ describe "RPNCalculatorService" do
   end # instance methods
 
   context "protected instance methods" do
-    describe "#notify_observer_result" do
-      it { should respond_to(:notify_observer_result).with(1).arguments }
+    describe "#notify" do
+      it { should respond_to(:notify).with(1).arguments }
       it "should nofity the observer with the calculator result by calling Observer#receive_calculator_result if an observer is attached" do
         expected_result = 1.0
         io_interface = instance_double("RealPage::Calculator::IOInterface", receive_calculator_result: nil)
@@ -72,12 +72,12 @@ describe "RPNCalculatorService" do
           expect(calculator_result.error?).to eq(false)
         end
         @calculator_service.attach_observer io_interface
-        @calculator_service.notify_observer_result(expected_result)
+        @calculator_service.notify(expected_result)
       end
     end
 
-    describe "#notify_observer_result_error" do
-      it { should respond_to(:notify_observer_result_error).with(2).arguments }
+    describe "#notify_error" do
+      it { should respond_to(:notify_error).with(2).arguments }
       it "should nofity the observer with the calculator error by calling Observer#receive_calculator_result_error if an observer is attached" do
         expected_result = "invalid_input"
         expected_error = RealPage::Calculator::Errors::Calculator::VALID_INPUT_EXPECTED
@@ -88,7 +88,7 @@ describe "RPNCalculatorService" do
           expect(calculator_result_error.error).to eq(expected_error)
         end
         @calculator_service.attach_observer io_interface
-        @calculator_service.notify_observer_result_error(expected_result, expected_error)
+        @calculator_service.notify_error(expected_result, expected_error)
       end
     end
   end # protected instance methods
