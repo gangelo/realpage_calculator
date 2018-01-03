@@ -41,28 +41,32 @@ module RealPage
 
         # Loop through our input tokens so we can process each one.
         input_tokens.each_with_index do |input_token, index|
-          case
-          when input_token.quit?
-            # If we're quitting just ignore it and move on, the interface will
-            # deal with it.
-          when input_token.operator? && input_stack.count < 2
+          if input_token.operator? && input_stack.count < 2
             # We have to have at least 2 operands before we're able to perform a
             # computaton, if we have less than 2 operands, notify with an error.
             calculator_result = notify_error(input_token.token, Errors::Calculator::OPERAND_EXPECTED) if input_stack.count < 2
             break
-          when input_token.operator?
-            # If we have at least 2 operands, perform the computation and return
-            # the result.
-            result = process_operator(input_token.token)
-          when input_token.operand?
-            # Operands just get added to the input stack until we encounter an
-            # operator, then we pop the most recent 2 operands and perform the
-            # computation and push the result back on to the input stack as we
-            # await the next computation.
-            result = process_operand(input_token.token)
-          when input_token.command?
-            result = process_command(input_token)
           end
+
+          result =
+            case
+            when input_token.quit?
+              # If we're quitting just ignore it and move on, the interface will
+              # deal with it.
+              result
+            when input_token.operator?
+              # If we have at least 2 operands, perform the computation and return
+              # the result.
+              process_operator(input_token.token)
+            when input_token.operand?
+              # Operands just get added to the input stack until we encounter an
+              # operator, then we pop the most recent 2 operands and perform the
+              # computation and push the result back on to the input stack as we
+              # await the next computation.
+              process_operand(input_token.token)
+            when input_token.command?
+              process_command(input_token)
+            end
 
           calculator_result = notify(result) if upper_bound(input_tokens) == index
         end
