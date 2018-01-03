@@ -8,6 +8,22 @@ module RealPage
     # Provides input parsing capabilities suitabe for an RPNCalculatorService
     # object.
     class RPNInputParser < InputParser
+      # Returns true if the input contains an invalid token; false otherwise.
+      #
+      # @param [Array<InputToken>] input The inputTokens to be interrogated.
+      #
+      # @return [TrueClass, FlaseClass] Returns true if input contains an
+      # invalid token; false otherwise.
+      def contains_invalid_tokens?(input_token_array)
+        return false if blank?(input_token_array)
+        invalid_tokens = []
+        input_token_array.each do |input_token|
+          invalid_tokens << input_token.token if input_token.invalid?
+        end
+        yield invalid_tokens if invalid_tokens.count > 0
+        invalid_tokens.count > 0
+      end
+
       # Returns true if the input contains the quit command; false otherwise.
       #
       # @param [Object] input The input to be interrogated.
@@ -41,8 +57,8 @@ module RealPage
       # be converted.
       #
       # @return [Array<String, Float>] Returns an array of mixed tokens
-      # comprised of
-      # Strings and/or Floats if token is InputToken.operand?(token).
+      # comprised of Strings and/or Floats if token is
+      # InputToken.operand?(token).
       def self.to_token_array(input_token_array)
         return [] if input_token_array.nil? || input_token_array.count == 0
         input_token_array.map do |input_token|
@@ -59,7 +75,7 @@ module RealPage
       #
       # @return [Array<InputToken> Returns an Array of InputTokens.
       def parse(input)
-        input.split.map { |t| InputToken.new(t) }
+        input.split.map { |t| InputToken.new(t) } || []
       end
     end
   end

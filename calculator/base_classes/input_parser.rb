@@ -23,6 +23,17 @@ module RealPage
         parse input
       end
 
+      # Returns true if the input contains an invalid token; false otherwise.
+      # This method must be overridden.
+      #
+      # @param [Object] input The input to be interrogated.
+      #
+      # @return [TrueClass, FlaseClass] Returns true if input contains an
+      # invalid token; false otherwise.
+      def contains_invalid_tokens?(_input)
+        raise MustOverrideError
+      end
+
       # Returns true if the input contains the quit command; false otherwise.
       # This method must be overridden.
       #
