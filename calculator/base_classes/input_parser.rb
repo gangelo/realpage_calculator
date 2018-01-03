@@ -20,7 +20,7 @@ module RealPage
       # on the #parse method implementation that must be overridden.
       def tokenize(input)
         return [] if blank?(input)
-        parse input
+        parse(input)
       end
 
       # Returns true if the input contains an invalid token; false otherwise.

@@ -34,8 +34,8 @@ module RealPage
 
         input = receive
         while !closed? && !input_parser.quit_command?(input)
-          calculator_service.compute input
-          close if input_parser.contains_quit_command? input
+          calculator_service.compute(input)
+          close if input_parser.contains_quit_command?(input)
           unless closed?
             display_prompt
             input = receive
@@ -113,7 +113,7 @@ module RealPage
         input = Readline.readline
         # If Ctrl-D, input will be nil? Just quit.
         if input.nil?
-          respond "\n"
+          respond("\n")
           close
         else
           input.strip
@@ -127,14 +127,14 @@ module RealPage
       def receive_stdin
         input = $stdin.gets
         if input.nil?
-          respond "\n"
+          respond("\n")
           close
         else
           input.strip
         end
       rescue SystemExit, Interrupt
         # Capture Ctrl-C.
-        respond "\n"
+        respond("\n")
         return nil
       end
 

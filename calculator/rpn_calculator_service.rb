@@ -30,7 +30,7 @@ module RealPage
         return if input_parser.contains_invalid_tokens?(input_tokens) do |invalid_tokens|
           notify_error(invalid_tokens.join(','), Errors::Calculator::VALID_INPUT_EXPECTED)
         end
-        compute_loop input_tokens
+        compute_loop(input_tokens)
       end
 
       protected
