@@ -33,7 +33,7 @@ module RealPage
         display_prompt
 
         input = receive
-        while !closed? && !input_parser.quit_command?(input)
+        until closed? || input_parser.quit_command?(input)
           calculator_service.compute(input)
           close if input_parser.contains_quit_command?(input)
           unless closed?
