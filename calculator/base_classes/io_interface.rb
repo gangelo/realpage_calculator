@@ -76,10 +76,6 @@ module RealPage
         @state = IOInterface.opened_state
       end
 
-      def accept_async
-        raise MustOverrideError
-      end
-
       # Returns the ready state of this interface.
       #
       # @return [TrueClass, FalseClass] Returns true if this interface is in

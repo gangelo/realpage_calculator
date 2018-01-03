@@ -43,10 +43,6 @@ module RealPage
         end
       end
 
-      def accept_async
-        raise MustOverrideError
-      end
-
       protected
 
       # Receives input from $stdin.
