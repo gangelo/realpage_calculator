@@ -3,12 +3,15 @@ require_relative 'support/calculator_result'
 require_relative 'support/rpn_input_parser'
 require_relative 'support/input_token'
 require_relative 'errors/errors'
+require_relative 'support/helpers'
 
 module RealPage
   module Calculator
     # Provides Reverse Polish Notation computation services to a given
     # IOInterface object or derived class object.
     class RPNCalculatorService < CalculatorService
+      include Helpers::Arrays
+
       # Initializes an object of this type.
       def initialize
         super RPNInputParser.new
@@ -24,46 +27,48 @@ module RealPage
         # Parse our input into an array of InputTokens.
         input_tokens = input_parser.tokenize(input)
         return notify_observer_result_error('', Errors::Calculator::VALID_INPUT_EXPECTED) if input_tokens.empty?
+        return if input_parser.contains_invalid_tokens?(input_tokens) do |invalid_tokens|
+          notify_observer_result_error(invalid_tokens.join(','), Errors::Calculator::VALID_INPUT_EXPECTED)
+        end
+        compute_loop input_tokens
+      end
 
+      protected
+
+      def compute_loop(input_tokens)
         result = ''
+        calculator_result = nil
 
         # Loop through our input tokens so we can process each one.
-        input_tokens.each do |input_token|
-          if input_token.operator?
+        input_tokens.each_with_index do |input_token, index|
+          case
+          when input_token.quit?
+            # If we're quitting just ignore it and move on, the interface will
+            # deal with it.
+          when input_token.operator? && input_stack.count < 2
             # We have to have at least 2 operands before we're able to perform a
             # computaton, if we have less than 2 operands, notify with an error.
-            return notify_observer_result_error(input_token.token, Errors::Calculator::OPERAND_EXPECTED) if input_stack.count < 2
+            calculator_result = notify_observer_result_error(input_token.token, Errors::Calculator::OPERAND_EXPECTED) if input_stack.count < 2
+            break
+          when input_token.operator?
             # If we have at least 2 operands, perform the computation and return
             # the result.
             result = process_operator(input_token.token)
-            next
-          elsif input_token.operand?
+          when input_token.operand?
             # Operands just get added to the input stack until we encounter an
             # operator, then we pop the most recent 2 operands and perform the
             # computation and push the result back on to the input stack as we
             # await the next computation.
             result = process_operand(input_token.token)
-            next
-          elsif input_token.quit?
-            # If we're quitting just ignore it and move on, the interface will
-            # deal with it.
-            next
-          elsif input_token.view_stack?
-            result = input_stack.to_s
-          elsif input_token.clear_stack?
-            result = input_stack.clear.to_s
-          elsif input_token.invalid?
-            # If we don't have a operator, operand or command, notify with an
-            # error.
-            return notify_observer_result_error(input_token.token, Errors::Calculator::VALID_INPUT_EXPECTED)
+          when input_token.command?
+            result = process_command(input_token)
           end
+
+          calculator_result = notify_observer_result(result) if upper_bound(input_tokens) == index
         end
 
-        # Notify with the result.
-        notify_observer_result(result)
+        calculator_result
       end
-
-      protected
 
       # Performs the processesing necessary when an operator is encountered
       # and returns the result.
@@ -101,6 +106,22 @@ module RealPage
         # back on to the input stack as we await the next computation.
         input_stack << token
         token
+      end
+
+      # Returns the result of running the command.
+      #
+      # @param [InputToken] command The InputCommand to process.
+      #
+      # @return [String] Returns the results of the command in String form.
+      def process_command(command)
+        result = ''
+        case
+        when command.view_stack?
+          result = input_stack.to_s
+        when command.clear_stack?
+          result = input_stack.clear.to_s
+        end
+        result
       end
 
       # Safely performs the computation of two operands given an operator.
