@@ -40,8 +40,7 @@ The RPC project consists of:
 | `RealPage::Calculator::I18nTranslator`  | The _i18n Tranclator_ Singleton object (_i18n Translator_) is responsible for loading the /configuration/config/i18n.yml file and providing a single(ton) interface for _translation_ services used by _IO Interfaces_. |
 | `RealPage::Calculator::InterfaceNotReadyError` `RealPage::Calculator::MustOverrideError`  | The _Error_ class objects (_Errors_) are used throughout the RPC project wherever a custom error needs to be raised.|
 | `RealPage::Calculator::Errors`  | The _Error Support_ module (_Error Support_) defines errors in the form of _Hash_ values. When the _Calculator Service_ encounters an error, a _CalculatorResult_ object is created and the _Error Support_ error is embedded in the _CalculatorResult_ object and sent to the _IO Interface_. The _Error Support_ error Hash embedded in the _CalculatorResult_ object is then used by the _IO Interface_ as input to the _i18n Translator_ ({key: :key, scope: :scope}) to return a locale specific error message to the output stream. |
-| `RealPage::Calculator::ArrayExtension`  | The _Array Extensions_ extensions (_Array Extensions_) add convenience functionality to the Ruby _Array_ class in support of _InputToken_ array processing. |
-| `RealPage::Calculator::ObjectExtension`  | The _Object Extensions_ extensions (_Object Extensions_) add convenience functionality to the Ruby _Object_ class in support of _InputToken_ array processing. |
+| `RealPage::Calculator::Helpers`  | The _Helpers_ module (_Helpers_) add convenience functionality in support of this project. |
 
 ### Configuration Files
 
@@ -121,11 +120,11 @@ _Input Tokens_ exist to identify the _nature_ (`#empty?`, `#invalid?`, `#valid?`
 
 #### Classes
 
-`RealPage::Calculator::Configuration` `RealPage::Calculator::I18nTranslator` `RealPage::Calculator::InterfaceNotReadyError` `RealPage::Calculator::MustOverrideError`  `RealPage::Calculator::ArrayExtension` `RealPage::Calculator::ObjectExtension`
+`RealPage::Calculator::Configuration` `RealPage::Calculator::I18nTranslator` `RealPage::Calculator::InterfaceNotReadyError` `RealPage::Calculator::MustOverrideError`
 
 #### Modules
 
-`RealPage::Calculator::Errors`
+`RealPage::Calculator::Errors` `RealPage::Calculator::Helpers::Blank`
 
 #### Reasoning
 
@@ -143,13 +142,13 @@ The `RealPage::Calculator::I18nTranslator` classes provides _i18n translation ke
 
 `RealPage::Calculator::Errors` is a _module_. Likewise, the data it makes available never changes; however, the data it makes available is static (not dependant upon loading a yaml file). Therefore, a Module makes the most sense.
 
-##### Extensions
-
-`RealPage::Calculator::ArrayExtension` and `RealPage::Calculator::ObjectExtension` are convenience extensions. `RealPage::Calculator::ArrayExtension` provides an extension to convert an Array of _InputTokens_ to an Array of _token_ values. `RealPage::Calculator::ObjectExtension` provides an extension to determine whether or not an object is nil? or empty? Both of these extensions are not justified, at least not as extensions. See [Technical/Architectural Reflections](#technicalarchitectural-reflections) for more detail.
-
 ##### Errors 
 
 The `RealPage::Calculator::InterfaceNotReadyError` and `RealPage::Calculator::MustOverrideError` error classes provide custom errors where the standard Ruby errors fall short.
+
+##### Helpers Module
+
+`RealPage::Calculator::Helpers` is a convenience module. The `RealPage::Calculator::Helpers::Blank` modue can be _included_ to mix in the _#blank?_ method, which can be used to determine whether or not an object is nil or empty This method is used by the _Input Parser_ classes to determine whether or not the input it receives is nil or empty.
 
 ### Executable Command-Line Scripts 
 
@@ -169,7 +168,6 @@ Some of the other things I would do or do differently would be:
 
 + Create additional _IO Interfaces_, one for _file_, and one for _WebSocket_ (I've never use WebSocket before), then create a Rails app host and see how it works.
 + Refactor `RealPage::Calculator::CalculatorService` to allow _input stack_ as a param during initialization so the _Calculator Service_ state could be restored in a stateless environment, _HTTP Interface_ for example.
-+ Move the convenience extensions found in `RealPage::Calculator::ArrayExtension` and `RealPage::Calculator::ObjectExtension` to a helper module to avoid any potential name collisions in consuming applications.
 + Provide a means of _setting_ (in the case of stateful environments) or _accepting_ (in the case of stateless environments) a locale to be used for localization.
 + Refactor `RealPage::Calculator::InputToken` into a base class by eliminating calculator-specific command methods (class and instance) and force _Calculator Services_ to implement their own, calculator-specific _InputToken_ class. It's not very extensible the way it is.
 + Refactor `RealPage::Calculator::InputParser` to allow a _token delimiter_ param during initialization to be used to parse and tokenize raw input; currently, only spaces are recognized.
