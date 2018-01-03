@@ -48,30 +48,40 @@ module RealPage
             break
           end
 
-          result =
-            case
-            when input_token.quit?
-              # If we're quitting just ignore it and move on, the interface will
-              # deal with it.
-              result
-            when input_token.operator?
-              # If we have at least 2 operands, perform the computation and return
-              # the result.
-              process_operator(input_token.token)
-            when input_token.operand?
-              # Operands just get added to the input stack until we encounter an
-              # operator, then we pop the most recent 2 operands and perform the
-              # computation and push the result back on to the input stack as we
-              # await the next computation.
-              process_operand(input_token.token)
-            when input_token.command?
-              process_command(input_token)
-            end
+          process_input_token(input_token) do |results|
+            result = results
+          end
 
           calculator_result = notify(result) if upper_bound(input_tokens) == index
         end
 
         calculator_result
+      end
+
+      # Processes an input token and yields the result
+      #
+      # @param [InputToken] input_token The InputToken object to process.
+      def process_input_token(input_token)
+        result =
+          case
+          when input_token.quit?
+            # If we're quitting just ignore it and move on, the interface will
+            # deal with it.
+            return
+          when input_token.operator?
+            # If we have at least 2 operands, perform the computation and return
+            # the result.
+            process_operator(input_token.token)
+          when input_token.operand?
+            # Operands just get added to the input stack until we encounter an
+            # operator, then we pop the most recent 2 operands and perform the
+            # computation and push the result back on to the input stack as we
+            # await the next computation.
+            process_operand(input_token.token)
+          when input_token.command?
+            process_command(input_token)
+          end
+        yield result
       end
 
       # Performs the processesing necessary when an operator is encountered
@@ -99,17 +109,17 @@ module RealPage
       # Performs the processesing necessary when an operand is encountered
       # and returns the input.
       #
-      # @param [String] token The operand to process.
+      # @param [String] operand The operand to process.
       #
       # @return [Float]
-      def process_operand(token)
+      def process_operand(operand)
         # Operands just get added to the input stack until we encounter an
         # operator, then
         # we pop the most recent 2 operands and perform the computation and
         # push the result
         # back on to the input stack as we await the next computation.
-        input_stack << token
-        token
+        input_stack << operand
+        operand
       end
 
       # Returns the result of running the command.
@@ -118,12 +128,12 @@ module RealPage
       #
       # @return [String] Returns the results of the command in String form.
       def process_command(command)
-        result = 
+        result =
           case
           when command.view_stack?
-            result = input_stack.to_s
+            input_stack.to_s
           when command.clear_stack?
-            result = input_stack.clear.to_s
+            input_stack.clear.to_s
           end
         result
       end
