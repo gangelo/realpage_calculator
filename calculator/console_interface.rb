@@ -36,10 +36,9 @@ module RealPage
         until closed? || input_parser.quit_command?(input)
           calculator_service.compute(input)
           close if input_parser.contains_quit_command?(input)
-          unless closed?
-            display_prompt
-            input = receive
-          end
+          break if closed?
+          display_prompt
+          input = receive
         end
       end
 
