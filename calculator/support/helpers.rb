@@ -2,7 +2,6 @@ module RealPage
   module Calculator
     # Namespace that contains all helper methods used in this project.
     module Helpers
-
       # Module that contains methods for Arrays.
       module Arrays
         # Returns the upper bound of an array.
@@ -16,7 +15,6 @@ module RealPage
           array.size - 1
         end
       end
-
       # Module that contains the #blank? method.
       module Blank
         # Method that checks an object for nil or empty.
