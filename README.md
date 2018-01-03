@@ -40,7 +40,7 @@ The RPC project consists of:
 | `RealPage::Calculator::I18nTranslator`  | The _i18n Tranclator_ Singleton object (_i18n Translator_) is responsible for loading the /configuration/config/i18n.yml file and providing a single(ton) interface for _translation_ services used by _IO Interfaces_. |
 | `RealPage::Calculator::InterfaceNotReadyError` `RealPage::Calculator::MustOverrideError`  | The _Error_ class objects (_Errors_) are used throughout the RPC project wherever a custom error needs to be raised.|
 | `RealPage::Calculator::Errors`  | The _Error Support_ module (_Error Support_) defines errors in the form of _Hash_ values. When the _Calculator Service_ encounters an error, a _CalculatorResult_ object is created and the _Error Support_ error is embedded in the _CalculatorResult_ object and sent to the _IO Interface_. The _Error Support_ error Hash embedded in the _CalculatorResult_ object is then used by the _IO Interface_ as input to the _i18n Translator_ ({key: :key, scope: :scope}) to return a locale specific error message to the output stream. |
-| `RealPage::Calculator::Helpers`  | The _Helpers_ module (_Helpers_) add convenience functionality in support of this project. |
+| `RealPage::Calculator::Helpers::Blank` `RealPage::Calculator::Helpers::Arrays`  | These _Helper_ modules (_Helpers_) add convenience functionality in support of this project. |
 
 ### Configuration Files
 
@@ -124,7 +124,7 @@ _Input Tokens_ exist to identify the _nature_ (`#empty?`, `#invalid?`, `#valid?`
 
 #### Modules
 
-`RealPage::Calculator::Errors` `RealPage::Calculator::Helpers::Blank`
+`RealPage::Calculator::Errors` `RealPage::Calculator::Helpers::Blank` `RealPage::Calculator::Helpers::Arrays`
 
 #### Reasoning
 
@@ -148,7 +148,7 @@ The `RealPage::Calculator::InterfaceNotReadyError` and `RealPage::Calculator::Mu
 
 ##### Helpers Module
 
-`RealPage::Calculator::Helpers` is a convenience module. The `RealPage::Calculator::Helpers::Blank` modue can be _included_ to mix in the _#blank?_ method, which can be used to determine whether or not an object is nil or empty This method is used by the _Input Parser_ classes to determine whether or not the input it receives is nil or empty.
+`RealPage::Calculator::Helpers` is a convenience module. The `RealPage::Calculator::Helpers::Blank` module can be _included_ to mix in the _#blank?_ method, which can be used to determine whether or not an object is nil or empty This method is used by the _Input Parser_ classes to determine whether or not the input it receives is nil or empty. Likewise, the `RealPage::Calculator::Helpers::Arrays` is also a module that may be mixed into a class to take advantage of the _#upper_bound_ member that returns the upper bound of an Array.
 
 ### Executable Command-Line Scripts 
 
