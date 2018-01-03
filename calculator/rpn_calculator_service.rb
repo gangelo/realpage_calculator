@@ -114,13 +114,13 @@ module RealPage
       #
       # @return [String] Returns the results of the command in String form.
       def process_command(command)
-        result = ''
-        case
-        when command.view_stack?
-          result = input_stack.to_s
-        when command.clear_stack?
-          result = input_stack.clear.to_s
-        end
+        result = 
+          case
+          when command.view_stack?
+            result = input_stack.to_s
+          when command.clear_stack?
+            result = input_stack.clear.to_s
+          end
         result
       end
 
