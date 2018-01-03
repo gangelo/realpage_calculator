@@ -8,6 +8,8 @@ module RealPage
     # Provides input parsing capabilities suitabe for an RPNCalculatorService
     # object.
     class InputParser
+      include Helpers::Blank
+
       # Converts input into a suitable format to be used by an
       # RPNCalculatorService objext.
       #
@@ -17,7 +19,7 @@ module RealPage
       # array if input is nil? or empty? The array element object types depends
       # on the #parse method implementation that must be overridden.
       def tokenize(input)
-        return [] if Helpers.blank?(input)
+        return [] if blank?(input)
         parse input
       end
 

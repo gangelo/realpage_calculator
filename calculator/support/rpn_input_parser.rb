@@ -15,7 +15,7 @@ module RealPage
       # @return [TrueClass, FlaseClass] Returns true if input is a quit command;
       # false otherwise.
       def contains_quit_command?(input)
-        return false if Helpers.blank?(input)
+        return false if blank?(input)
         input.split.include? RealPage::Calculator::Configuration.instance.quit_command
       end
 
@@ -30,7 +30,7 @@ module RealPage
       # @return [TrueClass, FlaseClass] Returns true if input is a quit command;
       # false otherwise.
       def quit_command?(input)
-        return false if Helpers.blank?(input)
+        return false if blank?(input)
         input == RealPage::Calculator::Configuration.instance.quit_command
       end
 
