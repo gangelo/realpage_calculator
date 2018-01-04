@@ -48,13 +48,10 @@ module RealPage
             result_error = error
           end
 
-          # Process our input token. Some commands (like quit) have no results
-          # to return to the interface, so process_input_token will not yield a
-          # result; however, if we DO have a result to return, set the result
-          # object.
-          process_input_token(input_token) do |results|
-            result = results
-          end
+          # Process our input token. The quit command has no results to return
+          # to the interface, so there's no need to call process_input_token;
+          # however, for everything else, set the result object.
+          result = process_input_token(input_token) unless input_token.quit?
         end
 
         # Notify the interface and return the result.
@@ -83,26 +80,20 @@ module RealPage
       #
       # @param [InputToken] input_token The InputToken object to process.
       def process_input_token(input_token)
-        result =
-          case
-          when input_token.quit?
-            # If we're quitting just ignore it and move on, the interface will
-            # deal with it.
-            return
-          when input_token.operator?
-            # If we have at least 2 operands, perform the computation and return
-            # the result.
-            process_operator(input_token.token)
-          when input_token.operand?
-            # Operands just get added to the input stack until we encounter an
-            # operator, then we pop the most recent 2 operands and perform the
-            # computation and push the result back on to the input stack as we
-            # await the next computation.
-            process_operand(input_token.token)
-          when input_token.command?
-            process_command(input_token)
-          end
-        yield result
+        case
+        when input_token.operator?
+          # If we have at least 2 operands, perform the computation and return
+          # the result.
+          process_operator(input_token.token)
+        when input_token.operand?
+          # Operands just get added to the input stack until we encounter an
+          # operator, then we pop the most recent 2 operands and perform the
+          # computation and push the result back on to the input stack as we
+          # await the next computation.
+          process_operand(input_token.token)
+        when input_token.command?
+          process_command(input_token)
+        end
       end
 
       # Performs the processesing necessary when an operator is encountered
