@@ -104,8 +104,7 @@ module RealPage
       # @return [Float]
       def process_operator(operator)
         # Pop the most recent 2 operands, perform the computation and push the
-        # result
-        # back on to the input stack as we await the next computation.
+        # result back on to the input stack as we await the next computation.
         operand_2 = input_stack.pop
         operand_1 = input_stack.pop
 
