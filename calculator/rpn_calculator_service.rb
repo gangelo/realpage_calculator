@@ -30,32 +30,53 @@ module RealPage
         return if input_parser.contains_invalid_tokens?(input_tokens) do |invalid_tokens|
           notify_error(invalid_tokens.join(','), Errors::Calculator::VALID_INPUT_EXPECTED)
         end
-        compute_loop(input_tokens)
+        process_loop(input_tokens)
       end
 
       protected
 
-      def compute_loop(input_tokens)
+      def process_loop(input_tokens)
         result = ''
-        calculator_result = nil
+        result_error = nil
 
         # Loop through our input tokens so we can process each one.
-        input_tokens.each_with_index do |input_token, index|
-          if input_token.operator? && input_stack.count < 2
-            # We have to have at least 2 operands before we're able to perform a
-            # computaton, if we have less than 2 operands, notify with an error.
-            calculator_result = notify_error(input_token.token, Errors::Calculator::OPERAND_EXPECTED) if input_stack.count < 2
-            break
+        input_tokens.each do |input_token|
+          # If we encounter an error, set what we need to notify the interface
+          # of the error and get out, we're done.
+          break if input_errors?(input_token) do |error, error_token|
+            result = error_token
+            result_error = error
           end
 
+          # Process our input token. Some commands (like quit) have no results
+          # to return to the interface, so process_input_token will not yield a
+          # result; however, if we DO have a result to return, set the result
+          # object.
           process_input_token(input_token) do |results|
             result = results
           end
-
-          calculator_result = notify(result) if upper_bound(input_tokens) == index
         end
 
-        calculator_result
+        # Notify the interface and return the result.
+        result_error ? notify_error(result, result_error) : notify(result)
+      end
+
+      # Checks to see if input_token is in error. If input_token is in error,
+      # the error and offending token is yielded
+      #
+      # @param [String] input_token The input token to check for errors.
+      #
+      # @return [TrueClass, FalseClass] , and true is returned; otherwise, false
+      # is returned.
+      def input_errors?(input_token)
+        if input_token.operator? && input_stack.count < 2
+          # We have to have at least 2 operands before we're able to perform a
+          # computaton, otherwise, this is an error.
+          yield Errors::Calculator::OPERAND_EXPECTED, input_token.token
+          true
+        else
+          false
+        end
       end
 
       # Processes an input token and yields the result
