@@ -15,7 +15,7 @@ module RSpecHelpers
     end
 
     def use_readline
-      RealPage::Calculator::Configuration.instance.use_readline
+      RealPage::Calculator::Configuration.instance.use_readline?
     end
   end
 end
