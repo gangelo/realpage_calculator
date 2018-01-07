@@ -4,7 +4,7 @@ ruby '2.3.1'
 
 group :development, :test do
   gem 'rbenv-rehash', '~> 0.3'
-  gem 'byebug', '~> 9.0', '>= 9.0.6'
+  gem 'pry-byebug'
 end
 
 group :test do
