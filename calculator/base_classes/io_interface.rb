@@ -40,7 +40,7 @@ module RealPage
       end
 
       # Starts the process of receiving input.
-      def accept
+      def accept(*_args)
         raise InterfaceNotReadyError unless ready?
         @state = IOInterface.opened_state
       end
