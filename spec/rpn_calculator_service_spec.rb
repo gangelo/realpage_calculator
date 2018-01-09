@@ -55,6 +55,11 @@ describe "RPNCalculatorService" do
         expect(@calculator_service.compute("q").result).to eq("")
       end
 
+      it "should not add Infinity to the input_stack when dividing by 0" do
+        @calculator_service.compute('1 0 /')
+        expect(@calculator_service.input_stack).to eq([])
+      end
+
       it "should return the computed value given a string of tokens that ends with 'quit'" do
         expect(@calculator_service.compute("5 8 + 13 - q").result).to eq(0.0)
       end

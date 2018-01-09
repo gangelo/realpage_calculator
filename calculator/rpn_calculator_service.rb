@@ -73,8 +73,10 @@ module RealPage
 
         result = safe_eval(operator, operand_1, operand_2)
 
-        # The result gets pushed to the input stack for subsequent computations.
-        input_stack << result
+        # The result gets pushed to the input stack for subsequent computations
+        # unless we've a divide by zero that results in an infinite value, then
+        # we do not add that to the input stack.
+        input_stack << result unless result.infinite?
 
         result
       end
