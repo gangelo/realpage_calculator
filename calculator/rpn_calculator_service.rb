@@ -31,19 +31,22 @@ module RealPage
         result_error = nil
 
         input_tokens.each do |input_token|
-          break if input_errors?(input_token) do |error, error_token|
+          # Ignore quit, it will be handled in the interface.
+          next if input_token.quit?
+
+          break if input_error?(input_token) do |error, error_token|
             result = error_token
             result_error = error
           end
 
-          result = process_input_token(input_token) unless input_token.quit?
+          result = process_input_token(input_token)
         end
 
         # Notify the interface and return the result.
         result_error ? notify_error(result, result_error) : notify(result)
       end
 
-      def input_errors?(input_token)
+      def input_error?(input_token)
         if input_token.operator? && input_stack.count < 2
           # We have to have at least 2 operands before we're able to perform a
           # computaton, otherwise, this is an error.
