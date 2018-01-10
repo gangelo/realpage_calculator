@@ -39,7 +39,7 @@ The RPC project consists of:
 | `RealPage::Calculator::Configuration`  | The _Configuration_ Singleton object (_Configuration_) is responsible for loading the _/calculator/config/calculator_service_config.yml_ file and providing a single(ton) interface to configuration settings user by _Calculator Services_. Configuration settings such as valid _operators_, _commands_ (i.e. as _quit_, _view stack_, _clear stack_) and _console_interface_options_ are made available through the _Configuration_ Singleton. |
 | `RealPage::Calculator::I18nTranslator`  | The _i18n Tranclator_ Singleton object (_i18n Translator_) is responsible for loading the /configuration/config/i18n.yml file and providing a single(ton) interface for _translation_ services used by _IO Interfaces_. |
 | `RealPage::Calculator::InterfaceNotReadyError` `RealPage::Calculator::MustOverrideError`  | The _Error_ class objects (_Errors_) are used throughout the RPC project wherever a custom error needs to be raised.|
-| `RealPage::Calculator::Errors`  | The _Error Support_ module (_Error Support_) defines errors in the form of _Hash_ values. When the _Calculator Service_ encounters an error, a _CalculatorResult_ object is created and the _Error Support_ error is embedded in the _CalculatorResult_ object and sent to the _IO Interface_. The _Error Support_ error Hash embedded in the _CalculatorResult_ object is then used by the _IO Interface_ as input to the _i18n Translator_ ({key: :key, scope: :scope}) to return a locale specific error message to the output stream. |
+| `RealPage::Calculator::Messages`  | The _Message Support_ module (_Message Support_) defines errors and warnings in the form of _Hash_ values. When the _Calculator Service_ encounters an error or warning, a _CalculatorResult_ object is created and the _Message Support_ message is embedded in the _CalculatorResult_ object and sent to the _IO Interface_. The _Message Support_ message Hash embedded in the _CalculatorResult_ object is then used by the _IO Interface_ as input to the _i18n Translator_ ({type: :error \| :warning, key: :key, scope: [:scope1, :scope2, ...]}) to return a locale specific message to the output stream. |
 | `RealPage::Calculator::Helpers::Blank` `RealPage::Calculator::Helpers::Arrays`  | These _Helper_ modules (_Helpers_) add convenience functionality in support of this project. |
 
 ### Configuration Files
@@ -53,7 +53,7 @@ The RPC project consists of:
 
 | Script        | Type | Purpose |
 |-------------:|:------------------|:------------------|
-| `/calculator/rpn_cal.rb`  | Ruby | The _Console RPN Calculator_ file is an _executable Ruby script_ that Users can use to run and interact with the RPN calculator in a UNIX-like CLI. |
+| `/calculator/rpn_cal.rb`  | Ruby | The _RPN Calculator_ file is an _executable Ruby script_ that Users can use to run and interact with the RPN calculator either in a UNIX-like CLI (console interface), or via input file (file interface). |
 
 ## Technical/Architectural Reasoning
 
@@ -124,7 +124,7 @@ _Input Tokens_ exist to identify the _nature_ (`#empty?`, `#invalid?`, `#valid?`
 
 #### Modules
 
-`RealPage::Calculator::Errors` `RealPage::Calculator::Helpers::Blank` `RealPage::Calculator::Helpers::Arrays`
+`RealPage::Calculator::Messages` `RealPage::Calculator::Helpers::Blank` `RealPage::Calculator::Helpers::Arrays`
 
 #### Reasoning
 
@@ -138,9 +138,9 @@ The `RealPage::Calculator::Configuration` class provides application _configurat
 
 The `RealPage::Calculator::I18nTranslator` classes provides _i18n translation key/scope pairs_ used for text translation. This is necessary to provide localization. For example, if I speak Spanish and am using the RPN Calculator, I should see error messages in Spanish. It also is a _Singleton_ for the same reasons mentioned previously.
 
-##### Errors Module
+##### Messages Module
 
-`RealPage::Calculator::Errors` is a _module_. Likewise, the data it makes available never changes; however, the data it makes available is static (not dependant upon loading a yaml file). Therefore, a Module makes the most sense.
+`RealPage::Calculator::Messages` is a _module_. Likewise, the data it makes available never changes; however, the data it makes available is static (not dependant upon loading a yaml file). Therefore, a Module makes the most sense.
 
 ##### Errors 
 
@@ -158,7 +158,7 @@ The `RealPage::Calculator::InterfaceNotReadyError` and `RealPage::Calculator::Mu
 
 #### Reasoning
 
-The justification for this script is that Users need a simple script to run the RPN calculator from the command-line. This script enables users to do that without having to start _irb_ and instantiate 
+The justification for this script is that Users need a simple script to run the RPN calculator from the command-line via input or command-line via input file. This script enables users to do that without having to start _irb_ and instantiate 
 
 ## Technical/Architectural Reflections
 
@@ -166,7 +166,7 @@ There are a few things I would do differently if I spent more time on the projec
 
 Some of the other things I would do or do differently would be:
 
-+ Create additional _IO Interfaces_, one for _file_, and one for _WebSocket_ (I've never use WebSocket before), then create a Rails app host and see how it works.
++ Create additional _IO Interfaces_, for example, a _WebSocket_ (I've never use WebSocket before), then create a Rails app host and see how it works.
 + Refactor `RealPage::Calculator::CalculatorService` to allow _input stack_ as a param during initialization so the _Calculator Service_ state could be restored in a stateless environment, _HTTP Interface_ for example.
 + Provide a means of _setting_ (in the case of stateful environments) or _accepting_ (in the case of stateless environments) a locale to be used for localization.
 + Refactor `RealPage::Calculator::InputToken` into a base class by eliminating calculator-specific command methods (class and instance) and force _Calculator Services_ to implement their own, calculator-specific _InputToken_ class. It's not very extensible the way it is.
@@ -181,9 +181,12 @@ For your convenience, _view stack_ (v) and _clear stack_ \(c\) commands have bee
 
 ### Rake Task
 
-To run a version of the RPN calculator from the console using _Rake_, make sure you are in the project root directory (`/realpage_calculator`), then type the following command into the command-line followed by ENTER:
+To run a version of the RPN calculator from the console using _Rake_, make sure you are in the project root directory (`/realpage_calculator`), then type either of the following command into the command-line followed by ENTER:
 
 `$ rake console`
+`$ rake file`
+
+The `$ rake console` command runs the RPN Calculator using the console and allows the user to interact with the calculator via user input into the terminal. The `$ rake file` command also runs the RPN Calculator using the console; however, this command uses the `spec/files/rpn_input_file.txt` file as input to the RPN Calculator.
 
 ### Ruby Script
 
@@ -191,9 +194,12 @@ To run a version of the RPN calculator from the console using _Ruby script_, fro
 
 `$ cd calculator`
 
-Now type the following command into the command-line followed by ENTER to run the RPN calculator:
+Now type one of the following command into the command-line followed by ENTER to run the RPN calculator:
 
 `$ ruby rpn_calc.rb`
+`$ ruby rpn_calc.rb spec/files/rpn_input_file.txt`
+
+The `$ ruby rpn_calc.rb` command runs the RPN Calculator using the console and allows the user to interact with the calculator via user input into the terminal. The `$ ruby rpn_calc.rb spec/files/rpn_input_file.txt` command also runs the RPN Calculator using the console; however, this command uses the `spec/files/rpn_input_file.txt` file as input to the RPN Calculator.
 
 #### Make the Script Permanently Executable
 
