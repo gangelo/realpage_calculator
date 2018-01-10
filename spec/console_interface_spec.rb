@@ -71,14 +71,16 @@ describe "ConsoleInterface" do
       it "should receive errors from the calculator" do
         allow(@console_interface).to receive(:receive).and_return("+ + #{quit_command}")
         expect(@console_interface).to receive(:receive_calculator_result_error) do |calculator_result|
-          expect(calculator_result.error).to_not eq(RealPage::Calculator::Errors::Calculator::NONE)
+          expect(calculator_result.message).to_not eq(CalculatorErrors.none)
         end
         @console_interface.accept
       end
 
       it "should pass errors from the calculator to #respond_error" do
         allow(@console_interface).to receive(:receive).and_return("+ + #{quit_command}")
-        error_label = RealPage::Calculator::I18nTranslator.instance.translate({ key: :error_label, scope: :errors })
+        #error_label = RealPage::Calculator::I18nTranslator.instance.translate({ type: :error, key: :error_label, scope: :errors })
+        error_label = RealPage::Calculator::I18nTranslator.instance.translate({ type: :error, key: :error_label, scope: [:errors] })
+
         expect(@console_interface).to receive(:respond_error).with(/#{error_label}/)
         @console_interface.accept
       end

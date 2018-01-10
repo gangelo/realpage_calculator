@@ -72,7 +72,7 @@ describe "FileInterface" do
       it { should respond_to(:receive_calculator_result_error).with(1).arguments }
       it "should receive errors from the calculator" do
         expect(@file_interface).to receive(:receive_calculator_result_error) do |calculator_result|
-          expect(calculator_result.error).to_not eq(RealPage::Calculator::Errors::Calculator::NONE)
+          expect(calculator_result.message).to_not eq(CalculatorErrors.none)
         end
         @file_interface.accept('spec/files/rpn_input_file_with_error.txt')
       end

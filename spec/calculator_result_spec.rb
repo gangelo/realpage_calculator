@@ -17,29 +17,81 @@ describe "CalculatorResult" do
       end
 
       it "should NOT raise an error if error is a valid error code" do
-        RealPage::Calculator::Errors::Calculator::all_errors.each do |error|
-          expect { RealPage::Calculator::CalculatorResult.new("1", error) }.to_not raise_exception
+        CalculatorErrors.all_errors.each do |error|
+          expect { RealPage::Calculator::CalculatorResult.new("1", { message: error }) }.to_not raise_exception
         end
       end
     end
   end # initialization
 
   context "instance methods" do
+    describe '#message' do
+      it 'should return the error if an error is available' do
+        message = CalculatorErrors.none
+        calculator_result = RealPage::Calculator::CalculatorResult.new('1.0', { message: message })
+        expect(calculator_result.message).to eq(message)
+      end
+      it 'should return the warning if a warning is available' do
+        message = CalculatorWarnings.none
+        calculator_result = RealPage::Calculator::CalculatorResult.new('1.0', { message: message })
+        expect(calculator_result.message).to eq(message)
+      end
+      it 'should return an empty Hash if a message is not available' do
+        calculator_result = RealPage::Calculator::CalculatorResult.new('2.0')
+        expect(calculator_result.message).to eq({})
+      end
+    end
+
+    describe '#message?' do
+      it 'should return true if a message is available' do
+        message = CalculatorErrors.operand_expected
+        calculator_result = RealPage::Calculator::CalculatorResult.new('-1.0', { message: message })
+        expect(calculator_result.message?).to eq(true)
+      end
+      it 'should return false if a message is not available' do
+        calculator_result = RealPage::Calculator::CalculatorResult.new('-1.0')
+        expect(calculator_result.message?).to eq(false)
+
+        calculator_result = RealPage::Calculator::CalculatorResult.new('0', { dummy: :hello})
+        expect(calculator_result.message?).to eq(false)
+      end
+    end
+
+    describe '#warning?' do
+      it "should return false if no warning is provided" do
+        calculator_result = RealPage::Calculator::CalculatorResult.new("1")
+        expect(calculator_result.warning?).to eq(false)
+      end
+
+      it "should return false if #none warning is provided" do
+        calculator_result = RealPage::Calculator::CalculatorResult.new("1", { message: CalculatorWarnings.none })
+        expect(calculator_result.warning?).to eq(false)
+      end
+
+      it "should return true if a warning other than #none is provided" do
+        CalculatorWarnings.all_warnings.each do |warning|
+          next if warning[:key] == :none
+          calculator_result = RealPage::Calculator::CalculatorResult.new("1", { message: warning })
+          expect(calculator_result.warning?).to eq(true)
+        end
+      end
+    end
+
     describe "#error?" do
       it "should return false if no error is provided" do
         calculator_result = RealPage::Calculator::CalculatorResult.new("1")
         expect(calculator_result.error?).to eq(false)
       end
 
-      it "should return false if NONE error is provided" do
-        calculator_result = RealPage::Calculator::CalculatorResult.new("1", RealPage::Calculator::Errors::Calculator::NONE)
+      it "should return false if #none error is provided" do
+        calculator_result = RealPage::Calculator::CalculatorResult.new("1", { message: CalculatorErrors.none })
         expect(calculator_result.error?).to eq(false)
       end
 
-      it "should return true if an error other than NONE is provided" do
-        RealPage::Calculator::Errors::Calculator::all_errors.each do |error|
+      it "should return true if an error other than #none is provided" do
+        CalculatorErrors.all_errors.each do |error|
           next if error[:key] == :none
-          calculator_result = RealPage::Calculator::CalculatorResult.new("1", error)
+          calculator_result = RealPage::Calculator::CalculatorResult.new("1", { message: error })
           expect(calculator_result.error?).to eq(true)
         end
       end
@@ -56,8 +108,8 @@ describe "CalculatorResult" do
 
     describe "#error" do
       it "should return the error provided to #initialize" do
-        calculator_result = RealPage::Calculator::CalculatorResult.new("", RealPage::Calculator::Errors::Calculator::OPERAND_EXPECTED)
-        expect(calculator_result.error).to eq(RealPage::Calculator::Errors::Calculator::OPERAND_EXPECTED)
+        calculator_result = RealPage::Calculator::CalculatorResult.new("", { message: CalculatorErrors.operand_expected })
+        expect(calculator_result.message).to eq(CalculatorErrors.operand_expected)
       end
     end
   end # attributes

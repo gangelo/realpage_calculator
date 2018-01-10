@@ -27,7 +27,7 @@ module RealPage
         if key_scope_hash.nil?
           return I18n.translate(:not_found, scope: :defaults)
         end
-
+        
         key = key_scope_hash[:key]
         scope = key_scope_hash[:scope]
 

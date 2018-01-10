@@ -51,9 +51,17 @@ module RealPage
       end
 
       def receive_calculator_result_error(calculator_result)
-        error_label = I18nTranslator.instance.translate(Errors.error_label)
-        error_message = I18nTranslator.instance.translate(calculator_result.error, token: calculator_result.result)
-        respond_error("#{error_label}: #{error_message}\n")
+        label = ''
+        case 
+        when calculator_result.error?
+          label = I18nTranslator.instance.translate(Messages.error_label)
+        when calculator_result.warning?
+          label = I18nTranslator.instance.translate(Messages.warning_label)
+        else
+          # TODO: Handle
+        end
+        message = I18nTranslator.instance.translate(calculator_result.message, token: calculator_result.result)
+        respond_error("#{label}: #{message}\n")
       end
 
       def receive_readline

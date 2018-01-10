@@ -25,7 +25,7 @@ describe "RPNCalculatorService" do
         expect(@calculator_service.compute("5").result).to eq(5.0)
         expect(@calculator_service.compute("8").result).to eq(8.0)
         expect(@calculator_service.compute("+").result).to eq(13.0)
-        expect(@calculator_service.compute("q").result).to eq("")
+        expect(@calculator_service.compute("q")).to eq(nil)
       end
 
       it "should produce the expected output given '5 8 + 13 - q' one token at a time" do
@@ -34,7 +34,7 @@ describe "RPNCalculatorService" do
         expect(@calculator_service.compute("+").result).to eq(13.0)
         expect(@calculator_service.compute("13").result).to eq(13.0)
         expect(@calculator_service.compute("-").result).to eq(0.0)
-        expect(@calculator_service.compute("q").result).to eq("")
+        expect(@calculator_service.compute("q")).to eq(nil)
       end
 
       it "should produce the expected output given '-3 -2 * 5 + q' one token at a time" do
@@ -43,7 +43,7 @@ describe "RPNCalculatorService" do
         expect(@calculator_service.compute("*").result).to eq(6.0)
         expect(@calculator_service.compute("5").result).to eq(5.0)
         expect(@calculator_service.compute("+").result).to eq(11.0)
-        expect(@calculator_service.compute("q").result).to eq("")
+        expect(@calculator_service.compute("q")).to eq(nil)
       end
 
       it "should produce the expected output given '5 9 1 - / q' one token at a time" do
@@ -52,7 +52,7 @@ describe "RPNCalculatorService" do
         expect(@calculator_service.compute("1").result).to eq(1.0)
         expect(@calculator_service.compute("-").result).to eq(8.0)
         expect(@calculator_service.compute("/").result).to eq(0.625)
-        expect(@calculator_service.compute("q").result).to eq("")
+        expect(@calculator_service.compute("q")).to eq(nil)
       end
 
       it "should not add Infinity to the input_stack when dividing by 0" do
@@ -85,15 +85,35 @@ describe "RPNCalculatorService" do
       it { should respond_to(:notify_error).with(2).arguments }
       it "should nofity the observer with the calculator error by calling Observer#receive_calculator_result_error if an observer is attached" do
         expected_result = "invalid_input"
-        expected_error = RealPage::Calculator::Errors::Calculator::VALID_INPUT_EXPECTED
+        expected_error = CalculatorErrors.valid_input_expected
         io_interface = instance_double("RealPage::Calculator::IOInterface", receive_calculator_result_error: nil)
         expect(io_interface).to receive(:receive_calculator_result_error).with(an_instance_of(RealPage::Calculator::CalculatorResult)) do |calculator_result_error|
           expect(calculator_result_error.result).to eq(expected_result)
           expect(calculator_result_error.error?).to eq(true)
-          expect(calculator_result_error.error).to eq(expected_error)
+          expect(calculator_result_error.message).to eq(expected_error)
         end
         @calculator_service.attach_observer io_interface
         @calculator_service.notify_error(expected_result, expected_error)
+      end
+    end
+
+    describe '#will_divide_by_zero?' do
+      it { should respond_to(:will_divide_by_zero?).with(1).argument }
+      it 'should retun true if processing the resulting input token will cause a divide by zero' do
+        @calculator_service.input_stack = [1.0, 0]
+        expect(@calculator_service.will_divide_by_zero?('/')).to eq(true)
+      end
+      it "should raise ArgumentError if the argument passed is not the '\' operand" do
+        @calculator_service.input_stack = [1.0, 0]
+        expect { @calculator_service.will_divide_by_zero?('*') }.to raise_error(ArgumentError)
+      end
+      it 'should raise ArgumentError if the the input stack does not contain at least 2 operands' do
+        @calculator_service.input_stack = [1.0]
+        expect { @calculator_service.will_divide_by_zero?('/') }.to raise_error(ArgumentError)
+      end
+      it 'should return true if the argument passed will cause a divide by zero' do
+        @calculator_service.input_stack = [5.0, 0]
+        expect(@calculator_service.will_divide_by_zero?('/')).to eq(true)
       end
     end
   end # protected instance methods

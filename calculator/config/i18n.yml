@@ -5,6 +5,11 @@ en:
   errors:
     error_label: Error
     calculator: 
-      none: None
-      operand_expected: An operand was expected but '%{token}' was encountered
-      valid_input_expected: A valid operator, operand, or input terminating sequence was expected but '%{token}' was encountered
+      none: None.
+      operand_expected: An operand was expected but '%{token}' was encountered.
+      valid_input_expected: A valid operator, operand, or input terminating sequence was expected but '%{token}' was encountered.
+  warnings:
+    warning_label: Warning
+    calculator: 
+      none: None.
+      infinite_result: The operation '%{token}' produced an infinite result. The operands have been cleared from the input stack.

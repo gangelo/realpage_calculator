@@ -1,6 +1,6 @@
 require_relative '../support/rpn_input_parser'
 require_relative '../errors/must_override_error'
-require_relative '../errors/errors'
+require_relative '../errors/messages'
 
 module RealPage
   module Calculator
@@ -40,7 +40,7 @@ module RealPage
 
       def notify(calculator_result)
         calculator_result = CalculatorResult.new(calculator_result,
-                                                 Errors::Calculator::NONE)
+                                                 { message: CalculatorErrors.none})
         @interface_observer.send(:receive_calculator_result, calculator_result) unless @interface_observer.nil?
         # Return the calculator result as it makes life a little easier for
         # testing.
@@ -49,11 +49,17 @@ module RealPage
 
       def notify_error(calculator_result, calculator_error)
         calculator_result = CalculatorResult.new(calculator_result,
-                                                 calculator_error)
+                                                 { message: calculator_error })
         @interface_observer.send(:receive_calculator_result_error, calculator_result) unless @interface_observer.nil?
         # Return the calculator result as it makes life a little easier for
         # testing.
         calculator_result
+      end
+
+      # Should return true if processing _token will cause a divide by zero
+      # scenario resulting in Float#infinite?.
+      def will_divide_by_zero?(_token)
+        raise MustOverrideError
       end
     end
   end

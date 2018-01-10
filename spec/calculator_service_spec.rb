@@ -49,6 +49,13 @@ describe "CalculatorService" do
         expect { @calculator_service.attach_observer("x") }.to change { @calculator_service.interface_observer }.from(nil).to("x")
       end
     end
+
+    describe '#will_divide_by_zero?' do
+      it { should respond_to(:will_divide_by_zero?).with(1).argument }
+      it 'should raise MustOverrideError' do
+        expect { @calculator_service.will_divide_by_zero?('x') }.to raise_error(RealPage::Calculator::MustOverrideError)
+      end
+    end
   end # instance methods
 
   context "protected instance methods" do
@@ -70,12 +77,12 @@ describe "CalculatorService" do
       it { should respond_to(:notify_error).with(2).arguments }
       it "should nofity the observer with a calculator error by calling Observer#receive_calculator_result_error if an observer is attached" do
         expected_result = "invalid_input"
-        expected_error = RealPage::Calculator::Errors::Calculator::VALID_INPUT_EXPECTED
+        expected_error = CalculatorErrors.valid_input_expected
         io_interface = instance_double("RealPage::Calculator::IOInterface", receive_calculator_result_error: nil)
         expect(io_interface).to receive(:receive_calculator_result_error).with(an_instance_of(RealPage::Calculator::CalculatorResult)) do |calculator_result_error|
           expect(calculator_result_error.result).to eq(expected_result)
           expect(calculator_result_error.error?).to eq(true)
-          expect(calculator_result_error.error).to eq(expected_error)
+          expect(calculator_result_error.message).to eq(expected_error)
         end
         @calculator_service.attach_observer io_interface
         @calculator_service.notify_error(expected_result, expected_error)
